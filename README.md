@@ -2,28 +2,8 @@
 
 GCN applied in a text classification context.
 
-```
-　　　　/)─―ヘ
-　　＿／　　　　＼
-／　　　　●　　　●
-｜　　　　　　　▼　|
-｜　　　　　　　亠ノ
-U￣U￣￣￣￣U￣U
-```
-
 ## Abstract
 This project aims to exam the text classification problem with novel approaches Graph Convolutional Networks and Graph Attention Networks using Deep Learning algorithms and Natural Language Processing Techniques.
-
-## Build
-It is applicable for only Linux distros. You can update the commands and use the equivalent ones in other distros (Mac, Windows, etc.) Executing `buid.sh` will create a new _virtual environment_ in the project folder and install dependencies into that. Run the following command to build: 
-
-```bash
-bash build.sh 
-```
-
-Be sure that your computer is connected to internet. It can take a while to download and install the dependencies.
-
-## Run
 
 #### **Available Datasets:**
 
