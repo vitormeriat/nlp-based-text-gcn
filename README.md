@@ -16,6 +16,18 @@ This project aims to exam the text classification problem with novel approaches 
 + citeseer (Citation Dataset)
 + pubmed (Citation Dataset)
 
+**Preprocess:**
+```bash
+preprocess.py <DATASET_NAME>
+```
+*Example:* ```python3 preprocess.py R8```
+
+**Train:**
+```bash
+train.py <DATASET_NAME>
+```
+*Example:* ```python3 train.py R8```
+
 ## References
 
 ### Papers 
