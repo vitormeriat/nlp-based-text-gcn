@@ -96,7 +96,27 @@ def chebyshev_polynomials(adj, k):
 
 
 def load_corpus(data_name, split_index_dir: str, node_features_dir: str, adjacency_dir: str):
-    """Loads all data input files (as well the training/test data)."""
+    """
+    Loads input corpus from gcn/data directory
+
+    ind.dataset_str.x => the feature vectors of the training docs as scipy.sparse.csr.csr_matrix object;
+    ind.dataset_str.tx => the feature vectors of the test docs as scipy.sparse.csr.csr_matrix object;
+    ind.dataset_str.allx => the feature vectors of both labeled and unlabeled training docs/words
+        (a superset of ind.dataset_str.x) as scipy.sparse.csr.csr_matrix object;
+    ind.dataset_str.y => the one-hot labels of the labeled training docs as numpy.ndarray object;
+    ind.dataset_str.ty => the one-hot labels of the test docs as numpy.ndarray object;
+    ind.dataset_str.ally => the labels for instances in ind.dataset_str.allx as numpy.ndarray object;
+    ind.dataset_str.adj => adjacency matrix of word/doc nodes as scipy.sparse.csr.csr_matrix object;
+    ind.dataset_str.train.index => the indices of training docs in original doc list.
+
+    All objects above must be saved using python pickle module.
+
+    :param dataset_str: Dataset name
+    :return: All data input files loaded (as well the training/test data).
+    """
+    #"""Loads all data input files (as well the training/test data)."""
+
+
     node_feature_names = ['x', 'y', 'tx', 'ty', 'allx', 'ally']
     node_features = []
     for node_feature_name in node_feature_names:

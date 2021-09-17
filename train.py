@@ -7,12 +7,14 @@ from matplotlib.backends.backend_pdf import PdfPages
 from sklearn.manifold import TSNE
 from matplotlib import pyplot as plt
 import numpy as np
-#import os
+import os
 
 
 def create_training_cfg() -> TrainingConfigs:
+    # 20NG - MR - Ohsumed - R8, R52
     conf = TrainingConfigs()
-    conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed', 'mr', 'cora', 'citeseer', 'pubmed']
+    #conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed', 'mr', 'cora', 'citeseer', 'pubmed']
+    conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed', 'mr']
     conf.corpus_split_index_dir = 'data/corpus.shuffled/split_index/'
     conf.corpus_node_features_dir = 'data/corpus.shuffled/node_features/'
     conf.corpus_adjacency_dir = 'data/corpus.shuffled/adjacency/'
@@ -36,22 +38,21 @@ def train(ds: str, training_cfg: TrainingConfigs):
 
 def save_history(hist, dataset, experiment, run_time):
     file_name = f'./experiments/{dataset}/EXPERIMENT_{experiment}_RUN_{run_time}.txt'
-    my_file=open(file_name,'w')
+    my_file = open(file_name, 'w')
     #my_file=map(lambda x:x+'\n', my_file)
     my_file.writelines(hist)
     my_file.close()
 
-def tsne_visualizer(data_set, experiment, run_time):
-    #data_set = 'mr' # 20ng R8 R52 ohsumed mr
-    data_path = './data/corpus.shuffled'
 
+def tsne_visualizer(data_set, experiment, run_time):
+    # data_set = 'mr' # 20ng R8 R52 ohsumed mr
+    data_path = './data/corpus.shuffled'
 
     #f = open(os.path.join(data_path, data_set + '.train.index'), 'r')
     f = open(f'{data_path}/split_index/{data_set}.train', 'r')
     lines = f.readlines()
     f.close()
     train_size = len(lines)
-
 
     #f = open(os.path.join(data_path, data_set + '_shuffle.txt'), 'r')
     f = open(f'{data_path}/meta/{data_set}.meta', 'r')
@@ -80,12 +81,13 @@ def tsne_visualizer(data_set, experiment, run_time):
         values = [float(x) for x in values_str_list]
         docs.append(values)
 
-    fea = docs[train_size:]  # int(train_size * 0.9)
+    fea = docs[train_size:]    # int(train_size * 0.9)
     label = labels[train_size:]  # int(train_size * 0.9)
     label = np.array(label)
 
     fea = TSNE(n_components=2).fit_transform(fea)
-    pdf = PdfPages(f'{data_set}_EXPERIMENT_{experiment}_RUN_{run_time}.pdf')
+    #pdf = PdfPages(
+    #    f'./experiments/{data_set}_EXPERIMENT_{experiment}_RUN_{run_time}.pdf')
     cls = np.unique(label)
 
     # cls=range(10)
@@ -96,17 +98,19 @@ def tsne_visualizer(data_set, experiment, run_time):
         else:
             plt.scatter(f[:, 0], f[:, 1], label=cls[i])
 
-    plt.legend(ncol=5, loc='upper center', bbox_to_anchor=(0.48, -0.08), fontsize=11)
+    plt.legend(ncol=5, loc='upper center',
+               bbox_to_anchor=(0.48, -0.08), fontsize=11)
     # plt.ylim([-20,35])
     # plt.title(md_file)
     plt.tight_layout()
-    pdf.savefig()
-    plt.show()
-    pdf.close()
+    #pdf.savefig()
+    #plt.show()
+    #pdf.close()
+    plt.savefig(f'./experiments/{data_set}_EXPERIMENT_{experiment}_RUN_{run_time}.png', dpi=300)
 
 
-def batch_train(dataset):
-    trn_cfg = create_training_cfg()
+def batch_train(dataset, trn_cfg):
+    #trn_cfg = create_training_cfg()
     experiment = 0
     times = 2
 
@@ -117,20 +121,22 @@ def batch_train(dataset):
 
 
 if __name__ == '__main__':
-    
+
+    trn_cfg = create_training_cfg()
     if len(argv) < 2:
-        raise Exception("Dataset name cannot be left blank. Must be one of datasets:%r." % trn_cfg.data_sets)
+        raise Exception(
+            "Dataset name cannot be left blank. Must be one of datasets:%r." % trn_cfg.data_sets)
     ds_name = argv[1]
 
     #print("------ Working with dataset", ds_name, "------\n")
-    #ORIGINAL_PAPER = {
+    # ORIGINAL_PAPER = {
     #    "mr": {"avg": 0.7674, "std": 0.0020},
     #    "Ohsumed": {"avg": 0.6836, "std": 0.0056},
     #    "R8": {"avg": 0.9707, "std": 0.0010},
     #    "R52": {"avg": 0.9356, "std": 0.0018}
-    #}
-    #print(ORIGINAL_PAPER[ds_name])
+    # }
+    # print(ORIGINAL_PAPER[ds_name])
 
-    batch_train(ds_name)
+    batch_train(ds_name, trn_cfg)
 
     print('\nDone!!!')
