@@ -31,7 +31,7 @@ def preprocess(ds: str, preprocessing_cfg: PreProcessingConfigs):  # Start pre-p
     shuffle_data(ds_name=ds, cfg=preprocessing_cfg)
     prepare_words(ds_name=ds, cfg=preprocessing_cfg)
     build_node_features(ds_name=ds, validation_ratio=0.10, use_predefined_word_vectors=False, cfg=preprocessing_cfg)
-    build_adjacency(ds_name=ds, cfg=preprocessing_cfg)
+    build_adjacency(ds_name=ds, cfg=preprocessing_cfg) # Default adjacency
 
 
 if __name__ == '__main__':
