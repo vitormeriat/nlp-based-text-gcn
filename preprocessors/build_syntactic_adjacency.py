@@ -51,7 +51,9 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
     nlp = StanfordCoreNLP(core_nlp_path, lang='en')
     stop_words = set(stopwords.words('english'))
 
-    windows_of_words = extract_windows(docs_of_words=docs_of_words, window_size=20)
+    window_size=20
+
+    windows_of_words = extract_windows(docs_of_words=docs_of_words, window_size=window_size)
 
     
     
@@ -92,11 +94,56 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
                     rela_pair_count_str[word_pair_str] = 1
 
     
-    ds_syntactic = cfg.corpus_shuffled_dir + '/{}_stan.pkl'.format(ds_name) + ".txt"
-    output0=open(ds_syntactic,'wb')
-    pkl.dump(rela_pair_count_str, output0)
-    output0.close()
+    #ds_syntactic = cfg.corpus_shuffled_dir + '/{}_stan.pkl'.format(ds_name) + ".txt"
+    #output0=open(ds_syntactic,'wb')
+    #pkl.dump(rela_pair_count_str, output0)
+    #output0.close()
 
-    
+    data1 = rela_pair_count_str
+    del(rela_pair_count_str)
+
+    max_count1 = 0.0
+    min_count1 = 0.0
+    count1 = []
+    for key in data1:
+        if data1[key] > max_count1:
+            max_count1 = data1[key]
+        if data1[key] < min_count1:
+            min_count1 = data1[key]
+        count1.append(data1[key])
+    count_mean1 = np.mean(count1)
+    count_var1 = np.var(count1)
+    count_std1 = np.std(count1, ddof=1)
+
+
+    # compute weights
+    for key in word_pair_count:
+        temp = key.split(',')
+        i = int(temp[0])
+        j = int(temp[1])
+        count = word_pair_count[key]
+        word_freq_i = word_window_freq[vocab[i]]
+        word_freq_j = word_window_freq[vocab[j]]
+        pmi = log((1.0 * count / window_size) / (1.0 * word_freq_i * word_freq_j / (window_size * window_size)))
+        if pmi <= 0:
+            continue
+        # pmi
+        row.append(train_size + i)
+        col.append(train_size + j)
+        ## weight.append(pmi)
+        # Dependência sintática
+        if i not in id_word_map or j not in id_word_map:
+            continue
+        newkey = id_word_map[i] + ',' + id_word_map[j]
+        if newkey in data1:
+            # padronização min-max
+            wei = (data1[newkey] - min_count1) / (max_count1 - min_count1)
+            # 0 normalização média
+            # wei = (data1[key]-count_mean1)/ count_std1
+            # Taxa de frequência de ocorrência, mais frequentemente quando 1 aparece
+            # wei = data1[key] / data2[key]
+            weight1.append(wei)
+        else:
+            weight1.append(pmi)
     
     pass
