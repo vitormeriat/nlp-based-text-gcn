@@ -8,8 +8,22 @@ import pickle as pkl
 from preprocessors.configs import PreProcessingConfigs
 from common import check_data_set
 from utils.file_ops import create_dir, check_paths
+from typing import List, Dict, Tuple
 
 
+
+def extract_windows(docs_of_words: List[List[str]], window_size: int) -> List[List[str]]:
+    """Word co-occurrence with context windows"""
+    windows = []
+    for doc_words in docs_of_words:
+        doc_len = len(doc_words)
+        if doc_len <= window_size:
+            windows.append(doc_words)
+        else:
+            for j in range(doc_len - window_size + 1):
+                window = doc_words[j: j + window_size]
+                windows.append(window)
+    return windows
 
 
 
@@ -36,4 +50,53 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
     core_nlp_path = cfg.corpus_shuffled_dir
     nlp = StanfordCoreNLP(core_nlp_path, lang='en')
     stop_words = set(stopwords.words('english'))
+
+    windows_of_words = extract_windows(docs_of_words=docs_of_words, window_size=20)
+
+    
+    
+    rela_pair_count_str = {}
+    for doc_id in range(len(docs_of_words)):
+        print(doc_id)
+        words = docs_of_words[doc_id]
+        words = words.split("\n")
+        rela=[]
+        for window in words:
+            if window==' ':
+                continue
+            # Construir rela_pair_count
+            window = window.replace(string.punctuation, ' ')
+            res = nlp.dependency_parse(window)
+            for tuple in res:
+                rela.append(f'{tuple[0]}, {tuple[1]}')
+            for pair in rela:
+                pair=pair.split(", ")
+                if pair[0]=='ROOT' or pair[1]=='ROOT':
+                    continue
+                if pair[0] == pair[1]:
+                    continue
+                if pair[0] in string.punctuation or pair[1] in string.punctuation:
+                    continue
+                if pair[0] in stop_words or pair[1] in stop_words:
+                    continue
+                word_pair_str = pair[0] + ',' + pair[1]
+                if word_pair_str in rela_pair_count_str:
+                    rela_pair_count_str[word_pair_str] += 1
+                else:
+                    rela_pair_count_str[word_pair_str] = 1
+                # two orders
+                word_pair_str = pair[1] + ',' + pair[0]
+                if word_pair_str in rela_pair_count_str:
+                    rela_pair_count_str[word_pair_str] += 1
+                else:
+                    rela_pair_count_str[word_pair_str] = 1
+
+    
+    ds_syntactic = cfg.corpus_shuffled_dir + '/{}_stan.pkl'.format(ds_name) + ".txt"
+    output0=open(ds_syntactic,'wb')
+    pkl.dump(rela_pair_count_str, output0)
+    output0.close()
+
+    
+    
     pass
