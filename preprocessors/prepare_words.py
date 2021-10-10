@@ -14,9 +14,9 @@ from utils.file_ops import write_iterable_to_file, create_dir, check_paths
 
 def extract_word_definitions(vocabulary: List[str]) -> List[str]:
     from nltk.corpus import wordnet
-    from nltk import download
-    temporary_nltk_folder = 'venv/nltk_data/'
-    download(info_or_id='wordnet', download_dir=temporary_nltk_folder)
+    #from nltk import download
+    #temporary_nltk_folder = 'venv/nltk_data/'
+    #download(info_or_id='wordnet', download_dir=temporary_nltk_folder)
 
     merged_definitions_of_words = []
     for word in vocabulary:
@@ -27,7 +27,7 @@ def extract_word_definitions(vocabulary: List[str]) -> List[str]:
         else:
             merged_definitions_of_word = ' '.join(word_definitions)
         merged_definitions_of_words.append(merged_definitions_of_word)
-    rmtree(temporary_nltk_folder)
+    #rmtree(temporary_nltk_folder)
     return merged_definitions_of_words
 
 

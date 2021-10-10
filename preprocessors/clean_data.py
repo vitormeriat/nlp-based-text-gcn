@@ -8,6 +8,12 @@ from common import extract_word_counts, check_data_set
 from preprocessors.configs import PreProcessingConfigs
 from utils.file_ops import create_dir, write_iterable_to_file, check_paths
 
+def config_nltk():
+    temporary_nltk_folder = 'venv/nltk_data/'
+    from nltk import download
+    download(info_or_id='stopwords', download_dir=temporary_nltk_folder)
+    download(info_or_id='wordnet', download_dir=temporary_nltk_folder)
+
 
 def clean_str(a_str: str) -> str:
     """
@@ -31,12 +37,12 @@ def clean_str(a_str: str) -> str:
 
 
 def retrieve_stop_words(language: str = 'english') -> Set[str]:
-    temporary_nltk_folder = 'venv/nltk_data/'
+    #temporary_nltk_folder = 'venv/nltk_data/'
     from nltk.corpus import stopwords
-    from nltk import download
-    download(info_or_id='stopwords', download_dir=temporary_nltk_folder)
+    #from nltk import download
+    #download(info_or_id='stopwords', download_dir=temporary_nltk_folder)
     retrieved_stop_words = set(stopwords.words(language))
-    rmtree(temporary_nltk_folder)
+    #rmtree(temporary_nltk_folder)
     return retrieved_stop_words
 
 

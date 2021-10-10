@@ -3,7 +3,7 @@ from sys import argv
 from preprocessors.build_adjacency import build_adjacency
 from preprocessors.build_syntactic_adjacency import build_syntactic_adjacency
 from preprocessors.build_node_features import build_node_features
-from preprocessors.clean_data import clean_data
+from preprocessors.clean_data import clean_data, config_nltk
 from preprocessors.configs import PreProcessingConfigs
 from preprocessors.prepare_words import prepare_words
 from preprocessors.shuffle_data import shuffle_data
@@ -31,6 +31,7 @@ def create_preprocessing_cfg() -> PreProcessingConfigs:
 
 
 def preprocess(ds: str, rp: str, preprocessing_cfg: PreProcessingConfigs):  # Start pre-processing
+    config_nltk()
     clean_data(ds_name=ds, rare_count=5, cfg=preprocessing_cfg)
     shuffle_data(ds_name=ds, cfg=preprocessing_cfg)
     prepare_words(ds_name=ds, cfg=preprocessing_cfg)
