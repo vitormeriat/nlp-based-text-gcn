@@ -235,8 +235,9 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
     weight_tfidf = []
     doc_word_freq = {}
     for doc_id in range(len(docs_of_words)):
-        doc_words = docs_of_words[doc_id]
-        words = doc_words.split()
+        #doc_words = docs_of_words[doc_id]
+        #words = doc_words.split()
+        words = docs_of_words[doc_id]
         for word in words:
             word_id = word_id_map[word]
             doc_word_str = str(doc_id) + ',' + str(word_id)
@@ -246,8 +247,9 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
                 doc_word_freq[doc_word_str] = 1
 
     for i in range(len(docs_of_words)):
-        doc_words = docs_of_words[i]
-        words = doc_words.split()
+        #doc_words = docs_of_words[i]
+        #words = doc_words.split()
+        words = docs_of_words[doc_id]
         doc_word_set = set()
         for word in words:
             if word in doc_word_set:
