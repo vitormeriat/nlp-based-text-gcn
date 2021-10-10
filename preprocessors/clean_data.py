@@ -1,4 +1,5 @@
 import re
+from time import time
 from collections import Counter
 from shutil import rmtree
 from typing import List, Set
@@ -57,6 +58,7 @@ def glue_lines(lines_of_words: List[List[str]], glue_str: str, with_strip: bool)
 
 
 def clean_data(ds_name: str, rare_count: int, cfg: PreProcessingConfigs):
+    t1 = time()
     corpus_path = cfg.corpus_dir + ds_name + cfg.data_set_extension
     ds_corpus_cleaned = cfg.corpus_cleaned_dir + ds_name + cfg.data_set_extension
 
@@ -74,6 +76,8 @@ def clean_data(ds_name: str, rare_count: int, cfg: PreProcessingConfigs):
     docs_of_words = glue_lines(lines_of_words=docs_of_words, glue_str=' ', with_strip=True)
 
     write_iterable_to_file(an_iterable=docs_of_words, file_path=ds_corpus_cleaned, file_mode='w')
+    elapsed = time() - t1
     print("[INFO] Cleaned-Corpus Dir='{}'".format(cfg.corpus_cleaned_dir))
     print("[INFO] Rare-Count=<{}>".format(rare_count))
+    print("[INFO] Elapsed time is %f seconds." % elapsed)
     print("[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========")

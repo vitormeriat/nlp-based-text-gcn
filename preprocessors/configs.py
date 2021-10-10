@@ -13,6 +13,7 @@ def make_path_absolute(a_path: str) -> str:
 class PreProcessingConfigs:
     def __init__(self):
         self.data_sets = None  # List of Valid Data-sets
+        self.adjacency_sets = None # List of Valid Adjacency-sets
         self.data_set_extension = None  # Extension of data-sets, e.g. "txt"
         self.corpus_dir = None  # Original Corpus Directory
         self.corpus_cleaned_dir = None  # Cleaned Corpus Directory
@@ -24,6 +25,7 @@ class PreProcessingConfigs:
         self.corpus_shuffled_word_vectors_dir = None  # Word-Vectors of Shuffled Corpus
         self.corpus_shuffled_node_features_dir = None  # Node Features (x,y,tx,ty,allx) of Shuffled Corpus
         self.corpus_shuffled_adjacency_dir = None  # Adjacency Matrix (adj) of Shuffled Corpus
+        self.core_nlp_path = None
 
     def build(self) -> 'PreProcessingConfigs':
         self.corpus_dir = make_path_absolute(self.corpus_dir)
@@ -36,4 +38,5 @@ class PreProcessingConfigs:
         self.corpus_shuffled_word_vectors_dir = make_path_absolute(self.corpus_shuffled_word_vectors_dir)
         self.corpus_shuffled_node_features_dir = make_path_absolute(self.corpus_shuffled_node_features_dir)
         self.corpus_shuffled_adjacency_dir = make_path_absolute(self.corpus_shuffled_adjacency_dir)
+        self.core_nlp_path = make_path_absolute(self.core_nlp_path)
         return self

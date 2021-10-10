@@ -1,4 +1,5 @@
 import string
+from time import time
 from stanfordcorenlp import StanfordCoreNLP
 from nltk.corpus import stopwords
 import numpy as np
@@ -8,27 +9,13 @@ import pickle as pkl
 from preprocessors.configs import PreProcessingConfigs
 from common import check_data_set
 from utils.file_ops import create_dir, check_paths
-from typing import List, Dict, Tuple
 
-
-
-def extract_windows(docs_of_words: List[List[str]], window_size: int) -> List[List[str]]:
-    """Word co-occurrence with context windows"""
-    windows = []
-    for doc_words in docs_of_words:
-        doc_len = len(doc_words)
-        if doc_len <= window_size:
-            windows.append(doc_words)
-        else:
-            for j in range(doc_len - window_size + 1):
-                window = doc_words[j: j + window_size]
-                windows.append(window)
-    return windows
-
+from preprocessors.adjacency import extract_windows
 
 
 def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
 
+    t1 = time()
     # input files
     ds_corpus = cfg.corpus_shuffled_dir + ds_name + ".txt"
     ds_corpus_vocabulary = cfg.corpus_shuffled_vocab_dir + ds_name + '.vocab'
@@ -37,23 +24,42 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
 
     # checkers
     check_data_set(data_set_name=ds_name, all_data_set_names=cfg.data_sets)
-    check_paths(ds_corpus, ds_corpus_vocabulary, ds_corpus_train_idx, ds_corpus_test_idx)
+    check_paths(ds_corpus, ds_corpus_vocabulary,
+                ds_corpus_train_idx, ds_corpus_test_idx)
 
-    create_dir(dir_path=cfg.corpus_shuffled_adjacency_dir, overwrite=False)
+    create_dir(dir_path=cfg.corpus_shuffled_adjacency_dir + "/syntactic", overwrite=False)
 
     docs_of_words = [line.split() for line in open(file=ds_corpus)]
-    vocab = open(ds_corpus_vocabulary).read().splitlines()  # Extract Vocabulary.
+    # Extract Vocabulary.
+    vocab = open(ds_corpus_vocabulary).read().splitlines()
     word_to_id = {word: i for i, word in enumerate(vocab)}  # Word to its id.
-    train_size = len(open(ds_corpus_train_idx).readlines())  # Real train-size, not adjusted.
+    # Real train-size, not adjusted.
+    train_size = len(open(ds_corpus_train_idx).readlines())
     test_size = len(open(ds_corpus_test_idx).readlines())  # Real test-size.
 
-    core_nlp_path = cfg.corpus_shuffled_dir
-    nlp = StanfordCoreNLP(core_nlp_path, lang='en')
+    #core_nlp_path = cfg.corpus_shuffled_dir
+    nlp = StanfordCoreNLP(cfg.core_nlp_path, lang='en')
     stop_words = set(stopwords.words('english'))
 
-    window_size=20
+    window_size = 20
 
-    windows_of_words = extract_windows(docs_of_words=docs_of_words, window_size=window_size)
+    #windows_of_words = extract_windows(docs_of_words=docs_of_words, window_size=window_size)
+
+    windows = []
+    for doc_words in docs_of_words:
+        #words = doc_words.split()
+        length = len(doc_words)
+        if length <= window_size:
+            windows.append(doc_words)
+        else:
+            # print(length, length - window_size + 1)
+            for j in range(length - window_size + 1):
+                window = doc_words[j: j + window_size]
+                windows.append(window)
+                # print(window)
+
+    windows_of_words=windows
+    del(windows)
 
     # ====================================================
     word_window_freq = {}
@@ -67,6 +73,54 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
             else:
                 word_window_freq[window[i]] = 1
             appeared.add(window[i])
+
+
+    # ====================================================
+    rela_pair_count_str = {}
+    for doc_id in range(len(docs_of_words)):
+        # #print(doc_id)
+        # words = docs_of_words[doc_id]
+        # #words = words.split("\n")
+        # rela = []
+        # for window in words:
+        #     if window == ' ':
+        #         continue
+
+        rela = [] 
+        words = docs_of_words[doc_id]
+        sentence = ' '.join(words)
+        # Construir rela_pair_count
+        #window = window.replace(string.punctuation, ' ')
+
+        res = nlp.dependency_parse(sentence)
+        for tuple in res:
+            rela.append(f'{tuple[0]}, {tuple[1]}')
+        for pair in rela:
+            pair = pair.split(", ")
+            if pair[0] == 'ROOT' or pair[1] == 'ROOT':
+                continue
+            if pair[0] == pair[1]:
+                continue
+            if pair[0] in string.punctuation or pair[1] in string.punctuation:
+                continue
+            if pair[0] in stop_words or pair[1] in stop_words:
+                continue
+            word_pair_str = pair[0] + ',' + pair[1]
+            if word_pair_str in rela_pair_count_str:
+                rela_pair_count_str[word_pair_str] += 1
+            else:
+                rela_pair_count_str[word_pair_str] = 1
+            # two orders
+            word_pair_str = pair[1] + ',' + pair[0]
+            if word_pair_str in rela_pair_count_str:
+                rela_pair_count_str[word_pair_str] += 1
+            else:
+                rela_pair_count_str[word_pair_str] = 1
+
+    #ds_syntactic = cfg.corpus_shuffled_dir + '/{}_stan.pkl'.format(ds_name) + ".txt"
+    # output0=open(ds_syntactic,'wb')
+    #pkl.dump(rela_pair_count_str, output0)
+    # output0.close()
 
     # ====================================================
     word_pair_count = {}
@@ -90,78 +144,36 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
                     word_pair_count[word_pair_str] += 1
                 else:
                     word_pair_count[word_pair_str] = 1
-    
-    # ====================================================
-    rela_pair_count_str = {}
-    for doc_id in range(len(docs_of_words)):
-        print(doc_id)
-        words = docs_of_words[doc_id]
-        words = words.split("\n")
-        rela=[]
-        for window in words:
-            if window==' ':
-                continue
-            # Construir rela_pair_count
-            window = window.replace(string.punctuation, ' ')
-            res = nlp.dependency_parse(window)
-            for tuple in res:
-                rela.append(f'{tuple[0]}, {tuple[1]}')
-            for pair in rela:
-                pair=pair.split(", ")
-                if pair[0]=='ROOT' or pair[1]=='ROOT':
-                    continue
-                if pair[0] == pair[1]:
-                    continue
-                if pair[0] in string.punctuation or pair[1] in string.punctuation:
-                    continue
-                if pair[0] in stop_words or pair[1] in stop_words:
-                    continue
-                word_pair_str = pair[0] + ',' + pair[1]
-                if word_pair_str in rela_pair_count_str:
-                    rela_pair_count_str[word_pair_str] += 1
-                else:
-                    rela_pair_count_str[word_pair_str] = 1
-                # two orders
-                word_pair_str = pair[1] + ',' + pair[0]
-                if word_pair_str in rela_pair_count_str:
-                    rela_pair_count_str[word_pair_str] += 1
-                else:
-                    rela_pair_count_str[word_pair_str] = 1
-
-    
-    #ds_syntactic = cfg.corpus_shuffled_dir + '/{}_stan.pkl'.format(ds_name) + ".txt"
-    #output0=open(ds_syntactic,'wb')
-    #pkl.dump(rela_pair_count_str, output0)
-    #output0.close()
 
     # ====================================================
-    data1 = rela_pair_count_str
-    del(rela_pair_count_str)
+    #data1 = rela_pair_count_str
+    #del(rela_pair_count_str)
 
     max_count1 = 0.0
     min_count1 = 0.0
     count1 = []
-    for key in data1:
-        if data1[key] > max_count1:
-            max_count1 = data1[key]
-        if data1[key] < min_count1:
-            min_count1 = data1[key]
-        count1.append(data1[key])
+    for key in rela_pair_count_str:
+        if rela_pair_count_str[key] > max_count1:
+            max_count1 = rela_pair_count_str[key]
+        if rela_pair_count_str[key] < min_count1:
+            min_count1 = rela_pair_count_str[key]
+        count1.append(rela_pair_count_str[key])
     count_mean1 = np.mean(count1)
     count_var1 = np.var(count1)
     count_std1 = np.std(count1, ddof=1)
 
     # ====================================================
     row = []
-    col = []    
+    col = []
     weight1 = []
 
     vocab_size = len(vocab)
 
     word_doc_list = {}
     for i in range(len(docs_of_words)):
-        doc_words = docs_of_words[i]
-        words = doc_words.split()
+        #doc_words = docs_of_words[i]
+        #words = doc_words.split()
+        words = docs_of_words[i]
         appeared = set()
         for word in words:
             if word in appeared:
@@ -185,6 +197,9 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
         id_word_map[i] = vocab[i]
 
     # ====================================================
+    # compute syntactic weights
+
+
     # compute weights
     for key in word_pair_count:
         temp = key.split(',')
@@ -199,23 +214,22 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
         # pmi
         row.append(train_size + i)
         col.append(train_size + j)
-        ## weight.append(pmi)
+        # weight.append(pmi)
         # Dependência sintática
         if i not in id_word_map or j not in id_word_map:
             continue
         newkey = id_word_map[i] + ',' + id_word_map[j]
-        if newkey in data1:
+        if newkey in rela_pair_count_str:
             # padronização min-max
-            wei = (data1[newkey] - min_count1) / (max_count1 - min_count1)
+            wei = (rela_pair_count_str[newkey] - min_count1) / (max_count1 - min_count1)
             # 0 normalização média
-            # wei = (data1[key]-count_mean1)/ count_std1
+            # wei = (rela_pair_count_str[key]-count_mean1)/ count_std1
             # Taxa de frequência de ocorrência, mais frequentemente quando 1 aparece
-            # wei = data1[key] / data2[key]
+            # wei = rela_pair_count_str[key] / data2[key]
             weight1.append(wei)
         else:
             weight1.append(pmi)
-    
-    
+
     # ====================================================
     # doc word frequency
     weight_tfidf = []
@@ -250,14 +264,22 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
             weight_tfidf.append(freq * idf)
             doc_word_set.add(word)
 
-
     weight = weight1 + weight_tfidf
     node_size = train_size + vocab_size + test_size
     adj = sp.csr_matrix((weight, (row, col)), shape=(node_size, node_size))
 
     # dump objects
-    
-    ds_syntactic = cfg.corpus_shuffled_adjacency_dir + '/ind.{}.adj'.format(ds_name)
-    f = open(ds_syntactic, 'wb')
-    pkl.dump(adj, f)
-    f.close()
+    #ds_syntactic = cfg.corpus_shuffled_adjacency_dir + '/ind.{}.adj'.format(ds_name)
+    #f = open(ds_syntactic, 'wb')
+    #pkl.dump(adj, f)
+    # f.close()
+
+    # Dump Adjacency Matrix
+    with open(cfg.corpus_shuffled_adjacency_dir + "/syntactic/ind.{}.adj".format(ds_name), 'wb') as f:
+        pkl.dump(adj, f)
+
+    elapsed = time() - t1
+    print("[INFO] Adjacency Dir='{}'".format(
+        cfg.corpus_shuffled_adjacency_dir))
+    print("[INFO] Elapsed time is %f seconds." % elapsed)
+    print("[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========")

@@ -1,4 +1,5 @@
 import pickle
+from time import time
 from collections import OrderedDict
 from shutil import rmtree
 from typing import List, Iterable
@@ -44,6 +45,8 @@ def extract_vocabulary(docs_of_words: Iterable[List[str]]) -> List[str]:
 
 
 def prepare_words(ds_name: str, cfg: PreProcessingConfigs):
+    t1 = time()
+
     ds_corpus = cfg.corpus_shuffled_dir + ds_name + cfg.data_set_extension
 
     # Checkers
@@ -72,6 +75,8 @@ def prepare_words(ds_name: str, cfg: PreProcessingConfigs):
     word_to_word_vectors_dict = OrderedDict((word, vec.tolist()) for word, vec in zip(vocabulary, word_vectors))
     pickle.dump(obj=word_to_word_vectors_dict, file=open(ds_corpus_word_vectors, mode='wb'))
 
+    elapsed = time() - t1
     print("[INFO] Vocabulary Dir='{}'".format(cfg.corpus_shuffled_vocab_dir))
     print("[INFO] Word-Vector Dir='{}'".format(cfg.corpus_shuffled_word_vectors_dir))
+    print("[INFO] Elapsed time is %f seconds." % elapsed)
     print("[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========")
