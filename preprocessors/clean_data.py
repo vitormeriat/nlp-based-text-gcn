@@ -1,7 +1,7 @@
 import re
 from time import time
 from collections import Counter
-from shutil import rmtree
+#from shutil import rmtree
 from typing import List, Set
 
 from common import extract_word_counts, check_data_set
@@ -76,7 +76,7 @@ def clean_data(ds_name: str, rare_count: int, cfg: PreProcessingConfigs):
     docs_of_words = [clean_str(line.strip().decode('latin1')).split() for line in open(corpus_path, 'rb')]
     word_counts = extract_word_counts(docs_of_words=docs_of_words)
     stop_words = retrieve_stop_words(language='english')
-    if ds_name != 'mr':  # If data-set is 'mr', don't remove stop and rare words, TODO: find why
+    if ds_name != 'mr' and ds_name != 'test':  # If data-set is 'mr', don't remove stop and rare words, TODO: find why
         docs_of_words = remove_stop_words(docs_of_words, stop_words=stop_words)
         docs_of_words = remove_rare_words(docs_of_words, word_counts=word_counts, rare_count=rare_count)
     docs_of_words = glue_lines(lines_of_words=docs_of_words, glue_str=' ', with_strip=True)

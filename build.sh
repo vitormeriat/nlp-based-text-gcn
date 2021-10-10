@@ -22,3 +22,14 @@ pip --version
 pip3 install -I nltk numpy networkx scipy 
 pip3 install -I sklearn torch
 
+# -------
+#venv\Scripts\activate.bat
+
+#python -m venv venv
+
+#pip install nltk
+#pip install scipy
+#pip install networkx
+#pip install scikit-learn
+#pip install stanfordcorenlp
+#pip install torch torchvision torchaudio
