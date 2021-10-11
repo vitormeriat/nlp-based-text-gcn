@@ -185,6 +185,7 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
         if rela_pair_count_str[key] < min_count1:
             min_count1 = rela_pair_count_str[key]
         count1.append(rela_pair_count_str[key])
+    
     count_mean1 = np.mean(count1)
     count_var1 = np.var(count1)
     count_std1 = np.std(count1, ddof=1)
@@ -212,6 +213,8 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
         if key in rela_pair_count_str:
             #print(':)')
             wei = (rela_pair_count_str[key] - min_count1) / (max_count1 - min_count1)
+            # 0 normalização média
+            # wei = (rela_pair_count_str[key]-count_mean1)/ count_std1
             weight.append(wei)
         else:
             weight.append(pmi)
@@ -258,6 +261,9 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
     # Dump Adjacency Matrix
     with open(cfg.corpus_shuffled_adjacency_dir + "/syntactic/ind.{}.adj".format(ds_name), 'wb') as f:
         pkl.dump(adj, f)
+    # =============================================================
+    nlp.close()
+
     # =============================================================
     elapsed = time() - t1
     print("[INFO] Adjacency Dir='{}'".format(

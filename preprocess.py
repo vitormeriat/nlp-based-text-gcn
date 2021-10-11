@@ -1,6 +1,6 @@
 from sys import argv
 
-from preprocessors.build_adjacency import build_adjacency
+from preprocessors.build_freq_adjacency import build_freq_adjacency
 from preprocessors.build_syntactic_adjacency import build_syntactic_adjacency
 from preprocessors.build_node_features import build_node_features
 from preprocessors.clean_data import clean_data, config_nltk
@@ -38,12 +38,11 @@ def preprocess(ds: str, rp: str, preprocessing_cfg: PreProcessingConfigs):  # St
     build_node_features(ds_name=ds, validation_ratio=0.10,
                         use_predefined_word_vectors=False, cfg=preprocessing_cfg)
     if rp == 'default':
-        build_adjacency(ds_name=ds, cfg=preprocessing_cfg)  # Default adjacency
+        build_freq_adjacency(ds_name=ds, cfg=preprocessing_cfg)  # Default adjacency
     elif rp == 'syntactic':
-        build_syntactic_adjacency(
-            ds_name=ds, cfg=preprocessing_cfg)  # Syntactic adjacency
+        build_syntactic_adjacency(ds_name=ds, cfg=preprocessing_cfg)  # Syntactic adjacency
     elif rp == 'semantic':
-        pass
+        pass # semantic adjacency
     else:
         pass
 

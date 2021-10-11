@@ -27,6 +27,8 @@ class TrainingConfigs:
         self.early_stopping = None  # Tolerance for early stopping (# of epochs), e.g. 10
         self.chebyshev_max_degree = None  # Maximum Chebyshev polynomial degree, e.g. 3
 
+        self.adjacency_sets = None # List of Valid Adjacency-sets
+
     def build(self) -> 'TrainingConfigs':
         self.corpus_split_index_dir = make_path_absolute(self.corpus_split_index_dir)
         self.corpus_node_features_dir = make_path_absolute(self.corpus_node_features_dir)
