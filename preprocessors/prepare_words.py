@@ -1,4 +1,5 @@
 import pickle
+from time import time
 from collections import OrderedDict
 from shutil import rmtree
 from typing import List, Iterable
@@ -13,9 +14,9 @@ from utils.file_ops import write_iterable_to_file, create_dir, check_paths
 
 def extract_word_definitions(vocabulary: List[str]) -> List[str]:
     from nltk.corpus import wordnet
-    from nltk import download
-    temporary_nltk_folder = 'venv/nltk_data/'
-    download(info_or_id='wordnet', download_dir=temporary_nltk_folder)
+    #from nltk import download
+    #temporary_nltk_folder = 'venv/nltk_data/'
+    #download(info_or_id='wordnet', download_dir=temporary_nltk_folder)
 
     merged_definitions_of_words = []
     for word in vocabulary:
@@ -26,7 +27,7 @@ def extract_word_definitions(vocabulary: List[str]) -> List[str]:
         else:
             merged_definitions_of_word = ' '.join(word_definitions)
         merged_definitions_of_words.append(merged_definitions_of_word)
-    rmtree(temporary_nltk_folder)
+    #rmtree(temporary_nltk_folder)
     return merged_definitions_of_words
 
 
@@ -44,6 +45,8 @@ def extract_vocabulary(docs_of_words: Iterable[List[str]]) -> List[str]:
 
 
 def prepare_words(ds_name: str, cfg: PreProcessingConfigs):
+    t1 = time()
+
     ds_corpus = cfg.corpus_shuffled_dir + ds_name + cfg.data_set_extension
 
     # Checkers
@@ -72,6 +75,8 @@ def prepare_words(ds_name: str, cfg: PreProcessingConfigs):
     word_to_word_vectors_dict = OrderedDict((word, vec.tolist()) for word, vec in zip(vocabulary, word_vectors))
     pickle.dump(obj=word_to_word_vectors_dict, file=open(ds_corpus_word_vectors, mode='wb'))
 
+    elapsed = time() - t1
     print("[INFO] Vocabulary Dir='{}'".format(cfg.corpus_shuffled_vocab_dir))
     print("[INFO] Word-Vector Dir='{}'".format(cfg.corpus_shuffled_word_vectors_dir))
+    print("[INFO] Elapsed time is %f seconds." % elapsed)
     print("[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========")

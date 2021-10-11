@@ -1,4 +1,5 @@
 import random
+from time import time
 from typing import List, Tuple
 
 from common import check_data_set
@@ -14,6 +15,8 @@ def load_corpus_meta(corpus_meta_path: str) -> Tuple[List[str], List[str], List[
 
 
 def shuffle_data(ds_name: str, cfg: PreProcessingConfigs):
+    t1 = time()
+
     ds_corpus = cfg.corpus_cleaned_dir + ds_name + cfg.data_set_extension
     ds_corpus_meta = cfg.corpus_meta_dir + ds_name + '.meta'
 
@@ -53,5 +56,7 @@ def shuffle_data(ds_name: str, cfg: PreProcessingConfigs):
     shuffled_doc_lines = [cleaned_doc_lines[all_doc_meta_id] for all_doc_meta_id in all_doc_meta_ids]
     write_iterable_to_file(an_iterable=shuffled_doc_lines, file_path=ds_corpus_shuffled, file_mode='w')
 
+    elapsed = time() - t1
     print("[INFO] Shuffled-Corpus Dir='{}'".format(cfg.corpus_shuffled_dir))
+    print("[INFO] Elapsed time is %f seconds." % elapsed)
     print("[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========")

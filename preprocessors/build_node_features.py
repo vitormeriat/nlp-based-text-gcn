@@ -1,4 +1,5 @@
 import pickle as pkl
+from time import time
 from collections import OrderedDict
 from math import ceil
 from typing import List, Dict, MutableMapping, Tuple, Union
@@ -146,6 +147,7 @@ def dump_node_features(directory: str, ds: str, node_features_dict: Dict[str, Un
 
 def build_node_features(ds_name: str, validation_ratio: float, use_predefined_word_vectors: bool,
                         cfg: PreProcessingConfigs):
+    t1 = time()
     # input files for building node features
     ds_corpus = cfg.corpus_shuffled_dir + ds_name + '.txt'
     ds_corpus_meta = cfg.corpus_shuffled_meta_dir + ds_name + '.meta'
@@ -199,7 +201,9 @@ def build_node_features(ds_name: str, validation_ratio: float, use_predefined_wo
     node_feature_matrices = {"x": x, "y": y, "tx": tx, "ty": ty, "allx": allx, "ally": ally}
     dump_node_features(directory=dir_corpus_node_features, ds=ds_name, node_features_dict=node_feature_matrices)
 
+    elapsed = time() - t1
     print("[INFO] x.shape=   {},\t y.shape=   {}".format(x.shape, y.shape))
     print("[INFO] tx.shape=  {},\t ty.shape=  {}".format(tx.shape, ty.shape))
     print("[INFO] allx.shape={},\t ally.shape={}".format(allx.shape, ally.shape))
+    print("[INFO] Elapsed time is %f seconds." % elapsed)
     print("[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========")
