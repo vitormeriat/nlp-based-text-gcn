@@ -21,7 +21,10 @@ def write_iterable_to_file(an_iterable: Iterable[Any], file_path: str, file_mode
 
 
 def check_paths(*paths: str):
-    """Check paths if they exist or not"""
+    """
+    Check paths if they exist or not
+    """
+    
     for path in paths:
         if not exists(path):
             raise FileNotFoundError('Path: {path} is not found.'.format(path=path))
