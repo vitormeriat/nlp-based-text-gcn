@@ -4,12 +4,12 @@ import torch.nn as nn
 
 
 class GraphConvolution(nn.Module):
-    def __init__( self, input_dim, \
-                        output_dim, \
-                        support, \
-                        act_func = None, \
-                        featureless = False, \
-                        dropout_rate = 0., \
+    def __init__( self, input_dim,
+                        output_dim,
+                        support,
+                        act_func = None,
+                        featureless = False,
+                        dropout_rate = 0.,
                         bias=False):
         super(GraphConvolution, self).__init__()
         self.support = support
@@ -47,9 +47,9 @@ class GraphConvolution(nn.Module):
 
 
 class GCN(nn.Module):
-    def __init__( self, input_dim, \
-                        support,\
-                        dropout_rate=0., \
+    def __init__( self, input_dim,
+                        support,
+                        dropout_rate=0.,
                         num_classes=10):
         super(GCN, self).__init__()
         

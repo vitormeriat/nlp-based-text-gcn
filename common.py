@@ -4,6 +4,7 @@ from typing import List
 
 
 def extract_word_counts(docs_of_words: List[List[str]]) -> Counter:
+    """Extract word counts"""
     word_counts = Counter()
     for words in docs_of_words:
         word_counts.update(words)
