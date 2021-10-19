@@ -2,6 +2,7 @@ from sys import argv
 
 from preprocessors.build_freq_adjacency import build_freq_adjacency
 from preprocessors.build_syntactic_adjacency import build_syntactic_adjacency
+from preprocessors.build_graph_adjacency import build_graph_adjacency
 from preprocessors.build_node_features import build_node_features
 from preprocessors.clean_data import clean_data, config_nltk
 from preprocessors.configs import PreProcessingConfigs
@@ -11,8 +12,7 @@ from preprocessors.shuffle_data import shuffle_data
 
 def create_preprocessing_cfg() -> PreProcessingConfigs:
     conf = PreProcessingConfigs()
-    conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed',
-                      'mr', 'cora', 'citeseer', 'pubmed', 'test']
+    conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed', 'mr', 'cora', 'citeseer', 'pubmed', 'test']
     conf.adjacency_sets = ['default', 'syntactic', 'semantic', 'graph']
     conf.data_set_extension = '.txt'
     conf.corpus_dir = 'data/corpus/'
@@ -35,14 +35,15 @@ def preprocess(ds: str, rp: str, preprocessing_cfg: PreProcessingConfigs):  # St
     clean_data(ds_name=ds, rare_count=5, cfg=preprocessing_cfg)
     shuffle_data(ds_name=ds, cfg=preprocessing_cfg)
     prepare_words(ds_name=ds, cfg=preprocessing_cfg)
-    build_node_features(ds_name=ds, validation_ratio=0.10,
-                        use_predefined_word_vectors=False, cfg=preprocessing_cfg)
+    build_node_features(ds_name=ds, validation_ratio=0.10, use_predefined_word_vectors=False, cfg=preprocessing_cfg)
     if rp == 'default':
         build_freq_adjacency(ds_name=ds, cfg=preprocessing_cfg)  # Default adjacency
     elif rp == 'syntactic':
         build_syntactic_adjacency(ds_name=ds, cfg=preprocessing_cfg)  # Syntactic adjacency
     elif rp == 'semantic':
         pass # semantic adjacency
+    elif rp == 'graph':
+        build_graph_adjacency(ds_name=ds, cfg=preprocessing_cfg) # graph adjacency
     else:
         pass
 

@@ -6,6 +6,8 @@ from typing import List, Dict, Tuple
 import numpy as np
 from scipy.spatial.distance import cosine
 
+from gowpy.feature_extraction.gow import TwidfVectorizer
+
 from common import flatten_nested_iterables
 
 
@@ -148,5 +150,53 @@ def extract_tf_idf_doc_word_weights(
                 doc_word_idf = log(
                     1.0 * num_docs / word_to_doc_counts[vocab[word_id]])
                 adj_weights.append(word_ids_pair_count * doc_word_idf)
+                doc_word_set.add(word)
+    return adj_rows, adj_cols, adj_weights
+
+
+def extract_tw_idf_doc_word_weights(
+        adj_rows: List[int], adj_cols: List[int], adj_weights: List[float], vocab: List[str], train_size: int,
+        docs_of_words: List[List[str]], word_to_id: Dict[str, int]) -> Tuple[List[int], List[int], List[float]]:
+    """Extract Doc-Word weights with graph-based weight"""
+    doc_word_ids_pair_to_counts = extract_doc_word_ids_pair_to_counts(docs_of_words, word_to_id)
+    word_to_doc_ids = extract_word_to_doc_ids(docs_of_words=docs_of_words)
+    word_to_doc_counts = extract_word_to_doc_counts(word_to_doc_ids=word_to_doc_ids)
+
+    vectorizer = TwidfVectorizer(                 
+        # Graph-of-words specificities
+        directed=True,
+        window_size=4,
+        # Token frequency filtering
+        min_df=0.0,
+        max_df=1.0,
+        # Graph-based term weighting approach
+        term_weighting='degree'
+    )
+    docs = []
+    for d in docs_of_words:
+        docs.append(' '.join(d))
+
+    vectors = vectorizer.fit_transform(docs)
+    v = vectors.toarray()
+    #l=[]
+    for i in v:
+        for j in i:
+            if j > 0:
+                adj_weights.append(j)
+
+    vocab_len = len(vocab)
+    num_docs = len(docs_of_words)
+    for doc_id, doc_words in enumerate(docs_of_words):
+        doc_word_set = set()
+        for word in doc_words:
+            if word not in doc_word_set:
+                word_id = word_to_id[word]
+                word_ids_pair_count = doc_word_ids_pair_to_counts[str(doc_id) + ',' + str(word_id)]
+
+                adj_rows.append(doc_id if doc_id < train_size else doc_id + vocab_len)
+                adj_cols.append(train_size + word_id)
+
+                doc_word_idf = log(1.0 * num_docs / word_to_doc_counts[vocab[word_id]])
+                #adj_weights.append(word_ids_pair_count * doc_word_idf)
                 doc_word_set.add(word)
     return adj_rows, adj_cols, adj_weights
