@@ -81,8 +81,15 @@ def extract_pmi_word_weights(windows_of_words: List[List[str]], word_to_id: Dict
         word_id_i, word_id_j = int(word_ids_in_str[0]), int(word_ids_in_str[1])
         word_i, word_j = vocab[word_id_i], vocab[word_id_j]
         word_freq_i, word_freq_j = word_counts_in_windows[word_i], word_counts_in_windows[word_j]
-        pmi_score = log((1.0 * count / num_windows) / (1.0 *
-                                                       word_freq_i * word_freq_j / (num_windows * num_windows)))
+        
+        #pmi_score = log((1.0 * count / num_windows) / (1.0 * word_freq_i * word_freq_j / (num_windows * num_windows)))
+        pmi_score = log(
+            1.0
+            * count
+            / num_windows
+            / (1.0 * word_freq_i * word_freq_j / num_windows ** 2)
+        )
+
         if pmi_score > 0.0:
             weight_rows.append(train_size + word_id_i)
             weight_cols.append(train_size + word_id_j)
@@ -135,20 +142,20 @@ def extract_tf_idf_doc_word_weights(
 
     vocab_len = len(vocab)
     num_docs = len(docs_of_words)
+    # percorro a lista de documentos
     for doc_id, doc_words in enumerate(docs_of_words):
         doc_word_set = set()
+        # percorro as palavras do documento
         for word in doc_words:
+            # se a palavra ainda não foi calculada...
             if word not in doc_word_set:
                 word_id = word_to_id[word]
-                word_ids_pair_count = doc_word_ids_pair_to_counts[str(
-                    doc_id) + ',' + str(word_id)]
+                word_ids_pair_count = doc_word_ids_pair_to_counts[str(doc_id) + ',' + str(word_id)]
 
-                adj_rows.append(doc_id if doc_id <
-                                train_size else doc_id + vocab_len)
+                adj_rows.append(doc_id if doc_id < train_size else doc_id + vocab_len)
                 adj_cols.append(train_size + word_id)
 
-                doc_word_idf = log(
-                    1.0 * num_docs / word_to_doc_counts[vocab[word_id]])
+                doc_word_idf = log(1.0 * num_docs / word_to_doc_counts[vocab[word_id]])
                 adj_weights.append(word_ids_pair_count * doc_word_idf)
                 doc_word_set.add(word)
     return adj_rows, adj_cols, adj_weights
@@ -158,9 +165,9 @@ def extract_tw_idf_doc_word_weights(
         adj_rows: List[int], adj_cols: List[int], adj_weights: List[float], vocab: List[str], train_size: int,
         docs_of_words: List[List[str]], word_to_id: Dict[str, int]) -> Tuple[List[int], List[int], List[float]]:
     """Extract Doc-Word weights with graph-based weight"""
-    doc_word_ids_pair_to_counts = extract_doc_word_ids_pair_to_counts(docs_of_words, word_to_id)
-    word_to_doc_ids = extract_word_to_doc_ids(docs_of_words=docs_of_words)
-    word_to_doc_counts = extract_word_to_doc_counts(word_to_doc_ids=word_to_doc_ids)
+    #doc_word_ids_pair_to_counts = extract_doc_word_ids_pair_to_counts(docs_of_words, word_to_id)
+    #word_to_doc_ids = extract_word_to_doc_ids(docs_of_words=docs_of_words)
+    #word_to_doc_counts = extract_word_to_doc_counts(word_to_doc_ids=word_to_doc_ids)
 
     vectorizer = TwidfVectorizer(                 
         # Graph-of-words specificities
@@ -172,31 +179,32 @@ def extract_tw_idf_doc_word_weights(
         # Graph-based term weighting approach
         term_weighting='degree'
     )
-    docs = []
-    for d in docs_of_words:
-        docs.append(' '.join(d))
 
+    docs = [' '.join(d) for d in docs_of_words]
     vectors = vectorizer.fit_transform(docs)
-    v = vectors.toarray()
-    #l=[]
-    for i in v:
-        for j in i:
-            if j > 0:
-                adj_weights.append(j)
+    vectors = vectors.toarray()
+    print(len(vectors))
+
+    top_words = vectorizer.get_feature_names()
+    top_words = np.array(top_words)
+    print(len(top_words))
+
 
     vocab_len = len(vocab)
-    num_docs = len(docs_of_words)
-    for doc_id, doc_words in enumerate(docs_of_words):
+    #num_docs = len(docs_of_words)
+    for doc_id, vector in enumerate(vectors):
+    #for vector in vectors:
         doc_word_set = set()
-        for word in doc_words:
-            if word not in doc_word_set:
-                word_id = word_to_id[word]
-                word_ids_pair_count = doc_word_ids_pair_to_counts[str(doc_id) + ',' + str(word_id)]
+        for word_id, twidf in enumerate(vector):
+            if twidf > 0:
+                word = top_words[word_id]
+                #word_id = word_to_id[word]
 
-                adj_rows.append(doc_id if doc_id < train_size else doc_id + vocab_len)
-                adj_cols.append(train_size + word_id)
+                if word not in doc_word_set:
+                    adj_rows.append(doc_id if doc_id < train_size else doc_id + vocab_len)
+                    adj_cols.append(train_size + word_id)
+                    adj_weights.append(twidf)
+                    doc_word_set.add(word)
+                break
 
-                doc_word_idf = log(1.0 * num_docs / word_to_doc_counts[vocab[word_id]])
-                #adj_weights.append(word_ids_pair_count * doc_word_idf)
-                doc_word_set.add(word)
     return adj_rows, adj_cols, adj_weights

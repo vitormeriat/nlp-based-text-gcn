@@ -17,7 +17,7 @@ def create_training_cfg() -> TrainingConfigs:
     conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed', 'mr', 'test']
     conf.corpus_split_index_dir = 'data/corpus.shuffled/split_index/'
     conf.corpus_node_features_dir = 'data/corpus.shuffled/node_features/'
-    conf.corpus_adjacency_dir = '' #'data/corpus.shuffled/adjacency/'
+    conf.corpus_adjacency_dir = ''  # 'data/corpus.shuffled/adjacency/'
     conf.corpus_vocab_dir = 'data/corpus.shuffled/vocabulary/'
     conf.adjacency_sets = ['default', 'syntactic', 'semantic', 'graph']
     conf.model = 'gcn'
@@ -41,27 +41,21 @@ def save_history(hist, representation, dataset, experiment, run_time):
     file_name = f'./experiments/{representation}/{dataset}/EXPERIMENT_{experiment}_RUN_{run_time}.txt'
     if not os.path.exists(f'./experiments/{representation}/{dataset}'):
         os.mkdir(f'./experiments/{representation}/{dataset}')
-    my_file = open(file_name, 'w')
-    #my_file=map(lambda x:x+'\n', my_file)
-    my_file.writelines(hist)
-    my_file.close()
+    with open(file_name, 'w') as my_file:
+        #my_file=map(lambda x:x+'\n', my_file)
+        my_file.writelines(hist)
 
 
 def tsne_visualizer(data_set, experiment, run_time, representation):
     # data_set = 'mr' # 20ng R8 R52 ohsumed mr
     data_path = './data/corpus.shuffled'
 
-    #f = open(os.path.join(data_path, data_set + '.train.index'), 'r')
-    f = open(f'{data_path}/split_index/{data_set}.train', 'r')
-    lines = f.readlines()
-    f.close()
+    with open(f'{data_path}/split_index/{data_set}.train', 'r') as f:
+        lines = f.readlines()
     train_size = len(lines)
 
-    #f = open(os.path.join(data_path, data_set + '_shuffle.txt'), 'r')
-    f = open(f'{data_path}/meta/{data_set}.meta', 'r')
-    lines = f.readlines()
-    f.close()
-
+    with open(f'{data_path}/meta/{data_set}.meta', 'r') as f:
+        lines = f.readlines()
     target_names = set()
     labels = []
     for line in lines:
@@ -72,11 +66,8 @@ def tsne_visualizer(data_set, experiment, run_time, representation):
 
     target_names = list(target_names)
 
-    #f = open(os.path.join(data_path, data_set + '_doc_vectors.txt'), 'r')
-    f = open(f'./data/{data_set}_doc_vectors.txt', 'r')
-    lines = f.readlines()
-    f.close()
-
+    with open(f'./data/{data_set}_doc_vectors.txt', 'r') as f:
+        lines = f.readlines()
     docs = []
     for line in lines:
         temp = line.strip().split()
@@ -89,7 +80,7 @@ def tsne_visualizer(data_set, experiment, run_time, representation):
     label = np.array(label)
 
     fea = TSNE(n_components=2).fit_transform(fea)
-    #pdf = PdfPages(
+    # pdf = PdfPages(
     #    f'./experiments/{data_set}_EXPERIMENT_{experiment}_RUN_{run_time}.pdf')
     cls = np.unique(label)
 
@@ -101,14 +92,16 @@ def tsne_visualizer(data_set, experiment, run_time, representation):
         else:
             plt.scatter(f[:, 0], f[:, 1], label=cls[i])
 
-    plt.legend(ncol=5, loc='upper center', bbox_to_anchor=(0.48, -0.08), fontsize=11)
+    plt.legend(ncol=5, loc='upper center',
+               bbox_to_anchor=(0.48, -0.08), fontsize=11)
     # plt.ylim([-20,35])
     # plt.title(md_file)
     plt.tight_layout()
-    #pdf.savefig()
-    #plt.show()
-    #pdf.close()
-    plt.savefig(f'./experiments/{representation}/{data_set}/EXPERIMENT_{experiment}_RUN_{run_time}.png', dpi=300)
+    # pdf.savefig()
+    # plt.show()
+    # pdf.close()
+    plt.savefig(
+        f'./experiments/{representation}/{data_set}/EXPERIMENT_{experiment}_RUN_{run_time}.png', dpi=300)
     plt.close()
 
 
@@ -117,15 +110,15 @@ def batch_train(dataset: str, rp: str, trn_cfg):
     times = 2
 
     if rp == 'default':
-        trn_cfg.corpus_adjacency_dir = 'data/corpus.shuffled/adjacency/default/'  # Default adjacency
+        trn_cfg.corpus_adjacency_dir = 'data/corpus.shuffled/adjacency/default/' # Default adjacency
     elif rp == 'syntactic':
-        trn_cfg.corpus_adjacency_dir = 'data/corpus.shuffled/adjacency/syntactic/'  # Syntactic adjacency
+        trn_cfg.corpus_adjacency_dir = 'data/corpus.shuffled/adjacency/syntactic/' # Syntactic adjacency
     elif rp == 'semantic':
-        pass # semantic adjacency
-    else:
-        pass
+        pass  # semantic adjacency
+    elif rp == 'graph':
+        trn_cfg.corpus_adjacency_dir = 'data/corpus.shuffled/adjacency/graph/'  # Graph adjacency
 
-    for indx in range(0, times):
+    for indx in range(times):
         hist = train(ds=ds_name, training_cfg=trn_cfg)
         save_history(hist, rp, dataset, experiment, indx)
         tsne_visualizer(dataset, experiment, indx, rp)
