@@ -200,26 +200,36 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
     # compute weights PMI
     num_window = len(docs_of_words)
     for key, count in rela_pair_count_str.items():
-        temp = key.split(',')
-        i = temp[0]
-        j = temp[1]
-        word_freq_i = word_window_freq[i]
-        word_freq_j = word_window_freq[j]
-        pmi = log((1.0 * count / num_window) / (1.0 * word_freq_i * word_freq_j / (num_window * num_window)))
-        #if pmi <= 0:
-        #    continue
-        # pmi
-        row.append(train_size + word_id_map[i])
-        col.append(train_size + word_id_map[j])
-        #weight.append(pmi)
-        if key in rela_pair_count_str:
-            #print(':)')
-            wei = (rela_pair_count_str[key] - min_count1) / (max_count1 - min_count1)
-            # 0 normalização média
-            # wei = (rela_pair_count_str[key]-count_mean1)/ count_std1
-            weight.append(wei)
-        else:
-            weight.append(pmi)
+        try:
+            temp = key.split(',')
+            i = temp[0]
+            j = temp[1]
+            word_freq_i = word_window_freq[i]
+            word_freq_j = word_window_freq[j]
+            #pmi = log((1.0 * count / num_window) / (1.0 * word_freq_i * word_freq_j / (num_window * num_window)))
+            pmi = log(
+                1.0
+                * count
+                / num_window
+                / (1.0 * word_freq_i * word_freq_j / num_window ** 2)
+            )
+
+            #if pmi <= 0:
+            #    continue
+            # pmi
+            row.append(train_size + word_id_map[i])
+            col.append(train_size + word_id_map[j])
+            #weight.append(pmi)
+            if key in rela_pair_count_str:
+                #print(':)')
+                wei = (rela_pair_count_str[key] - min_count1) / (max_count1 - min_count1)
+                # 0 normalização média
+                # wei = (rela_pair_count_str[key]-count_mean1)/ count_std1
+                weight.append(wei)
+            else:
+                weight.append(pmi)
+        except:
+            pass
     # =============================================================
     # doc word frequency
     weight_tfidf = []
