@@ -3,11 +3,11 @@ from sys import argv
 from trainer.configs import TrainingConfigs
 from trainer.train_model import train_model
 
-#from matplotlib.backends.backend_pdf import PdfPages
 from sklearn.manifold import TSNE
 from matplotlib import pyplot as plt
 import numpy as np
 import os
+from common import get_hyperparameters
 
 
 def create_training_cfg() -> TrainingConfigs:
@@ -17,7 +17,7 @@ def create_training_cfg() -> TrainingConfigs:
     conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed', 'mr', 'test']
     conf.corpus_split_index_dir = 'data/corpus.shuffled/split_index/'
     conf.corpus_node_features_dir = 'data/corpus.shuffled/node_features/'
-    conf.corpus_adjacency_dir = '' #'data/corpus.shuffled/adjacency/'
+    conf.corpus_adjacency_dir = ''  # 'data/corpus.shuffled/adjacency/'
     conf.corpus_vocab_dir = 'data/corpus.shuffled/vocabulary/'
     conf.adjacency_sets = ['default', 'syntactic', 'semantic', 'graph']
     conf.model = 'gcn'
@@ -38,30 +38,25 @@ def train(ds: str, training_cfg: TrainingConfigs):
 
 
 def save_history(hist, representation, dataset, experiment, run_time):
-    file_name = f'./experiments/{representation}/{dataset}/EXPERIMENT_{experiment}_RUN_{run_time}.txt'
-    if not os.path.exists(f'./experiments/{representation}/{dataset}'):
-        os.mkdir(f'./experiments/{representation}/{dataset}')
-    my_file = open(file_name, 'w')
-    #my_file=map(lambda x:x+'\n', my_file)
-    my_file.writelines(hist)
-    my_file.close()
+    file_name = f'experiments/{representation}/{dataset}/RUN_{run_time}/EXPERIMENT_{experiment}.txt'
+    if not os.path.exists(f'experiments/{representation}/{dataset}/RUN_{run_time}'):
+        #os.mkdir(f'experiments/{representation}/{dataset}/RUN_{run_time}')
+        os.makedirs(f'experiments/{representation}/{dataset}/RUN_{run_time}')
+    with open(file_name, 'w') as my_file:
+        #my_file=map(lambda x:x+'\n', my_file)
+        my_file.writelines(hist)
 
 
 def tsne_visualizer(data_set, experiment, run_time, representation):
     # data_set = 'mr' # 20ng R8 R52 ohsumed mr
     data_path = './data/corpus.shuffled'
 
-    #f = open(os.path.join(data_path, data_set + '.train.index'), 'r')
-    f = open(f'{data_path}/split_index/{data_set}.train', 'r')
-    lines = f.readlines()
-    f.close()
+    with open(f'{data_path}/split_index/{data_set}.train', 'r') as f:
+        lines = f.readlines()
     train_size = len(lines)
 
-    #f = open(os.path.join(data_path, data_set + '_shuffle.txt'), 'r')
-    f = open(f'{data_path}/meta/{data_set}.meta', 'r')
-    lines = f.readlines()
-    f.close()
-
+    with open(f'{data_path}/meta/{data_set}.meta', 'r') as f:
+        lines = f.readlines()
     target_names = set()
     labels = []
     for line in lines:
@@ -72,11 +67,8 @@ def tsne_visualizer(data_set, experiment, run_time, representation):
 
     target_names = list(target_names)
 
-    #f = open(os.path.join(data_path, data_set + '_doc_vectors.txt'), 'r')
-    f = open(f'./data/{data_set}_doc_vectors.txt', 'r')
-    lines = f.readlines()
-    f.close()
-
+    with open(f'./data/{data_set}_doc_vectors.txt', 'r') as f:
+        lines = f.readlines()
     docs = []
     for line in lines:
         temp = line.strip().split()
@@ -84,16 +76,13 @@ def tsne_visualizer(data_set, experiment, run_time, representation):
         values = [float(x) for x in values_str_list]
         docs.append(values)
 
-    fea = docs[train_size:]    # int(train_size * 0.9)
+    fea = docs[train_size:]      # int(train_size * 0.9)
     label = labels[train_size:]  # int(train_size * 0.9)
     label = np.array(label)
 
     fea = TSNE(n_components=2).fit_transform(fea)
-    #pdf = PdfPages(
-    #    f'./experiments/{data_set}_EXPERIMENT_{experiment}_RUN_{run_time}.pdf')
     cls = np.unique(label)
 
-    # cls=range(10)
     fea_num = [fea[label == i] for i in cls]
     for i, f in enumerate(fea_num):
         if cls[i] in range(10):
@@ -102,41 +91,56 @@ def tsne_visualizer(data_set, experiment, run_time, representation):
             plt.scatter(f[:, 0], f[:, 1], label=cls[i])
 
     plt.legend(ncol=5, loc='upper center', bbox_to_anchor=(0.48, -0.08), fontsize=11)
-    # plt.ylim([-20,35])
-    # plt.title(md_file)
     plt.tight_layout()
-    #pdf.savefig()
-    #plt.show()
-    #pdf.close()
-    plt.savefig(f'./experiments/{representation}/{data_set}/EXPERIMENT_{experiment}_RUN_{run_time}.png', dpi=300)
+    plt.savefig(f'experiments/{representation}/{data_set}/RUN_{run_time}/EXPERIMENT_{experiment}.png', dpi=300)
+    #plt.savefig(f'./experiments/{representation}/{data_set}/EXPERIMENT_{experiment}_RUN_{run_time}.png', dpi=300)
     plt.close()
 
 
 def batch_train(dataset: str, rp: str, trn_cfg):
-    experiment = 0
-    times = 2
+    '''
+    Experiments > Graph Representation > Model Hyperparameter Tuning > Run Step
+    '''
+    #trn_cfg = create_training_cfg()
+
+    hyperparameters = get_hyperparameters()
 
     if rp == 'default':
-        trn_cfg.corpus_adjacency_dir = 'data/corpus.shuffled/adjacency/default/'  # Default adjacency
+        trn_cfg.corpus_adjacency_dir = 'data/corpus.shuffled/adjacency/default/' # Default adjacency
     elif rp == 'syntactic':
-        trn_cfg.corpus_adjacency_dir = 'data/corpus.shuffled/adjacency/syntactic/'  # Syntactic adjacency
+        trn_cfg.corpus_adjacency_dir = 'data/corpus.shuffled/adjacency/syntactic/' # Syntactic adjacency
     elif rp == 'semantic':
-        pass # semantic adjacency
-    else:
-        pass
+        pass  # semantic adjacency
+    elif rp == 'graph':
+        trn_cfg.corpus_adjacency_dir = 'data/corpus.shuffled/adjacency/graph/'  # Graph adjacency
 
-    for indx in range(0, times):
-        hist = train(ds=ds_name, training_cfg=trn_cfg)
-        save_history(hist, rp, dataset, experiment, indx)
-        tsne_visualizer(dataset, experiment, indx, rp)
+    times = 10
+
+    for indx in range(times):
+
+        for parameters in hyperparameters:
+            #experiment = parameters['experiment']
+            experiment = parameters['model']
+
+            trn_cfg.learning_rate = parameters['learning_rate']
+            trn_cfg.epochs = parameters['epochs']
+            trn_cfg.hidden1 = parameters['hidden_1']
+            trn_cfg.dropout = parameters['dropout']
+            trn_cfg.weight_decay = parameters['weight_decay']
+            trn_cfg.early_stopping = parameters['early_stopping']
+            trn_cfg.chebyshev_max_degree = parameters['max_degree']
+
+            hist = train(ds=ds_name, training_cfg=trn_cfg)
+            save_history(hist, rp, dataset, experiment, indx)
+            tsne_visualizer(dataset, experiment, indx, rp)
 
 
 if __name__ == '__main__':
 
     trn_cfg = create_training_cfg()
     if len(argv) < 3:
-        raise Exception(
-            "Dataset name cannot be left blank. Must be one of datasets:%r." % trn_cfg.data_sets)
+        raise Exception("Dataset name cannot be left blank. Must be one of datasets:%r." % trn_cfg.data_sets)
+        
     ds_name = argv[1]
     rp_name = argv[2]
 

@@ -9,9 +9,10 @@ from utils.file_ops import create_dir, check_paths
 
 import preprocessors.adjacency as adj
 
+
 def build_graph_adjacency(ds_name: str, cfg: PreProcessingConfigs):
     """Build Adjacency Matrix of Doc-Word Heterogeneous Graph"""
-    
+
     t1 = time()
     # input files
     ds_corpus = cfg.corpus_shuffled_dir + ds_name + ".txt"
@@ -21,35 +22,44 @@ def build_graph_adjacency(ds_name: str, cfg: PreProcessingConfigs):
 
     # checkers
     check_data_set(data_set_name=ds_name, all_data_set_names=cfg.data_sets)
-    check_paths(ds_corpus, ds_corpus_vocabulary, ds_corpus_train_idx, ds_corpus_test_idx)
+    check_paths(ds_corpus, ds_corpus_vocabulary,
+                ds_corpus_train_idx, ds_corpus_test_idx)
 
-    create_dir(dir_path=cfg.corpus_shuffled_adjacency_dir + "/graph", overwrite=False)
+    create_dir(dir_path=cfg.corpus_shuffled_adjacency_dir +
+               "/graph", overwrite=False)
 
     docs_of_words = [line.split() for line in open(file=ds_corpus)]
-    vocab = open(ds_corpus_vocabulary).read().splitlines()  # Extract Vocabulary.
+    # Extract Vocabulary.
+    vocab = open(ds_corpus_vocabulary).read().splitlines()
     word_to_id = {word: i for i, word in enumerate(vocab)}  # Word to its id.
-    train_size = len(open(ds_corpus_train_idx).readlines())  # Real train-size, not adjusted.
+    # Real train-size, not adjusted.
+    train_size = len(open(ds_corpus_train_idx).readlines())
     test_size = len(open(ds_corpus_test_idx).readlines())  # Real test-size.
 
-    windows_of_words = adj.extract_windows(docs_of_words=docs_of_words, window_size=20)
+    windows_of_words = adj.extract_windows(
+        docs_of_words=docs_of_words, window_size=20)
 
     # Extract word-word weights
-    rows, cols, weights = adj.extract_pmi_word_weights(windows_of_words, word_to_id, vocab, train_size)
+    rows, cols, weights = adj.extract_pmi_word_weights(
+        windows_of_words, word_to_id, vocab, train_size)
     # As an alternative, use cosine similarity of word vectors as weights:
     #   ds_corpus_word_vectors = cfg.CORPUS_WORD_VECTORS_DIR + ds_name + '.word_vectors'
     #   rows, cols, weights = extract_cosine_similarity_word_weights(vocab, train_size, ds_corpus_word_vectors)
 
     # Extract word-doc weights
-    rows, cols, weights = adj.extract_tw_idf_doc_word_weights(rows, cols, weights, vocab, train_size, docs_of_words, word_to_id)
+    rows, cols, weights = adj.extract_tw_idf_doc_word_weights(
+        rows, cols, weights, vocab, train_size, docs_of_words, word_to_id)
 
     adjacency_len = train_size + len(vocab) + test_size
-    adjacency_matrix = csr_matrix((weights, (rows, cols)), shape=(adjacency_len, adjacency_len))
+    adjacency_matrix = csr_matrix(
+        (weights, (rows, cols)), shape=(adjacency_len, adjacency_len))
 
     # Dump Adjacency Matrix
     with open(cfg.corpus_shuffled_adjacency_dir + "/graph/ind.{}.adj".format(ds_name), 'wb') as f:
         pickle.dump(adjacency_matrix, f)
 
     elapsed = time() - t1
-    print("[INFO] Adjacency Dir='{}'".format(cfg.corpus_shuffled_adjacency_dir))
+    print("[INFO] Adjacency Dir='{}'".format(
+        cfg.corpus_shuffled_adjacency_dir))
     print("[INFO] Elapsed time is %f seconds." % elapsed)
     print("[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========")
