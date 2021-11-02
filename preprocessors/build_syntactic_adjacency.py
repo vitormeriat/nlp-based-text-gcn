@@ -146,8 +146,14 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
         #         continue
         # Construir rela_pair_count
         #window = window.replace(string.punctuation, ' ')
-        res = nlp.dependency_parse(sentence)
-        tokenized = nlp.word_tokenize(sentence)
+
+        try:
+            res = nlp.dependency_parse(sentence)
+            tokenized = nlp.word_tokenize(sentence)
+        except Exception as e:
+            print(f'{sentence} = {e}')
+            res=[]
+        
         #print(res)
         #print(tokenized)
         #for tuple in res:

@@ -7,6 +7,7 @@ from sklearn.manifold import TSNE
 from matplotlib import pyplot as plt
 import numpy as np
 import os
+from common import get_hyperparameters
 
 
 def create_training_cfg() -> TrainingConfigs:
@@ -37,9 +38,10 @@ def train(ds: str, training_cfg: TrainingConfigs):
 
 
 def save_history(hist, representation, dataset, experiment, run_time):
-    file_name = f'./experiments/{representation}/{dataset}/EXPERIMENT_{experiment}_RUN_{run_time}.txt'
-    if not os.path.exists(f'./experiments/{representation}/{dataset}'):
-        os.mkdir(f'./experiments/{representation}/{dataset}')
+    file_name = f'experiments/{representation}/{dataset}/RUN_{run_time}/EXPERIMENT_{experiment}.txt'
+    if not os.path.exists(f'experiments/{representation}/{dataset}/RUN_{run_time}'):
+        #os.mkdir(f'experiments/{representation}/{dataset}/RUN_{run_time}')
+        os.makedirs(f'experiments/{representation}/{dataset}/RUN_{run_time}')
     with open(file_name, 'w') as my_file:
         #my_file=map(lambda x:x+'\n', my_file)
         my_file.writelines(hist)
@@ -90,13 +92,18 @@ def tsne_visualizer(data_set, experiment, run_time, representation):
 
     plt.legend(ncol=5, loc='upper center', bbox_to_anchor=(0.48, -0.08), fontsize=11)
     plt.tight_layout()
-    plt.savefig(f'./experiments/{representation}/{data_set}/EXPERIMENT_{experiment}_RUN_{run_time}.png', dpi=300)
+    plt.savefig(f'experiments/{representation}/{data_set}/RUN_{run_time}/EXPERIMENT_{experiment}.png', dpi=300)
+    #plt.savefig(f'./experiments/{representation}/{data_set}/EXPERIMENT_{experiment}_RUN_{run_time}.png', dpi=300)
     plt.close()
 
 
 def batch_train(dataset: str, rp: str, trn_cfg):
-    experiment = 0
-    times = 2
+    '''
+    Experiments > Graph Representation > Model Hyperparameter Tuning > Run Step
+    '''
+    #trn_cfg = create_training_cfg()
+
+    hyperparameters = get_hyperparameters()
 
     if rp == 'default':
         trn_cfg.corpus_adjacency_dir = 'data/corpus.shuffled/adjacency/default/' # Default adjacency
@@ -107,18 +114,33 @@ def batch_train(dataset: str, rp: str, trn_cfg):
     elif rp == 'graph':
         trn_cfg.corpus_adjacency_dir = 'data/corpus.shuffled/adjacency/graph/'  # Graph adjacency
 
+    times = 10
+
     for indx in range(times):
-        hist = train(ds=ds_name, training_cfg=trn_cfg)
-        save_history(hist, rp, dataset, experiment, indx)
-        tsne_visualizer(dataset, experiment, indx, rp)
+
+        for parameters in hyperparameters:
+            #experiment = parameters['experiment']
+            experiment = parameters['model']
+
+            trn_cfg.learning_rate = parameters['learning_rate']
+            trn_cfg.epochs = parameters['epochs']
+            trn_cfg.hidden1 = parameters['hidden_1']
+            trn_cfg.dropout = parameters['dropout']
+            trn_cfg.weight_decay = parameters['weight_decay']
+            trn_cfg.early_stopping = parameters['early_stopping']
+            trn_cfg.chebyshev_max_degree = parameters['max_degree']
+
+            hist = train(ds=ds_name, training_cfg=trn_cfg)
+            save_history(hist, rp, dataset, experiment, indx)
+            tsne_visualizer(dataset, experiment, indx, rp)
 
 
 if __name__ == '__main__':
 
     trn_cfg = create_training_cfg()
     if len(argv) < 3:
-        raise Exception(
-            "Dataset name cannot be left blank. Must be one of datasets:%r." % trn_cfg.data_sets)
+        raise Exception("Dataset name cannot be left blank. Must be one of datasets:%r." % trn_cfg.data_sets)
+        
     ds_name = argv[1]
     rp_name = argv[2]
 
