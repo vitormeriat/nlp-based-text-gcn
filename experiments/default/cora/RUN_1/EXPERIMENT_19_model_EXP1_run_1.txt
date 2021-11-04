@@ -1,0 +1,44 @@
+
+==========: 294166372460600
+Epoch:0001, train_loss=1.97821, train_acc=0.10428, val_loss=1.94397, val_acc=0.22751, time=0.12900
+Epoch:0002, train_loss=1.92847, train_acc=0.22437, val_loss=1.94071, val_acc=0.34392, time=0.12801
+Epoch:0003, train_loss=1.90434, train_acc=0.29936, val_loss=1.93991, val_acc=0.34392, time=0.13101
+Epoch:0004, train_loss=1.90130, train_acc=0.30111, val_loss=1.94004, val_acc=0.34392, time=0.12998
+Epoch:0005, train_loss=1.90369, train_acc=0.30346, val_loss=1.93989, val_acc=0.34392, time=0.12901
+Epoch:0006, train_loss=1.90047, train_acc=0.30404, val_loss=1.93948, val_acc=0.34392, time=0.10200
+Epoch:0007, train_loss=1.89252, train_acc=0.30463, val_loss=1.93917, val_acc=0.34392, time=0.12900
+Epoch:0008, train_loss=1.88398, train_acc=0.30463, val_loss=1.93915, val_acc=0.34921, time=0.12801
+Epoch:0009, train_loss=1.87712, train_acc=0.30814, val_loss=1.93937, val_acc=0.32804, time=0.12600
+Epoch:0010, train_loss=1.87178, train_acc=0.31693, val_loss=1.93966, val_acc=0.32275, time=0.10300
+Early stopping...
+
+Optimization Finished!
+
+Test set results: loss= 1.92943, accuracy= 0.27463, time= 0.03200
+
+Test Precision, Recall and F1-Score...
+              precision    recall  f1-score   support
+
+           0     0.1765    0.0214    0.0382       140
+           1     0.0000    0.0000    0.0000        45
+           2     0.1429    0.0248    0.0423       121
+           3     0.0000    0.0000    0.0000        92
+           4     0.1111    0.0086    0.0160       116
+           5     0.0000    0.0000    0.0000        65
+           6     0.2831    0.9270    0.4337       233
+
+    accuracy                         0.2746       812
+   macro avg     0.1019    0.1403    0.0757       812
+weighted avg     0.1488    0.2746    0.1396       812
+
+
+Macro average Test Precision, Recall and F1-Score...
+(0.10193312799125766, 0.14026875373184827, 0.07574357448505012, None)
+
+Micro average Test Precision, Recall and F1-Score...
+(0.2746305418719212, 0.2746305418719212, 0.2746305418719212, None)
+
+Embeddings:
+Word_embeddings:1343
+Train_doc_embeddings:1896
+Test_doc_embeddings:812

@@ -8,8 +8,10 @@ from scipy import stats
 import matplotlib.pyplot as plt
 
 PATH = "./"
-DATASETS = ["MR", "Ohsumed", "R8", "R52"]
-MODES = ["default", "syntactic", "semantic", "graph"]
+#DATASETS = ["MR", "Ohsumed", "R8", "R52"]
+#MODES = ["default", "syntactic", "semantic", "graph"]
+DATASETS = ["cora", "citeseer"]
+MODES = ["default", "syntactic"]
 
 
 mode = "default"
@@ -18,38 +20,10 @@ dataset_config = {
     "MR": {"marker": 'o', "linestyle": '-'},
     "Ohsumed": {"marker": '^', "linestyle": '--'},
     "R8": {"marker": 's', "linestyle": '-.'},
-    "R52": {"marker": 'D', "linestyle": ':'}
+    "R52": {"marker": 'D', "linestyle": ':'},
+    "cora": {"marker": 'D', "linestyle": ':'},
+    "citeseer": {"marker": 's', "linestyle": '--'}
 }
-
-basic_stats = {}
-
-for dataset in DATASETS:
-    mypath = f'statistics/{mode}/{dataset}.csv'
-    basic_stats = pd.read_csv(mypath, delimiter=';')
-
-    plt.plot(basic_stats["name"], basic_stats["mean"],
-             marker=dataset_config[dataset]["marker"],
-             linestyle=dataset_config[dataset]["linestyle"], label=dataset)
-
-    for x, y in zip(basic_stats["name"], basic_stats["mean"]):
-
-        label = "{:.4f}".format(y)
-
-        plt.annotate(label,  # this is the text
-                     (x, y),  # this is the point to label
-                     textcoords="offset points",  # how to position the text
-                     xytext=(0, 10),  # distance from text to points (x,y)
-                     ha='center',  # horizontal alignment can be left, right or center
-                     rotation=15,
-                     fontsize=18)
-
-    # plt.title("Average accurracy of each experiment",fontsize=36)
-    plt.xticks(rotation=30, fontsize=20)
-    plt.yticks(numpy.arange(0.65, 1.05, step=0.05), fontsize=20)
-    plt.legend(loc='lower center', fontsize=20, mode=None,
-               ncol=4, bbox_to_anchor=(0.5, -0.22))
-    plt.savefig(f'statistics/{mode}/{mode.upper()}.png', dpi=300)
-    plt.close()
 
 
 def calculate_statistics(max_result, dataset):
@@ -113,6 +87,37 @@ def calculate_statistics(max_result, dataset):
         "Difference (Experiment-Original)": round(max_result["mean"].values[0] - ORIGINAL_PAPER[dataset]["avg"], 4),
         "Equal Variance?": IS_VARIANCE_EQUAL
     })
+
+
+basic_stats = {}
+
+for dataset in DATASETS:
+    mypath = f'statistics/{mode}/{dataset}.csv'
+    basic_stats = pd.read_csv(mypath, delimiter=';')
+
+    plt.plot(basic_stats["name"], basic_stats["mean"],
+             marker=dataset_config[dataset]["marker"],
+             linestyle=dataset_config[dataset]["linestyle"], label=dataset)
+
+    for x, y in zip(basic_stats["name"], basic_stats["mean"]):
+
+        label = "{:.4f}".format(y)
+
+        plt.annotate(label,  # this is the text
+                     (x, y),  # this is the point to label
+                     textcoords="offset points",  # how to position the text
+                     xytext=(0, 10),  # distance from text to points (x,y)
+                     ha='center',  # horizontal alignment can be left, right or center
+                     rotation=15,
+                     fontsize=18)
+
+    # plt.title("Average accurracy of each experiment",fontsize=36)
+    plt.xticks(rotation=30, fontsize=20)
+    plt.yticks(numpy.arange(0.65, 1.05, step=0.05), fontsize=20)
+    plt.legend(loc='lower center', fontsize=20, mode=None,
+               ncol=4, bbox_to_anchor=(0.5, -0.22))
+    plt.savefig(f'statistics/{mode}/{mode.upper()}.png', dpi=300)
+    plt.close()
 
 
 statistics_results = []

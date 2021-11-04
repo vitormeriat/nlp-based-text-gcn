@@ -1,0 +1,45 @@
+
+==========: 304285116831100
+Epoch:0001, train_loss=1.78348, train_acc=0.19349, val_loss=1.79328, val_acc=0.22511, time=0.27500
+Epoch:0002, train_loss=1.78421, train_acc=0.21456, val_loss=1.79259, val_acc=0.22511, time=0.28601
+Epoch:0003, train_loss=1.76789, train_acc=0.26868, val_loss=1.79262, val_acc=0.17749, time=0.27999
+Epoch:0004, train_loss=1.76144, train_acc=0.27299, val_loss=1.79252, val_acc=0.19048, time=0.32300
+Epoch:0005, train_loss=1.75629, train_acc=0.27011, val_loss=1.79210, val_acc=0.20779, time=0.29700
+Epoch:0006, train_loss=1.74809, train_acc=0.34387, val_loss=1.79180, val_acc=0.16450, time=0.33100
+Epoch:0007, train_loss=1.73929, train_acc=0.44301, val_loss=1.79191, val_acc=0.22078, time=0.28701
+Epoch:0008, train_loss=1.73202, train_acc=0.39224, val_loss=1.79231, val_acc=0.22078, time=0.34100
+Epoch:0009, train_loss=1.72563, train_acc=0.38362, val_loss=1.79274, val_acc=0.20779, time=0.34001
+Epoch:0010, train_loss=1.71862, train_acc=0.42577, val_loss=1.79307, val_acc=0.19913, time=0.27302
+Epoch:0011, train_loss=1.71077, train_acc=0.47797, val_loss=1.79324, val_acc=0.16450, time=0.33200
+Epoch:0012, train_loss=1.70269, train_acc=0.50814, val_loss=1.79328, val_acc=0.16883, time=0.28800
+Early stopping...
+
+Optimization Finished!
+
+Test set results: loss= 1.78898, accuracy= 0.19738, time= 0.09301
+
+Test Precision, Recall and F1-Score...
+              precision    recall  f1-score   support
+
+           0     0.1793    0.1376    0.1557       189
+           1     0.1636    0.0600    0.0878       150
+           2     0.1875    0.3529    0.2449       204
+           3     0.2028    0.2115    0.2071       208
+           4     0.2344    0.2601    0.2466       173
+           5     0.0000    0.0000    0.0000        69
+
+    accuracy                         0.1974       993
+   macro avg     0.1613    0.1704    0.1570       993
+weighted avg     0.1807    0.1974    0.1795       993
+
+
+Macro average Test Precision, Recall and F1-Score...
+(0.16126444757041253, 0.1703602304186006, 0.15700427099701833, None)
+
+Micro average Test Precision, Recall and F1-Score...
+(0.1973816717019134, 0.1973816717019134, 0.1973816717019134, None)
+
+Embeddings:
+Word_embeddings:3515
+Train_doc_embeddings:2319
+Test_doc_embeddings:993

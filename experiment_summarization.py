@@ -8,7 +8,7 @@ from scipy import stats
 
 #MODES = ["default", "syntactic", "semantic", "graph"]
 #DATASETS = ["MR", "Ohsumed", "R8", "R52"]
-DATASETS = ["test"]
+DATASETS = ["cora", "citeseer"]
 MODES = ["default", "syntactic"]
 
 def clean_text(txt):
@@ -124,11 +124,10 @@ df = pd.DataFrame(data=all_results)
 
 df["cost"] = pd.to_numeric(df["cost"])
 df["accuracy"] = pd.to_numeric(df["accuracy"])
-#df["experiment"] = pd.to_numeric(df["experiment"])
-#df["run"] = pd.to_numeric(df["run"])
+df["experiment"] = pd.to_numeric(df["experiment"])
+df["run"] = pd.to_numeric(df["run"])
 
-#df = df.sort_values(by=['experiment', 'run', 'mode', 'dataset'])
-df = df.sort_values(by=['mode', 'dataset'])
+df = df.sort_values(by=['experiment', 'run', 'mode', 'dataset'])
 df = df.reset_index(drop=True)
 
 for mode in MODES:
