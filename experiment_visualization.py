@@ -91,6 +91,7 @@ def calculate_statistics(max_result, dataset):
 
 basic_stats = {}
 
+plt.figure(figsize=(28,10))
 for dataset in DATASETS:
     mypath = f'statistics/{mode}/{dataset}.csv'
     basic_stats = pd.read_csv(mypath, delimiter=';')
@@ -109,15 +110,15 @@ for dataset in DATASETS:
                      xytext=(0, 10),  # distance from text to points (x,y)
                      ha='center',  # horizontal alignment can be left, right or center
                      rotation=15,
-                     fontsize=18)
+                     fontsize=16)
 
     # plt.title("Average accurracy of each experiment",fontsize=36)
-    plt.xticks(rotation=30, fontsize=20)
+    plt.xticks(rotation=45, fontsize=18)
     plt.yticks(numpy.arange(0.65, 1.05, step=0.05), fontsize=20)
     plt.legend(loc='lower center', fontsize=20, mode=None,
                ncol=4, bbox_to_anchor=(0.5, -0.22))
-    plt.savefig(f'statistics/{mode}/{mode.upper()}.png', dpi=300)
-    plt.close()
+plt.savefig(f'statistics/{mode}/{mode.upper()}.png', dpi=300)
+plt.close()
 
 
 statistics_results = []

@@ -40,8 +40,3 @@ def get_hyperparameters():
             })
 
     return hyperparameters
-
-# Experiment;    Learning Rate;  Hidden 1;   Dropout;    Early Stopping; Epochs; Weight Decay;   Max Degree; Model
-#0;             0.02;           200;        0.5;        10;             10000;  0;              3;          ES10
-#1;             0.02;           200;        0.5;        100;            10000;  0;              3;          ES100
-#2;             0.02;           200;        0.5;        1000;           10000;  0;              3;          ES1000

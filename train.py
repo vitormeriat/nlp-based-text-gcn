@@ -115,7 +115,7 @@ def batch_train(dataset: str, rp: str, trn_cfg):
     elif rp == 'graph':
         trn_cfg.corpus_adjacency_dir = 'data/corpus.shuffled/adjacency/graph/'  # Graph adjacency
 
-    times = 3
+    times = 5
 
     for indx in range(times):
 
@@ -133,7 +133,7 @@ def batch_train(dataset: str, rp: str, trn_cfg):
 
             hist = train(ds=ds_name, training_cfg=trn_cfg)
             save_history(hist, rp, dataset, experiment, model, indx)
-            tsne_visualizer(dataset, experiment, indx, rp)
+            #tsne_visualizer(dataset, experiment, indx, rp)
 
 
 if __name__ == '__main__':

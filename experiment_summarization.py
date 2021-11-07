@@ -4,12 +4,12 @@ import pandas as pd
 import sys
 import numpy
 from scipy import stats
+import os
 
 
 #MODES = ["default", "syntactic", "semantic", "graph"]
-#DATASETS = ["MR", "Ohsumed", "R8", "R52"]
-DATASETS = ["cora", "citeseer"]
-MODES = ["default", "syntactic"]
+DATASETS = ["MR", "Ohsumed", "R8", "R52"]
+MODES = ["default", "graph", "syntactic"]
 
 def clean_text(txt):
     return txt.split(':')[1].replace(',', '')
@@ -22,7 +22,7 @@ def get_metrics(file_path, info, mode, dataset):
     for line in text:
         
         if line[0:6] == "Epoch:":
-            line = line.replace('\n', '').replace(', ', ' ').replace(':', ' ').replace('=', ' ')
+            #line = line.replace('\n', '').replace(', ', ' ').replace(':', ' ').replace('=', ' ')
             epochs = line.split(" ")[1]
         if line[0:17] == "Test set results:":
             #line = line.replace('\n', '').replace(', ', ' ').replace(':', ' ').replace('=', ' ')
@@ -34,8 +34,8 @@ def get_metrics(file_path, info, mode, dataset):
                 "mode": mode,
                 "dataset": dataset,
                 "experiment": info[1],
-                "name": info[3],
-                "run": info[5].split(".")[0]
+                "name": info[4],
+                "run": info[6].split(".")[0]
             }
 
 
@@ -68,6 +68,10 @@ def calculate_basic_statistics(df, mode, dataset):
         all_results.append(results)
 
     results = pd.DataFrame(all_results)
+
+    if not os.path.exists(f'./statistics/{mode}/'):
+        os.makedirs(f'./statistics/{mode}/')
+
     results.to_csv(
         # "./Basic_Statistics/"+dataset+".csv",
         f'./statistics/{mode}/{dataset}.csv',
@@ -130,8 +134,66 @@ df["run"] = pd.to_numeric(df["run"])
 df = df.sort_values(by=['experiment', 'run', 'mode', 'dataset'])
 df = df.reset_index(drop=True)
 
+statistics_results = []
+best_results = []
+
 for mode in MODES:
     for dataset in DATASETS:
         #experiments = df.loc[df['dataset'] == dataset]
         experiments = df.loc[(df['mode'] == mode) & (df['dataset'] == dataset)]
         calculate_basic_statistics(experiments, mode, dataset)
+
+        for experiment in range(19):
+            experiment_results = df.loc[(df["experiment"] == experiment)]
+            statistics_results.append(calculate_statistics(experiment_results, dataset))
+        results = pd.DataFrame(statistics_results)
+        max_result = results.loc[(results["mean"] == numpy.max(results["mean"]))]
+        best_results.append(calculate_statistics(max_result, dataset))
+
+
+    statistics_results_df = pd.DataFrame(statistics_results)
+    best_results_df = pd.DataFrame(best_results)
+
+    statistics_results_df.to_csv(
+        "./statistics/all_results.csv",
+        sep=';',
+        index=False
+    )
+
+    best_results_df.to_csv(
+        "./statistics/best_results.csv",
+        sep=';',
+        index=False
+    )
+
+
+#statistics_results = []
+#best_results = []
+
+# for dataset in DATASETS:
+#     all_results = basic_stats[dataset]
+#     for experiment in range(19):
+#         results = pd.DataFrame(all_results)
+#         experiment_results = results.loc[(results["experiment"] == experiment)]
+#         statistics_results.append(calculate_statistics(experiment_results, dataset))
+
+#     results = pd.DataFrame(all_results)
+#     max_result = results.loc[(results["mean"] == numpy.max(results["mean"]))]
+#     best_results.append(calculate_statistics(max_result, dataset))
+
+
+# statistics_results_df = pd.DataFrame(statistics_results)
+# best_results_df = pd.DataFrame(best_results)
+
+
+# statistics_results_df.to_csv(
+#     "./statistics/all_results.csv",
+#     sep=';',
+#     index=False
+# )
+
+# best_results_df.to_csv(
+#     "./statistics/best_results.csv",
+#     sep=';',
+#     index=False
+# )

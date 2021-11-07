@@ -274,6 +274,9 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
     # =============================================================
     weight += weight_tfidf
     node_size = train_size + vocab_size + test_size
+
+    print(f"[INFO] ({len(weight)}, ({len(row)}, {len(col)})), shape=({node_size}, {node_size})")
+    
     adj = sp.csr_matrix((weight, (row, col)), shape=(node_size, node_size))
     # =============================================================
     # Dump Adjacency Matrix
