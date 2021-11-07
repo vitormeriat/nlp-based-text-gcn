@@ -13,8 +13,8 @@ from common import get_hyperparameters
 def create_training_cfg() -> TrainingConfigs:
     # 20NG - MR - Ohsumed - R8, R52
     conf = TrainingConfigs()
-    #conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed', 'mr', 'cora', 'citeseer', 'pubmed']
-    conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed', 'mr', 'test']
+    conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed', 'mr', 'cora', 'citeseer', 'pubmed']
+    #conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed', 'mr', 'test']
     conf.corpus_split_index_dir = 'data/corpus.shuffled/split_index/'
     conf.corpus_node_features_dir = 'data/corpus.shuffled/node_features/'
     conf.corpus_adjacency_dir = ''  # 'data/corpus.shuffled/adjacency/'
@@ -37,8 +37,9 @@ def train(ds: str, training_cfg: TrainingConfigs):
     return train_model(ds_name=ds, is_featureless=True, cfg=training_cfg)
 
 
-def save_history(hist, representation, dataset, experiment, run_time):
-    file_name = f'experiments/{representation}/{dataset}/RUN_{run_time}/EXPERIMENT_{experiment}.txt'
+def save_history(hist, representation, dataset, experiment, model, run_time):
+    #EXPERIMENT_11_model_mr_DO05_run_6.txt
+    file_name = f'experiments/{representation}/{dataset}/RUN_{run_time}/EXPERIMENT_{experiment}_model_{model}_run_{run_time}.txt'
     if not os.path.exists(f'experiments/{representation}/{dataset}/RUN_{run_time}'):
         #os.mkdir(f'experiments/{representation}/{dataset}/RUN_{run_time}')
         os.makedirs(f'experiments/{representation}/{dataset}/RUN_{run_time}')
@@ -114,13 +115,13 @@ def batch_train(dataset: str, rp: str, trn_cfg):
     elif rp == 'graph':
         trn_cfg.corpus_adjacency_dir = 'data/corpus.shuffled/adjacency/graph/'  # Graph adjacency
 
-    times = 10
+    times = 5
 
     for indx in range(times):
 
         for parameters in hyperparameters:
-            #experiment = parameters['experiment']
-            experiment = parameters['model']
+            experiment = parameters['experiment']
+            model = parameters['model']
 
             trn_cfg.learning_rate = parameters['learning_rate']
             trn_cfg.epochs = parameters['epochs']
@@ -131,8 +132,8 @@ def batch_train(dataset: str, rp: str, trn_cfg):
             trn_cfg.chebyshev_max_degree = parameters['max_degree']
 
             hist = train(ds=ds_name, training_cfg=trn_cfg)
-            save_history(hist, rp, dataset, experiment, indx)
-            tsne_visualizer(dataset, experiment, indx, rp)
+            save_history(hist, rp, dataset, experiment, model, indx)
+            #tsne_visualizer(dataset, experiment, indx, rp)
 
 
 if __name__ == '__main__':

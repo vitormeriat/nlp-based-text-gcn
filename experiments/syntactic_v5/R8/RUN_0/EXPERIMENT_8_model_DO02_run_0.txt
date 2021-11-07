@@ -1,0 +1,55 @@
+
+==========: 253175530118300
+Epoch:0001, train_loss=2.17295, train_acc=0.09054, val_loss=2.06684, val_acc=0.46350, time=1.32101
+Epoch:0002, train_loss=1.94934, train_acc=0.48167, val_loss=2.06424, val_acc=0.48358, time=1.30500
+Epoch:0003, train_loss=1.89177, train_acc=0.51124, val_loss=2.06596, val_acc=0.45073, time=1.24701
+Epoch:0004, train_loss=1.88264, train_acc=0.50496, val_loss=2.06909, val_acc=0.42153, time=1.19801
+Epoch:0005, train_loss=1.88947, train_acc=0.49402, val_loss=2.07085, val_acc=0.42153, time=1.25502
+Epoch:0006, train_loss=1.88345, train_acc=0.51975, val_loss=2.07136, val_acc=0.45255, time=1.20800
+Epoch:0007, train_loss=1.86712, train_acc=0.55499, val_loss=2.07134, val_acc=0.47080, time=1.28402
+Epoch:0008, train_loss=1.84926, train_acc=0.56735, val_loss=2.07069, val_acc=0.47993, time=1.26700
+Epoch:0009, train_loss=1.82973, train_acc=0.57910, val_loss=2.06972, val_acc=0.45985, time=1.25601
+Epoch:0010, train_loss=1.81087, train_acc=0.59267, val_loss=2.06905, val_acc=0.43978, time=1.30701
+Epoch:0011, train_loss=1.79690, train_acc=0.61313, val_loss=2.06876, val_acc=0.43066, time=1.29001
+Epoch:0012, train_loss=1.78703, train_acc=0.62649, val_loss=2.06849, val_acc=0.42883, time=1.28601
+Epoch:0013, train_loss=1.77680, train_acc=0.63541, val_loss=2.06805, val_acc=0.42518, time=1.21201
+Epoch:0014, train_loss=1.76442, train_acc=0.64331, val_loss=2.06761, val_acc=0.42883, time=1.28201
+Epoch:0015, train_loss=1.75144, train_acc=0.64412, val_loss=2.06734, val_acc=0.43796, time=1.17701
+Epoch:0016, train_loss=1.73992, train_acc=0.64756, val_loss=2.06730, val_acc=0.43613, time=1.30801
+Epoch:0017, train_loss=1.73059, train_acc=0.65222, val_loss=2.06742, val_acc=0.44161, time=1.30601
+Epoch:0018, train_loss=1.72307, train_acc=0.65728, val_loss=2.06766, val_acc=0.43796, time=1.33001
+Epoch:0019, train_loss=1.71681, train_acc=0.66376, val_loss=2.06799, val_acc=0.42701, time=1.19301
+Epoch:0020, train_loss=1.71152, train_acc=0.67733, val_loss=2.06843, val_acc=0.42701, time=1.30802
+Early stopping...
+
+Optimization Finished!
+
+Test set results: loss= 2.01639, accuracy= 0.45226, time= 0.46701
+
+Test Precision, Recall and F1-Score...
+              precision    recall  f1-score   support
+
+           0     0.3498    0.2141    0.2656       696
+           1     0.4982    0.7729    0.6059      1083
+           2     0.1250    0.0115    0.0211        87
+           3     0.0000    0.0000    0.0000       121
+           4     0.0625    0.0267    0.0374        75
+           5     0.0000    0.0000    0.0000        10
+           6     0.0345    0.0123    0.0182        81
+           7     0.0000    0.0000    0.0000        36
+
+    accuracy                         0.4523      2189
+   macro avg     0.1337    0.1297    0.1185      2189
+weighted avg     0.3661    0.4523    0.3870      2189
+
+
+Macro average Test Precision, Recall and F1-Score...
+(0.13374528781886724, 0.12968003048978227, 0.11850974593291982, None)
+
+Micro average Test Precision, Recall and F1-Score...
+(0.45226130653266333, 0.45226130653266333, 0.45226130653266333, None)
+
+Embeddings:
+Word_embeddings:7688
+Train_doc_embeddings:5485
+Test_doc_embeddings:2189

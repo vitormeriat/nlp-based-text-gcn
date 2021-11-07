@@ -1,0 +1,44 @@
+
+==========: 253488995554400
+Epoch:0001, train_loss=2.29618, train_acc=0.03889, val_loss=2.08580, val_acc=0.47445, time=1.38600
+Epoch:0002, train_loss=2.03107, train_acc=0.53069, val_loss=2.12919, val_acc=0.28832, time=1.34702
+Epoch:0003, train_loss=2.37111, train_acc=0.30444, val_loss=2.09411, val_acc=0.48358, time=1.25300
+Epoch:0004, train_loss=2.02740, train_acc=0.54811, val_loss=2.09502, val_acc=0.48905, time=1.18502
+Epoch:0005, train_loss=2.02331, train_acc=0.53575, val_loss=2.08012, val_acc=0.45438, time=1.22301
+Epoch:0006, train_loss=1.88025, train_acc=0.56796, val_loss=2.07355, val_acc=0.40328, time=1.28401
+Epoch:0007, train_loss=1.80706, train_acc=0.61900, val_loss=2.07699, val_acc=0.29015, time=1.26101
+Epoch:0008, train_loss=1.81939, train_acc=0.55094, val_loss=2.08219, val_acc=0.27007, time=1.17400
+Epoch:0009, train_loss=1.84080, train_acc=0.50942, val_loss=2.08193, val_acc=0.28467, time=1.24100
+Early stopping...
+
+Optimization Finished!
+
+Test set results: loss= 2.05610, accuracy= 0.31339, time= 0.40401
+
+Test Precision, Recall and F1-Score...
+              precision    recall  f1-score   support
+
+           0     0.3095    0.6149    0.4117       696
+           1     0.4762    0.2308    0.3109      1083
+           2     0.0294    0.0345    0.0317        87
+           3     0.0248    0.0248    0.0248       121
+           4     0.0625    0.0133    0.0220        75
+           5     0.0000    0.0000    0.0000        10
+           6     0.0000    0.0000    0.0000        81
+           7     0.1111    0.0278    0.0444        36
+
+    accuracy                         0.3134      2189
+   macro avg     0.1267    0.1183    0.1057      2189
+weighted avg     0.3405    0.3134    0.2889      2189
+
+
+Macro average Test Precision, Recall and F1-Score...
+(0.1266848628004951, 0.11827125567978432, 0.10570544649581284, None)
+
+Micro average Test Precision, Recall and F1-Score...
+(0.3133851073549566, 0.3133851073549566, 0.3133851073549566, None)
+
+Embeddings:
+Word_embeddings:7688
+Train_doc_embeddings:5485
+Test_doc_embeddings:2189
