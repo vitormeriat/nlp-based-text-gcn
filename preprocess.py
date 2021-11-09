@@ -1,7 +1,7 @@
 from sys import argv
 
 from preprocessors.build_freq_adjacency import build_freq_adjacency
-from preprocessors.build_syntactic_adjacency import build_syntactic_adjacency
+from preprocessors.build_syntactic_adjacency_v2 import build_syntactic_adjacency
 from preprocessors.build_graph_adjacency import build_graph_adjacency
 from preprocessors.build_node_features import build_node_features
 from preprocessors.clean_data import clean_data, config_nltk
