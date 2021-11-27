@@ -172,7 +172,7 @@ def extract_tw_idf_doc_word_weights(
     vectorizer = TwidfVectorizer(                 
         # Graph-of-words specificities
         directed=True,
-        window_size=4,
+        window_size=20,
         # Token frequency filtering
         min_df=0.0,
         max_df=1.0,

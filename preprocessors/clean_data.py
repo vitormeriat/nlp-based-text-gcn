@@ -3,6 +3,7 @@ from time import time
 from collections import Counter
 #from shutil import rmtree
 from typing import List, Set
+import os
 
 from common import extract_word_counts, check_data_set
 from preprocessors.configs import PreProcessingConfigs
@@ -10,9 +11,10 @@ from utils.file_ops import create_dir, write_iterable_to_file, check_paths
 
 def config_nltk():
     temporary_nltk_folder = 'venv/nltk_data/'
-    from nltk import download
-    download(info_or_id='stopwords', download_dir=temporary_nltk_folder)
-    download(info_or_id='wordnet', download_dir=temporary_nltk_folder)
+    if not os.path.exists(temporary_nltk_folder):
+        from nltk import download
+        download(info_or_id='stopwords', download_dir=temporary_nltk_folder)
+        download(info_or_id='wordnet', download_dir=temporary_nltk_folder)
 
 
 def clean_str(a_str: str) -> str:
@@ -39,11 +41,8 @@ def clean_str(a_str: str) -> str:
 def retrieve_stop_words(language: str = 'english') -> Set[str]:
     #temporary_nltk_folder = 'venv/nltk_data/'
     from nltk.corpus import stopwords
-    #from nltk import download
-    #download(info_or_id='stopwords', download_dir=temporary_nltk_folder)
-    retrieved_stop_words = set(stopwords.words(language))
-    #rmtree(temporary_nltk_folder)
-    return retrieved_stop_words
+
+    return set(stopwords.words(language))
 
 
 def remove_stop_words(lines_of_words: List[List[str]], stop_words: Set[str]) -> List[List[str]]:
@@ -76,7 +75,7 @@ def clean_data(ds_name: str, rare_count: int, cfg: PreProcessingConfigs):
     docs_of_words = [clean_str(line.strip().decode('latin1')).split() for line in open(corpus_path, 'rb')]
     word_counts = extract_word_counts(docs_of_words=docs_of_words)
     stop_words = retrieve_stop_words(language='english')
-    if ds_name != 'mr' and ds_name != 'test':  # If data-set is 'mr', don't remove stop and rare words, TODO: find why
+    if ds_name not in ['mr', 'test']:  # If data-set is 'mr', don't remove stop and rare words, TODO: find why
         docs_of_words = remove_stop_words(docs_of_words, stop_words=stop_words)
         docs_of_words = remove_rare_words(docs_of_words, word_counts=word_counts, rare_count=rare_count)
     docs_of_words = glue_lines(lines_of_words=docs_of_words, glue_str=' ', with_strip=True)

@@ -87,6 +87,7 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
 
     nlp = StanfordCoreNLP(cfg.core_nlp_path, lang='en')
 
+    errors = 0
     rela_pair_count_str = {}
     for docs_of_word in docs_of_words:
         words = docs_of_word
@@ -96,7 +97,8 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
             res = nlp.dependency_parse(sentence)
             tokenized = nlp.word_tokenize(sentence)
         except Exception as e:
-            print(f'{sentence} = {e}')
+            #print(f'{sentence} = {e}')
+            errors += 1
             res = []
 
         for pair in list(res):
@@ -121,6 +123,7 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
                 rela_pair_count_str[word_pair_str] += 1
             else:
                 rela_pair_count_str[word_pair_str] = 1
+    print(f'[INFO] Error in Dependency Parse: {errors}')
     nlp.close()
     # =============================================================
     max_count1 = 0.0
@@ -173,7 +176,7 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
         except:
             errors += 1
 
-    print(f'Deu ruim: {errors}')
+    print(f'[INFO] Error in Compute Weights: {errors}')
     # =============================================================
     # doc word frequency
     weight_tfidf = []

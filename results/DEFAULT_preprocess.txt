@@ -1,0 +1,310 @@
+
+
+
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ R8
+
+[WARN] Path:C:/bin/CoreNLP/stanford-corenlp-full-2018-10-05 is already absolute.
+[nltk_data] Downloading package stopwords to venv/nltk_data/...
+[nltk_data]   Package stopwords is already up-to-date!
+[nltk_data] Downloading package wordnet to venv/nltk_data/...
+[nltk_data]   Package wordnet is already up-to-date!
+[INFO] Cleaned-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.cleaned/'
+[INFO] Rare-Count=<5>
+[INFO] Elapsed time is 2.736037 seconds.
+[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========
+[INFO] Shuffled-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/'
+[INFO] Elapsed time is 1.240016 seconds.
+[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========
+[INFO] Vocabulary Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/vocabulary/'
+[INFO] Word-Vector Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/word_vectors/'
+[INFO] Elapsed time is 18.646517 seconds.
+[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========
+[INFO] x.shape=   (4937, 300),   y.shape=   (4937, 8)
+[INFO] tx.shape=  (2189, 300),   ty.shape=  (2189, 8)
+[INFO] allx.shape=(13173, 300),  ally.shape=(13173, 8)
+[INFO] Elapsed time is 3.925049 seconds.
+[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========
+[INFO] (3165430, (3165430, 3165430)), shape=(15362, 15362)
+[INFO] Adjacency Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/adjacency/'
+[INFO] Elapsed time is 609.521250 seconds.
+[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========
+
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ R52
+
+[WARN] Path:C:/bin/CoreNLP/stanford-corenlp-full-2018-10-05 is already absolute.
+[nltk_data] Downloading package stopwords to venv/nltk_data/...
+[nltk_data]   Package stopwords is already up-to-date!
+[nltk_data] Downloading package wordnet to venv/nltk_data/...
+[nltk_data]   Package wordnet is already up-to-date!
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.cleaned/' already exists, not overwritten.
+[INFO] Cleaned-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.cleaned/'
+[INFO] Rare-Count=<5>
+[INFO] Elapsed time is 2.882026 seconds.
+[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/meta/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/split_index/' already exists, not overwritten.
+[INFO] Shuffled-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/'
+[INFO] Elapsed time is 1.393010 seconds.
+[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/vocabulary/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/word_vectors/' already exists, not overwritten.
+[INFO] Vocabulary Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/vocabulary/'
+[INFO] Word-Vector Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/word_vectors/'
+[INFO] Elapsed time is 17.737232 seconds.
+[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========
+[INFO] x.shape=   (5879, 300),   y.shape=   (5879, 52)
+[INFO] tx.shape=  (2568, 300),   ty.shape=  (2568, 52)
+[INFO] allx.shape=(15424, 300),  ally.shape=(15424, 52)
+[INFO] Elapsed time is 4.559078 seconds.
+[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/adjacency//default' already exists, not overwritten.
+[INFO] (3981246, (3981246, 3981246)), shape=(17992, 17992)
+[INFO] Adjacency Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/adjacency/'
+[INFO] Elapsed time is 751.066634 seconds.
+[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========
+
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 20ng
+
+[WARN] Path:C:/bin/CoreNLP/stanford-corenlp-full-2018-10-05 is already absolute.
+[nltk_data] Downloading package stopwords to venv/nltk_data/...
+[nltk_data]   Package stopwords is already up-to-date!
+[nltk_data] Downloading package wordnet to venv/nltk_data/...
+[nltk_data]   Package wordnet is already up-to-date!
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.cleaned/' already exists, not overwritten.
+[INFO] Cleaned-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.cleaned/'
+[INFO] Rare-Count=<5>
+[INFO] Elapsed time is 15.263231 seconds.
+[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/meta/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/split_index/' already exists, not overwritten.
+[INFO] Shuffled-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/'
+[INFO] Elapsed time is 4.521075 seconds.
+[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/vocabulary/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/word_vectors/' already exists, not overwritten.
+[INFO] Vocabulary Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/vocabulary/'
+[INFO] Word-Vector Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/word_vectors/'
+[INFO] Elapsed time is 54.680272 seconds.
+[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========
+[INFO] x.shape=   (10183, 300),  y.shape=   (10183, 20)
+[INFO] tx.shape=  (7532, 300),   ty.shape=  (7532, 20)
+[INFO] allx.shape=(54071, 300),  ally.shape=(54071, 20)
+[INFO] Elapsed time is 14.615608 seconds.
+[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/adjacency//default' already exists, not overwritten.
+[INFO] (24689966, (24689966, 24689966)), shape=(61603, 61603)
+[INFO] Adjacency Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/adjacency/'
+[INFO] Elapsed time is 5880.365294 seconds.
+[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========
+
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ ohsumed
+
+[WARN] Path:C:/bin/CoreNLP/stanford-corenlp-full-2018-10-05 is already absolute.
+[nltk_data] Downloading package stopwords to venv/nltk_data/...
+[nltk_data]   Package stopwords is already up-to-date!
+[nltk_data] Downloading package wordnet to venv/nltk_data/...
+[nltk_data]   Package wordnet is already up-to-date!
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.cleaned/' already exists, not overwritten.
+[INFO] Cleaned-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.cleaned/'
+[INFO] Rare-Count=<5>
+[INFO] Elapsed time is 3.649063 seconds.
+[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/meta/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/split_index/' already exists, not overwritten.
+[INFO] Shuffled-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/'
+[INFO] Elapsed time is 0.557001 seconds.
+[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/vocabulary/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/word_vectors/' already exists, not overwritten.
+[INFO] Vocabulary Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/vocabulary/'
+[INFO] Word-Vector Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/word_vectors/'
+[INFO] Elapsed time is 19.506081 seconds.
+[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========
+[INFO] x.shape=   (0, 300),      y.shape=   (0,)
+[INFO] tx.shape=  (4043, 300),   ty.shape=  (4043, 23)
+[INFO] allx.shape=(13392, 300),  ally.shape=(13392, 23)
+[INFO] Elapsed time is 2.874040 seconds.
+[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/adjacency//default' already exists, not overwritten.
+[INFO] (4957285, (4957285, 4957285)), shape=(17435, 17435)
+[INFO] Adjacency Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/adjacency/'
+[INFO] Elapsed time is 772.528057 seconds.
+[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========
+
+
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ mr
+[nltk_data] Downloading package stopwords to venv/nltk_data/...
+[nltk_data]   Package stopwords is already up-to-date!
+[nltk_data] Downloading package wordnet to venv/nltk_data/...
+[nltk_data]   Package wordnet is already up-to-date!
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.cleaned/' already exists, not overwritten.
+[INFO] Cleaned-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.cleaned/'
+[INFO] Rare-Count=<5>
+[INFO] Elapsed time is 0.508003 seconds.
+[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/meta/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/split_index/' already exists, not overwritten.
+[INFO] Shuffled-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/'
+[INFO] Elapsed time is 1.260024 seconds.
+[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/vocabulary/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/word_vectors/' already exists, not overwritten.
+[INFO] Vocabulary Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/vocabulary/'
+[INFO] Word-Vector Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/word_vectors/'
+[INFO] Elapsed time is 7.968829 seconds.
+[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========
+[INFO] x.shape=   (6398, 300),   y.shape=   (6398, 2)
+[INFO] tx.shape=  (3554, 300),   ty.shape=  (3554, 2)
+[INFO] allx.shape=(25872, 300),  ally.shape=(25872, 2)
+[INFO] Elapsed time is 4.977086 seconds.
+[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/adjacency//default' already exists, not overwritten.
+[INFO] (1701424, (1701424, 1701424)), shape=(29426, 29426)
+[INFO] Adjacency Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/adjacency/'
+[INFO] Elapsed time is 31.502527 seconds.
+[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========
+
+
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ cora
+[nltk_data] Downloading package stopwords to venv/nltk_data/...
+[nltk_data]   Package stopwords is already up-to-date!
+[nltk_data] Downloading package wordnet to venv/nltk_data/...
+[nltk_data]   Package wordnet is already up-to-date!
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.cleaned/' already exists, not overwritten.
+[INFO] Cleaned-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.cleaned/'
+[INFO] Rare-Count=<5>
+[INFO] Elapsed time is 0.132006 seconds.
+[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/meta/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/split_index/' already exists, not overwritten.
+[INFO] Shuffled-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/'
+[INFO] Elapsed time is 0.111006 seconds.
+[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/vocabulary/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/word_vectors/' already exists, not overwritten.
+[INFO] Vocabulary Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/vocabulary/'
+[INFO] Word-Vector Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/word_vectors/'
+[INFO] Elapsed time is 0.066004 seconds.
+[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========
+[INFO] x.shape=   (1707, 300),   y.shape=   (1707, 7)
+[INFO] tx.shape=  (812, 300),    ty.shape=  (812, 7)
+[INFO] allx.shape=(3239, 300),   ally.shape=(3239, 7)
+[INFO] Elapsed time is 0.860021 seconds.
+[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/adjacency//default' already exists, not overwritten.
+[INFO] (335138, (335138, 335138)), shape=(4051, 4051)
+[INFO] Adjacency Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/adjacency/'
+[INFO] Elapsed time is 3.964062 seconds.
+[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========
+
+
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ citeseer
+[nltk_data] Downloading package stopwords to venv/nltk_data/...
+[nltk_data]   Package stopwords is already up-to-date!
+[nltk_data] Downloading package wordnet to venv/nltk_data/...
+[nltk_data]   Package wordnet is already up-to-date!
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.cleaned/' already exists, not overwritten.
+[INFO] Cleaned-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.cleaned/'
+[INFO] Rare-Count=<5>
+[INFO] Elapsed time is 0.205008 seconds.
+[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/meta/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/split_index/' already exists, not overwritten.
+[INFO] Shuffled-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/'
+[INFO] Elapsed time is 0.153007 seconds.
+[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/vocabulary/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/word_vectors/' already exists, not overwritten.
+[INFO] Vocabulary Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/vocabulary/'
+[INFO] Word-Vector Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/word_vectors/'
+[INFO] Elapsed time is 0.148001 seconds.
+[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========
+[INFO] x.shape=   (2088, 300),   y.shape=   (2088, 6)
+[INFO] tx.shape=  (993, 300),    ty.shape=  (993, 6)
+[INFO] allx.shape=(5834, 300),   ally.shape=(5834, 6)
+[INFO] Elapsed time is 1.263036 seconds.
+[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/adjacency//default' already exists, not overwritten.
+[INFO] (1106622, (1106622, 1106622)), shape=(6827, 6827)
+[INFO] Adjacency Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/adjacency/'
+[INFO] Elapsed time is 24.590425 seconds.
+[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========
+
+
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ pubmed
+[nltk_data] Downloading package stopwords to venv/nltk_data/...
+[nltk_data]   Package stopwords is already up-to-date!
+[nltk_data] Downloading package wordnet to venv/nltk_data/...
+[nltk_data]   Package wordnet is already up-to-date!
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.cleaned/' already exists, not overwritten.
+[INFO] Cleaned-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.cleaned/'
+[INFO] Rare-Count=<5>
+[INFO] Elapsed time is 1.508031 seconds.
+[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/meta/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/split_index/' already exists, not overwritten.
+[INFO] Shuffled-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/'
+[INFO] Elapsed time is 4.652079 seconds.
+[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/vocabulary/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/word_vectors/' already exists, not overwritten.
+[INFO] Vocabulary Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/vocabulary/'
+[INFO] Word-Vector Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/word_vectors/'
+[INFO] Elapsed time is 0.374028 seconds.
+[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========
+[INFO] x.shape=   (12422, 300),  y.shape=   (12422, 3)
+[INFO] tx.shape=  (5915, 300),   ty.shape=  (5915, 3)
+[INFO] allx.shape=(14254, 300),  ally.shape=(14254, 3)
+[INFO] Elapsed time is 5.656074 seconds.
+[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/adjacency//default' already exists, not overwritten.
+[INFO] (929469, (929469, 929469)), shape=(20169, 20169)
+[INFO] Adjacency Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/adjacency/'
+[INFO] Elapsed time is 236.283034 seconds.
+[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========
+
+
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ test
+[nltk_data] Downloading package stopwords to venv/nltk_data/...
+[nltk_data]   Package stopwords is already up-to-date!
+[nltk_data] Downloading package wordnet to venv/nltk_data/...
+[nltk_data]   Package wordnet is already up-to-date!
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.cleaned/' already exists, not overwritten.
+[INFO] Cleaned-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.cleaned/'
+[INFO] Rare-Count=<5>
+[INFO] Elapsed time is 0.046999 seconds.
+[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/meta/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/split_index/' already exists, not overwritten.
+[INFO] Shuffled-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/'
+[INFO] Elapsed time is 0.025005 seconds.
+[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/vocabulary/' already exists, not overwritten.
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/word_vectors/' already exists, not overwritten.
+[INFO] Vocabulary Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/vocabulary/'
+[INFO] Word-Vector Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/word_vectors/'
+[INFO] Elapsed time is 0.621000 seconds.
+[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========
+[INFO] x.shape=   (145, 300),    y.shape=   (145, 2)
+[INFO] tx.shape=  (39, 300),     ty.shape=  (39, 2)
+[INFO] allx.shape=(3283, 300),   ally.shape=(3283, 2)
+[INFO] Elapsed time is 0.400020 seconds.
+[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========
+[WARN] directory:'C:\\repos\\GCN-for-text-classification/data/corpus.shuffled/adjacency//default' already exists, not overwritten.
+[INFO] (243090, (243090, 243090)), shape=(3322, 3322)
+[INFO] Adjacency Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/adjacency/'
+[INFO] Elapsed time is 8.906137 seconds.
+[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========
+
+
+
+
+

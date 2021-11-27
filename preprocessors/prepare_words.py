@@ -33,8 +33,7 @@ def extract_word_definitions(vocabulary: List[str]) -> List[str]:
 
 def extract_tf_idf_word_vectors(word_definitions: List[str], max_features: int) -> List[np.ndarray]:
     tf_idf_vectorizer = TfidfVectorizer(max_features=max_features)
-    tf_idf_vector_arrays = tf_idf_vectorizer.fit_transform(word_definitions).toarray()
-    return tf_idf_vector_arrays
+    return tf_idf_vectorizer.fit_transform(word_definitions).toarray()
 
 
 def extract_vocabulary(docs_of_words: Iterable[List[str]]) -> List[str]:

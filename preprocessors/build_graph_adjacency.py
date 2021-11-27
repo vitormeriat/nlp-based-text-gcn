@@ -51,6 +51,10 @@ def build_graph_adjacency(ds_name: str, cfg: PreProcessingConfigs):
         rows, cols, weights, vocab, train_size, docs_of_words, word_to_id)
 
     adjacency_len = train_size + len(vocab) + test_size
+
+    print(
+        f"[INFO] ({len(weights)}, ({len(rows)}, {len(cols)})), shape=({adjacency_len}, {adjacency_len})")
+
     adjacency_matrix = csr_matrix(
         (weights, (rows, cols)), shape=(adjacency_len, adjacency_len))
 
