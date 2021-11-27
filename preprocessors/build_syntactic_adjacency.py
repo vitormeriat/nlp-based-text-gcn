@@ -12,11 +12,13 @@ from utils.file_ops import create_dir, check_paths
 
 from preprocessors.adjacency import extract_windows
 
+
 def remove_punctuation(text):
     for punc in list(string.punctuation):
         if punc in text:
             text = text.replace(punc, ' ')
     return text.strip()
+
 
 def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
 
@@ -32,7 +34,8 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
     check_paths(ds_corpus, ds_corpus_vocabulary,
                 ds_corpus_train_idx, ds_corpus_test_idx)
 
-    create_dir(dir_path=cfg.corpus_shuffled_adjacency_dir + "/syntactic", overwrite=False)
+    create_dir(dir_path=cfg.corpus_shuffled_adjacency_dir +
+               "/syntactic", overwrite=False)
 
     docs_of_words = [line.split() for line in open(file=ds_corpus)]
     # Extract Vocabulary.
@@ -86,7 +89,7 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
             appeared.add(word)
     # =============================================================
     #word_doc_freq = {}
-    #for word, doc_list in word_doc_list.items():
+    # for word, doc_list in word_doc_list.items():
     #    word_doc_freq[word] = len(doc_list)
     word_doc_freq = {
         word: len(doc_list) for word, doc_list in word_doc_list.items()
@@ -135,12 +138,12 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
     # =============================================================
     rela_pair_count_str = {}
     for docs_of_word in docs_of_words:
-        #print(doc_id)
+        # print(doc_id)
         words = docs_of_word
         sentence = ' '.join(words)
 
         #words = words.split("\n")
-        #rela=[]
+        # rela=[]
         # for window in words:
         #     if window==' ':
         #         continue
@@ -152,20 +155,20 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
             tokenized = nlp.word_tokenize(sentence)
         except Exception as e:
             print(f'{sentence} = {e}')
-            res=[]
-        
-        #print(res)
-        #print(tokenized)
-        #for tuple in res:
+            res = []
+
+        # print(res)
+        # print(tokenized)
+        # for tuple in res:
         #    #rela.append(f'{tuple[0]}, {tuple[1]}')
         #    rela.append(f'{tuple[0]}, {tuple[1]}, {tuple[2]}')
         for pair in list(res):
             #pair=pair.split(", ")
-            if pair[0]=='ROOT' or pair[1]=='ROOT':
+            if pair[0] == 'ROOT' or pair[1] == 'ROOT':
                 continue
             if pair[0] == pair[1]:
                 continue
-            #if pair[0] in string.punctuation or pair[1] in string.punctuation:
+            # if pair[0] in string.punctuation or pair[1] in string.punctuation:
             #    continue
             if pair[0] in stop_words or pair[1] in stop_words:
                 continue
@@ -220,15 +223,16 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
                 / (1.0 * word_freq_i * word_freq_j / num_window ** 2)
             )
 
-            #if pmi <= 0:
+            # if pmi <= 0:
             #    continue
             # pmi
             row.append(train_size + word_id_map[i])
             col.append(train_size + word_id_map[j])
-            #weight.append(pmi)
+            # weight.append(pmi)
             if key in rela_pair_count_str:
-                #print(':)')
-                wei = (rela_pair_count_str[key] - min_count1) / (max_count1 - min_count1)
+                # print(':)')
+                wei = (rela_pair_count_str[key] -
+                       min_count1) / (max_count1 - min_count1)
                 # 0 normalização média
                 # wei = (rela_pair_count_str[key]-count_mean1)/ count_std1
                 weight.append(wei)
@@ -275,8 +279,9 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
     weight += weight_tfidf
     node_size = train_size + vocab_size + test_size
 
-    print(f"[INFO] ({len(weight)}, ({len(row)}, {len(col)})), shape=({node_size}, {node_size})")
-    
+    print(
+        f"[INFO] ({len(weight)}, ({len(row)}, {len(col)})), shape=({node_size}, {node_size})")
+
     adj = sp.csr_matrix((weight, (row, col)), shape=(node_size, node_size))
     # =============================================================
     # Dump Adjacency Matrix

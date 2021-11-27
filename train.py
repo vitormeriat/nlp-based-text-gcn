@@ -6,14 +6,15 @@ from trainer.train_model import train_model
 from sklearn.manifold import TSNE
 from matplotlib import pyplot as plt
 import numpy as np
-import os
-from common import get_hyperparameters
+#import os
+#from common import get_hyperparameters
 
 
 def create_training_cfg() -> TrainingConfigs:
     # 20NG - MR - Ohsumed - R8, R52
     conf = TrainingConfigs()
-    conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed', 'mr', 'cora', 'citeseer', 'pubmed']
+    conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed',
+                      'mr', 'cora', 'citeseer', 'pubmed', 'test']
     #conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed', 'mr', 'test']
     conf.corpus_split_index_dir = 'data/corpus.shuffled/split_index/'
     conf.corpus_node_features_dir = 'data/corpus.shuffled/node_features/'
@@ -37,18 +38,14 @@ def train(ds: str, training_cfg: TrainingConfigs):
     return train_model(ds_name=ds, is_featureless=True, cfg=training_cfg)
 
 
-def save_history(hist, representation, dataset, experiment, model, run_time):
-    #EXPERIMENT_11_model_mr_DO05_run_6.txt
-    file_name = f'experiments/{representation}/{dataset}/RUN_{run_time}/EXPERIMENT_{experiment}_model_{model}_run_{run_time}.txt'
-    if not os.path.exists(f'experiments/{representation}/{dataset}/RUN_{run_time}'):
-        #os.mkdir(f'experiments/{representation}/{dataset}/RUN_{run_time}')
-        os.makedirs(f'experiments/{representation}/{dataset}/RUN_{run_time}')
+def save_history(hist, representation, dataset):
+    file_name = f'experiments/{representation}_dataset_{dataset}.txt'
+
     with open(file_name, 'w') as my_file:
-        #my_file=map(lambda x:x+'\n', my_file)
         my_file.writelines(hist)
 
 
-def tsne_visualizer(data_set, experiment, run_time, representation):
+def tsne_visualizer(data_set, representation):
     # data_set = 'mr' # 20ng R8 R52 ohsumed mr
     data_path = './data/corpus.shuffled'
 
@@ -91,57 +88,75 @@ def tsne_visualizer(data_set, experiment, run_time, representation):
         else:
             plt.scatter(f[:, 0], f[:, 1], label=cls[i])
 
-    plt.legend(ncol=5, loc='upper center', bbox_to_anchor=(0.48, -0.08), fontsize=11)
+    plt.legend(ncol=5, loc='upper center',
+               bbox_to_anchor=(0.48, -0.08), fontsize=11)
     plt.tight_layout()
-    plt.savefig(f'experiments/{representation}/{data_set}/RUN_{run_time}/EXPERIMENT_{experiment}.png', dpi=300)
+    plt.savefig(
+        f'experiments/{representation}_dataset_{data_set}.png', dpi=300)
     #plt.savefig(f'./experiments/{representation}/{data_set}/EXPERIMENT_{experiment}_RUN_{run_time}.png', dpi=300)
     plt.close()
-
 
 def batch_train(dataset: str, rp: str, trn_cfg):
     '''
     Experiments > Graph Representation > Model Hyperparameter Tuning > Run Step
     '''
-    #trn_cfg = create_training_cfg()
 
-    hyperparameters = get_hyperparameters()
+    #hyperparameters = get_hyperparameters()
+    path = 'data/corpus.shuffled/adjacency/'
 
     if rp == 'default':
-        trn_cfg.corpus_adjacency_dir = 'data/corpus.shuffled/adjacency/default/' # Default adjacency
+        # Default adjacency
+        trn_cfg.corpus_adjacency_dir = f'{path}/default/'
     elif rp == 'syntactic':
-        trn_cfg.corpus_adjacency_dir = 'data/corpus.shuffled/adjacency/syntactic/' # Syntactic adjacency
+        # Syntactic adjacency
+        trn_cfg.corpus_adjacency_dir = f'{path}/syntactic/'
     elif rp == 'semantic':
-        pass  # semantic adjacency
+        # Semantic adjacency
+        trn_cfg.corpus_adjacency_dir = f'{path}/semantic/'
     elif rp == 'graph':
-        trn_cfg.corpus_adjacency_dir = 'data/corpus.shuffled/adjacency/graph/'  # Graph adjacency
+        # Graph adjacency
+        trn_cfg.corpus_adjacency_dir = f'{path}/graph/'
 
-    times = 5
+    for ds in trn_cfg.data_sets:
+        print('\n\n░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ '+ds)
 
-    for indx in range(times):
+        hist = train(ds=ds, training_cfg=trn_cfg)
+        save_history(hist, rp, ds)
+        tsne_visualizer(ds, rp)
 
-        for parameters in hyperparameters:
-            experiment = parameters['experiment']
-            model = parameters['model']
+# def batch_train(dataset: str, rp: str, trn_cfg):
+#     '''
+#     Experiments > Graph Representation > Model Hyperparameter Tuning > Run Step
+#     '''
 
-            trn_cfg.learning_rate = parameters['learning_rate']
-            trn_cfg.epochs = parameters['epochs']
-            trn_cfg.hidden1 = parameters['hidden_1']
-            trn_cfg.dropout = parameters['dropout']
-            trn_cfg.weight_decay = parameters['weight_decay']
-            trn_cfg.early_stopping = parameters['early_stopping']
-            trn_cfg.chebyshev_max_degree = parameters['max_degree']
+#     #hyperparameters = get_hyperparameters()
+#     path = 'data/corpus.shuffled/adjacency/'
 
-            hist = train(ds=ds_name, training_cfg=trn_cfg)
-            save_history(hist, rp, dataset, experiment, model, indx)
-            #tsne_visualizer(dataset, experiment, indx, rp)
+#     if rp == 'default':
+#         # Default adjacency
+#         trn_cfg.corpus_adjacency_dir = f'{path}/default/'
+#     elif rp == 'syntactic':
+#         # Syntactic adjacency
+#         trn_cfg.corpus_adjacency_dir = f'{path}/syntactic/'
+#     elif rp == 'semantic':
+#         # Semantic adjacency
+#         trn_cfg.corpus_adjacency_dir = f'{path}/semantic/'
+#     elif rp == 'graph':
+#         # Graph adjacency
+#         trn_cfg.corpus_adjacency_dir = f'{path}/graph/'
+
+#     hist = train(ds=ds_name, training_cfg=trn_cfg)
+#     save_history(hist, rp, dataset)
+#     tsne_visualizer(dataset, rp)
 
 
 if __name__ == '__main__':
 
     trn_cfg = create_training_cfg()
     if len(argv) < 3:
-        raise Exception("Dataset name cannot be left blank. Must be one of datasets:%r." % trn_cfg.data_sets)
-        
+        raise Exception(
+            "Dataset name cannot be left blank. Must be one of datasets:%r." % trn_cfg.data_sets)
+
     ds_name = argv[1]
     rp_name = argv[2]
 

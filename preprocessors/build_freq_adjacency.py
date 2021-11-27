@@ -52,7 +52,8 @@ def build_freq_adjacency(ds_name: str, cfg: PreProcessingConfigs):
 
     adjacency_len = train_size + len(vocab) + test_size
 
-    print(f"[INFO] ({len(weights)}, ({len(rows)}, {len(cols)})), shape=({adjacency_len}, {adjacency_len})")
+    print(
+        f"[INFO] ({len(weights)}, ({len(rows)}, {len(cols)})), shape=({adjacency_len}, {adjacency_len})")
 
     adjacency_matrix = csr_matrix(
         (weights, (rows, cols)), shape=(adjacency_len, adjacency_len))

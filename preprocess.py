@@ -12,7 +12,7 @@ from preprocessors.shuffle_data import shuffle_data
 
 def create_preprocessing_cfg() -> PreProcessingConfigs:
     conf = PreProcessingConfigs()
-    conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed',
+    conf.data_sets = [#'20ng', 'R8', 'R52', 'ohsumed',
                       'mr', 'cora', 'citeseer', 'pubmed', 'test']
     conf.adjacency_sets = ['default', 'syntactic', 'semantic', 'graph']
     conf.data_set_extension = '.txt'
@@ -44,11 +44,17 @@ def preprocess(ds: str, rp: str, preprocessing_cfg: PreProcessingConfigs):  # St
     elif rp == 'syntactic':
         build_syntactic_adjacency(
             ds_name=ds, cfg=preprocessing_cfg)  # Syntactic adjacency
-    elif rp == 'semantic':
-        pass  # Semantic adjacency
+    #elif rp == 'semantic':
+    #    pass  # Semantic adjacency
     elif rp == 'graph':
         build_graph_adjacency(
             ds_name=ds, cfg=preprocessing_cfg)  # Graph adjacency
+
+
+def batch_preprocessing(rp: str, preprocessing_cfg: PreProcessingConfigs):
+    for ds in preprocessing_cfg.data_sets:
+        print('\n\n░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ '+ds)
+        preprocess(ds, rp, preprocessing_cfg)
 
 
 if __name__ == '__main__':
@@ -58,4 +64,5 @@ if __name__ == '__main__':
             "Dataset name cannot be left blank. Must be one of datasets:%r." % prep_cfg.data_sets)
     ds_name = argv[1]
     rp_name = argv[2]
-    preprocess(ds=ds_name, rp=rp_name, preprocessing_cfg=prep_cfg)
+    #preprocess(ds=ds_name, rp=rp_name, preprocessing_cfg=prep_cfg)
+    batch_preprocessing(rp_name, prep_cfg)

@@ -61,10 +61,10 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
     pl = PrintLog()
     configure_cuda()
     check_data_set(data_set_name=ds_name, all_data_set_names=cfg.data_sets)
-    
+
     set_seeds(seed=2019, set_seed_randomly=True)
 
-    pl.print_log(f"\n{'='*10}: {torch.seed()}")
+    pl.print_log(f"\n{'='*20} Torch Seed: {torch.seed()}")
 
     # Load corpus & unpack values
     corpus_values = load_corpus(ds_name, cfg.corpus_split_index_dir, cfg.corpus_node_features_dir,
