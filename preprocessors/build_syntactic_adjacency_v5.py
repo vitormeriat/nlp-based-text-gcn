@@ -167,8 +167,7 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
                 row.append(train_size + word_id_map[i])
                 col.append(train_size + word_id_map[j])
                 if key in rela_pair_count_str:
-                    wei = (rela_pair_count_str[key] -
-                           min_count1) / (max_count1 - min_count1)
+                    #wei = (rela_pair_count_str[key] - min_count1) / (max_count1 - min_count1)
                     wei = (rela_pair_count_str[key]-count_mean1) / count_std1
                     weight.append(wei)
                 # else:

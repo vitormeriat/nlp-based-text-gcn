@@ -232,7 +232,7 @@ def build_syntactic_adjacency(ds_name: str, cfg: PreProcessingConfigs):
             #weight.append(pmi)
             if key in rela_pair_count_str:
                 #print(':)')
-                wei = (rela_pair_count_str[key] - min_count1) / (max_count1 - min_count1)
+                #wei = (rela_pair_count_str[key] - min_count1) / (max_count1 - min_count1)
                 # 0 normalização média
                 wei = (rela_pair_count_str[key]-count_mean1)/ count_std1
                 weight.append(wei)
