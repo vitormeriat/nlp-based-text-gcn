@@ -110,9 +110,9 @@ def batch_train(dataset: str, rp: str, trn_cfg):
     elif rp == 'syntactic':
         # Syntactic adjacency
         trn_cfg.corpus_adjacency_dir = f'{path}/syntactic/'
-    elif rp == 'semantic':
+    elif rp == 'linguistic_inquiry':
         # Semantic adjacency
-        trn_cfg.corpus_adjacency_dir = f'{path}/semantic/'
+        trn_cfg.corpus_adjacency_dir = f'{path}/linguistic_inquiry/'
     elif rp == 'graph':
         # Graph adjacency
         trn_cfg.corpus_adjacency_dir = f'{path}/graph/'

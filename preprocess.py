@@ -2,6 +2,7 @@ from sys import argv
 
 from preprocessors.build_freq_adjacency import build_freq_adjacency
 from preprocessors.build_syntactic_adjacency_v5 import build_syntactic_adjacency
+from preprocessors.build_linguistic_inquiry_adj import build_linguistic_inquiry_adjacency
 from preprocessors.build_graph_adjacency import build_graph_adjacency
 from preprocessors.build_node_features import build_node_features
 from preprocessors.clean_data import clean_data, config_nltk
@@ -27,6 +28,7 @@ def create_preprocessing_cfg() -> PreProcessingConfigs:
     conf.corpus_shuffled_adjacency_dir = 'data/corpus.shuffled/adjacency/'
     conf.corpus_shuffled_node_features_dir = 'data/corpus.shuffled/node_features/'
     conf.core_nlp_path = 'C:/bin/CoreNLP/stanford-corenlp-full-2018-10-05'
+    conf.liwc_path = 'C:/bin/LIWC/LIWC2007_English100131.dic'
     conf.build()
     return conf
 
@@ -38,14 +40,16 @@ def preprocess(ds: str, rp: str, preprocessing_cfg: PreProcessingConfigs):  # St
     prepare_words(ds_name=ds, cfg=preprocessing_cfg)
     build_node_features(ds_name=ds, validation_ratio=0.10,
                         use_predefined_word_vectors=False, cfg=preprocessing_cfg)
+
     if rp == 'default':
-        # Default adjacency
-        build_freq_adjacency(ds_name=ds, cfg=preprocessing_cfg)
+        build_freq_adjacency(
+            ds_name=ds, cfg=preprocessing_cfg) # Default adjacency
     elif rp == 'syntactic':
         build_syntactic_adjacency(
             ds_name=ds, cfg=preprocessing_cfg)  # Syntactic adjacency
-    #elif rp == 'semantic':
-    #    pass  # Semantic adjacency
+    elif rp == 'linguistic_inquiry':
+        build_linguistic_inquiry_adjacency(
+            ds_name=ds, cfg=preprocessing_cfg)  # Linguistic Inquiry and Word Count
     elif rp == 'graph':
         build_graph_adjacency(
             ds_name=ds, cfg=preprocessing_cfg)  # Graph adjacency

@@ -26,6 +26,7 @@ class PreProcessingConfigs:
         self.corpus_shuffled_node_features_dir = None  # Node Features (x,y,tx,ty,allx) of Shuffled Corpus
         self.corpus_shuffled_adjacency_dir = None  # Adjacency Matrix (adj) of Shuffled Corpus
         self.core_nlp_path = None
+        self.liwc_path = None
 
     def build(self) -> 'PreProcessingConfigs':
         self.corpus_dir = make_path_absolute(self.corpus_dir)
