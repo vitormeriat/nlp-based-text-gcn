@@ -14,6 +14,7 @@ from utils.logger import PrintLog
 
 import random
 
+
 def return_seed(nums=10):
     # seed = [47, 17, 1, 3, 87, 300, 77, 23, 13]
     seed = random.sample(range(0, 100000), nums)
@@ -45,12 +46,14 @@ def evaluate_model(model, criterion, features, labels, mask):
     with torch.no_grad():
         logits = model(features)
         t_mask = torch.from_numpy(np.array(mask * 1., dtype=np.float32))
-        tm_mask = torch.transpose(torch.unsqueeze(t_mask, 0), 1, 0).repeat(1, labels.shape[1])
+        tm_mask = torch.transpose(torch.unsqueeze(
+            t_mask, 0), 1, 0).repeat(1, labels.shape[1])
         loss = criterion(logits * tm_mask, torch.max(labels, 1)[1])
         pred = torch.max(logits, 1)[1]
         #acc = ((pred == torch.max(labels, 1)[1]).float() * t_mask).sum().item() / t_mask.sum().item()
         try:
-            acc = ((pred == torch.max(labels, 1)[1]).float() * t_mask).sum().item() / t_mask.sum().item()
+            acc = ((pred == torch.max(labels, 1)[1]).float(
+            ) * t_mask).sum().item() / t_mask.sum().item()
         except ZeroDivisionError:
             acc = 0
 
@@ -58,13 +61,14 @@ def evaluate_model(model, criterion, features, labels, mask):
 
 
 def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
+    t1 = time()
     pl = PrintLog()
     configure_cuda()
     check_data_set(data_set_name=ds_name, all_data_set_names=cfg.data_sets)
-    
+
     set_seeds(seed=2019, set_seed_randomly=True)
 
-    pl.print_log(f"\n{'='*10}: {torch.seed()}")
+    pl.print_log(f"\n{'='*20} Torch Seed: {torch.seed()}")
 
     # Load corpus & unpack values
     corpus_values = load_corpus(ds_name, cfg.corpus_split_index_dir, cfg.corpus_node_features_dir,
@@ -74,7 +78,8 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
     if is_featureless:
         features = sp.identity(features.shape[0])
 
-    features, support, num_supports, model_func = prepare_matrices(features, adj, cfg.model, cfg.chebyshev_max_degree)
+    features, support, num_supports, model_func = prepare_matrices(
+        features, adj, cfg.model, cfg.chebyshev_max_degree)
 
     # Define placeholders
     t_features = torch.from_numpy(features)
@@ -82,13 +87,10 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
     t_y_val = torch.from_numpy(y_val)
     t_y_test = torch.from_numpy(y_test)
     t_train_mask = torch.from_numpy(train_mask.astype(np.float32))
-    tm_train_mask = torch.transpose(torch.unsqueeze(t_train_mask, 0), 1, 0).repeat(1, y_train.shape[1])
+    tm_train_mask = torch.transpose(torch.unsqueeze(
+        t_train_mask, 0), 1, 0).repeat(1, y_train.shape[1])
 
-    t_support = []
-    for i in range(len(support)):
-        # noinspection PyArgumentList
-        t_support.append(torch.Tensor(support[i]))
-
+    t_support = [torch.Tensor(support[i]) for i in range(len(support))]
     # if torch.cuda.is_available():
     #     model_func = model_func.cuda()
     #     t_features = t_features.cuda()
@@ -100,7 +102,8 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
     #     for i in range(len(support)):
     #         t_support = [t.cuda() for t in t_support if True]
 
-    model = model_func(input_dim=features.shape[0], support=t_support, num_classes=y_train.shape[1])
+    model = model_func(
+        input_dim=features.shape[0], support=t_support, num_classes=y_train.shape[1])
 
     # Loss and optimizer
     criterion = torch.nn.CrossEntropyLoss()
@@ -115,12 +118,12 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
         # Forward pass
         logits = model(t_features)
         loss = criterion(logits * tm_train_mask, torch.max(t_y_train, 1)[1])
-        
-        #acc = ((torch.max(logits, 1)[1] == torch.max(t_y_train, 1)[
-        #    1]).float() * t_train_mask).sum().item() / t_train_mask.sum().item()
 
+        # acc = ((torch.max(logits, 1)[1] == torch.max(t_y_train, 1)[
+        #    1]).float() * t_train_mask).sum().item() / t_train_mask.sum().item()
         try:
-            acc = ((torch.max(logits, 1)[1] == torch.max(t_y_train, 1)[1]).float() * t_train_mask).sum().item() / t_train_mask.sum().item()
+            acc = ((torch.max(logits, 1)[1] == torch.max(t_y_train, 1)[1]).float(
+            ) * t_train_mask).sum().item() / t_train_mask.sum().item()
         except ZeroDivisionError:
             acc = 0
 
@@ -130,11 +133,12 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
         optimizer.step()
 
         # Validation
-        val_loss, val_acc, pred, labels, duration = evaluate_model(model, criterion, t_features, t_y_val, val_mask)
+        val_loss, val_acc, pred, labels, duration = evaluate_model(
+            model, criterion, t_features, t_y_val, val_mask)
         val_losses.append(val_loss)
 
         pl.print_log("Epoch:{:04d}, train_loss={:.5f}, train_acc={:.5f}, val_loss={:.5f}, val_acc={:.5f}, time={:.5f}"
-                  .format(epoch + 1, loss, acc, val_loss, val_acc, time.time() - epoch_start_time))
+                     .format(epoch + 1, loss, acc, val_loss, val_acc, time.time() - epoch_start_time))
 
         if epoch > cfg.early_stopping and val_losses[-1] > np.mean(val_losses[-(cfg.early_stopping + 1):-1]):
             pl.print_log("Early stopping...")
@@ -143,7 +147,8 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
     pl.print_log("\nOptimization Finished!")
 
     # Testing
-    test_loss, test_acc, pred, labels, test_duration = evaluate_model(model, criterion, t_features, t_y_test, test_mask)
+    test_loss, test_acc, pred, labels, test_duration = evaluate_model(
+        model, criterion, t_features, t_y_test, test_mask)
     pl.print_log("\nTest set results: loss= {:.5f}, accuracy= {:.5f}, time= {:.5f}".format(test_loss, test_acc,
                                                                                            test_duration))
 
@@ -154,12 +159,17 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
             test_pred.append(pred[i])
             test_labels.append(np.argmax(labels[i]))
 
+    elapsed = time() - t1
+
     pl.print_log("\nTest Precision, Recall and F1-Score...")
-    pl.print_log(metrics.classification_report(test_labels, test_pred, digits=4))
+    pl.print_log(metrics.classification_report(
+        test_labels, test_pred, digits=4))
     pl.print_log("\nMacro average Test Precision, Recall and F1-Score...")
-    pl.print_log(metrics.precision_recall_fscore_support(test_labels, test_pred, average='macro'))
+    pl.print_log(metrics.precision_recall_fscore_support(
+        test_labels, test_pred, average='macro'))
     pl.print_log("\nMicro average Test Precision, Recall and F1-Score...")
-    pl.print_log(metrics.precision_recall_fscore_support(test_labels, test_pred, average='micro'))
+    pl.print_log(metrics.precision_recall_fscore_support(
+        test_labels, test_pred, average='micro'))
 
     # doc and word embeddings
     tmp = model.layer1.embedding.numpy()
@@ -171,13 +181,14 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
     pl.print_log('Word_embeddings:' + str(len(word_embeddings)))
     pl.print_log('Train_doc_embeddings:' + str(len(train_doc_embeddings)))
     pl.print_log('Test_doc_embeddings:' + str(len(test_doc_embeddings)))
+    pl.print_log("\nElapsed time is %f seconds." % elapsed)
     print('\nWord_embeddings:')
     print(word_embeddings)
 
     # Create word-vectors and written to file # todo: commented-out
     with open(cfg.corpus_vocab_dir + ds_name + '.vocab', 'r') as f:
         words = f.readlines()
-        
+
     vocab_size = len(words)
     word_vectors = []
     for i in range(vocab_size):
@@ -186,10 +197,9 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
         word_vector_str = ' '.join([str(x) for x in word_vector])
         word_vectors.append(word + ' ' + word_vector_str)
 
-    word_embeddings_str = '\n'.join(word_vectors) 
+    word_embeddings_str = '\n'.join(word_vectors)
     with open('./data/' + ds_name + '_word_vectors.txt', 'w') as f:
         f.write(word_embeddings_str)
-
 
     # Create doc vectors and written to file  # todo: commented-out
     doc_vectors = []

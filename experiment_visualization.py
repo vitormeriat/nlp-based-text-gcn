@@ -91,7 +91,7 @@ def calculate_statistics(max_result, dataset):
 
 basic_stats = {}
 
-plt.figure(figsize=(28,10))
+plt.figure(figsize=(28, 10))
 for dataset in DATASETS:
     mypath = f'statistics/{mode}/{dataset}.csv'
     basic_stats = pd.read_csv(mypath, delimiter=';')

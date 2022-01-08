@@ -6,14 +6,15 @@ from scipy.sparse import csr_matrix
 from common import check_data_set
 from preprocessors.configs import PreProcessingConfigs
 from utils.file_ops import create_dir, check_paths
-
+from utils.logger import PrintLog
 import preprocessors.adjacency as adj
 
 
-def build_graph_adjacency(ds_name: str, cfg: PreProcessingConfigs):
+def build_graph_adjacency(ds_name: str, cfg: PreProcessingConfigs, pl: PrintLog):
     """Build Adjacency Matrix of Doc-Word Heterogeneous Graph"""
 
     t1 = time()
+    #pl = PrintLog()
     # input files
     ds_corpus = cfg.corpus_shuffled_dir + ds_name + ".txt"
     ds_corpus_vocabulary = cfg.corpus_shuffled_vocab_dir + ds_name + '.vocab'
@@ -51,6 +52,10 @@ def build_graph_adjacency(ds_name: str, cfg: PreProcessingConfigs):
         rows, cols, weights, vocab, train_size, docs_of_words, word_to_id)
 
     adjacency_len = train_size + len(vocab) + test_size
+
+    pl.print_log(
+        f"[INFO] ({len(weights)}, ({len(rows)}, {len(cols)})), shape=({adjacency_len}, {adjacency_len})")
+
     adjacency_matrix = csr_matrix(
         (weights, (rows, cols)), shape=(adjacency_len, adjacency_len))
 
@@ -59,7 +64,7 @@ def build_graph_adjacency(ds_name: str, cfg: PreProcessingConfigs):
         pickle.dump(adjacency_matrix, f)
 
     elapsed = time() - t1
-    print("[INFO] Adjacency Dir='{}'".format(
+    pl.print_log("[INFO] Adjacency Dir='{}'".format(
         cfg.corpus_shuffled_adjacency_dir))
-    print("[INFO] Elapsed time is %f seconds." % elapsed)
-    print("[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========")
+    pl.print_log("[INFO] Elapsed time is %f seconds." % elapsed)
+    pl.print_log("[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========")

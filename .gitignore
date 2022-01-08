@@ -19,3 +19,6 @@ __pycache__
 
 # Ignore virtual environment
 venv
+
+*_doc_vectors.txt
+*_word_vectors.txt
