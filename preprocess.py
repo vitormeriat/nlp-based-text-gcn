@@ -10,13 +10,16 @@ from preprocessors.clean_data import clean_data, config_nltk
 from preprocessors.configs import PreProcessingConfigs
 from preprocessors.prepare_words import prepare_words
 from preprocessors.shuffle_data import shuffle_data
+from utils.file_ops import create_dir
+from utils.logger import PrintLog
 
 
 def create_preprocessing_cfg() -> PreProcessingConfigs:
     conf = PreProcessingConfigs()
     conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed',
                       'mr', 'cora', 'citeseer', 'pubmed', 'test']
-    conf.adjacency_sets = ['default', 'syntactic_dependency', 'linguistic_inquiry', 'semantic', 'graph']
+    conf.adjacency_sets = ['default', 'syntactic_dependency',
+                           'linguistic_inquiry', 'semantic', 'graph']
     conf.data_set_extension = '.txt'
     conf.corpus_dir = 'data/corpus/'
     conf.corpus_meta_dir = 'data/corpus/meta/'
@@ -34,31 +37,41 @@ def create_preprocessing_cfg() -> PreProcessingConfigs:
     return conf
 
 
-def preprocess(ds: str, rp: str, preprocessing_cfg: PreProcessingConfigs):  # Start pre-processing
-    config_nltk()
-    clean_data(ds_name=ds, rare_count=5, cfg=preprocessing_cfg)
-    shuffle_data(ds_name=ds, cfg=preprocessing_cfg)
-    prepare_words(ds_name=ds, cfg=preprocessing_cfg)
-    build_node_features(ds_name=ds, validation_ratio=0.10,
-                        use_predefined_word_vectors=False, cfg=preprocessing_cfg)
+def save_history(hist, representation, dataset):
+    create_dir(dir_path='data/log', overwrite=False)
+    with open(f'data/log/{representation}_dataset_{dataset}.txt', 'w') as my_file:
+        my_file.writelines(hist)
 
-    if rp == 'default':
+
+def preprocess(ds: str, rp: str, preprocessing_cfg: PreProcessingConfigs):  # Start pre-processing
+    pl = PrintLog()
+    config_nltk()
+    clean_data(ds_name=ds, rare_count=5, cfg=preprocessing_cfg, pl=pl)
+    shuffle_data(ds_name=ds, cfg=preprocessing_cfg, pl=pl)
+    prepare_words(ds_name=ds, cfg=preprocessing_cfg, pl=pl)
+    build_node_features(ds_name=ds, validation_ratio=0.10,
+                        use_predefined_word_vectors=False, cfg=preprocessing_cfg, pl=pl)
+
+    if rp == 'frequency':
         build_freq_adjacency(
-            ds_name=ds, cfg=preprocessing_cfg)  # Default adjacency
+            ds_name=ds, cfg=preprocessing_cfg, pl=pl)  # Frequency adjacency
     elif rp == 'syntactic_dependency':
         build_dependency_adjacency(
-            ds_name=ds, cfg=preprocessing_cfg)  # Dependency adjacency
+            ds_name=ds, cfg=preprocessing_cfg, pl=pl)  # Dependency adjacency
     elif rp == 'linguistic_inquiry':
         build_linguistic_inquiry_adjacency(
-            ds_name=ds, cfg=preprocessing_cfg)  # Linguistic Inquiry and Word Count
+            ds_name=ds, cfg=preprocessing_cfg, pl=pl)  # Linguistic Inquiry and Word Count
     elif rp == 'graph':
         build_graph_adjacency(
-            ds_name=ds, cfg=preprocessing_cfg)  # Graph adjacency
+            ds_name=ds, cfg=preprocessing_cfg, pl=pl)  # Graph adjacency
+
+    hist=pl.log_history()
+    save_history(hist, rp, ds)
 
 
 def batch_preprocessing(rp: str, preprocessing_cfg: PreProcessingConfigs):
     for ds in preprocessing_cfg.data_sets:
-        print('\n\n░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ '+ds)
+        print('\n\n░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ '+ ds)
         preprocess(ds, rp, preprocessing_cfg)
 
 

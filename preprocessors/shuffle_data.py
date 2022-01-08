@@ -1,7 +1,7 @@
 import random
 from time import time
 from typing import List, Tuple
-
+from utils.logger import PrintLog
 from common import check_data_set
 from preprocessors.configs import PreProcessingConfigs
 from utils.file_ops import create_dir, write_iterable_to_file, check_paths
@@ -14,7 +14,7 @@ def load_corpus_meta(corpus_meta_path: str) -> Tuple[List[str], List[str], List[
     return all_doc_meta_list, train_doc_meta_list, test_doc_meta_list
 
 
-def shuffle_data(ds_name: str, cfg: PreProcessingConfigs):
+def shuffle_data(ds_name: str, cfg: PreProcessingConfigs, pl: PrintLog):
     t1 = time()
 
     ds_corpus = cfg.corpus_cleaned_dir + ds_name + cfg.data_set_extension
@@ -57,6 +57,6 @@ def shuffle_data(ds_name: str, cfg: PreProcessingConfigs):
     write_iterable_to_file(an_iterable=shuffled_doc_lines, file_path=ds_corpus_shuffled, file_mode='w')
 
     elapsed = time() - t1
-    print("[INFO] Shuffled-Corpus Dir='{}'".format(cfg.corpus_shuffled_dir))
-    print("[INFO] Elapsed time is %f seconds." % elapsed)
-    print("[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========")
+    pl.print_log("[INFO] Shuffled-Corpus Dir='{}'".format(cfg.corpus_shuffled_dir))
+    pl.print_log("[INFO] Elapsed time is %f seconds." % elapsed)
+    pl.print_log("[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========")

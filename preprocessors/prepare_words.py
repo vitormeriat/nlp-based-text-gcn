@@ -3,7 +3,7 @@ from time import time
 from collections import OrderedDict
 from shutil import rmtree
 from typing import List, Iterable
-
+from utils.logger import PrintLog
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 
@@ -43,7 +43,7 @@ def extract_vocabulary(docs_of_words: Iterable[List[str]]) -> List[str]:
     return list(vocabulary.keys())
 
 
-def prepare_words(ds_name: str, cfg: PreProcessingConfigs):
+def prepare_words(ds_name: str, cfg: PreProcessingConfigs, pl: PrintLog):
     t1 = time()
 
     ds_corpus = cfg.corpus_shuffled_dir + ds_name + cfg.data_set_extension
@@ -75,7 +75,7 @@ def prepare_words(ds_name: str, cfg: PreProcessingConfigs):
     pickle.dump(obj=word_to_word_vectors_dict, file=open(ds_corpus_word_vectors, mode='wb'))
 
     elapsed = time() - t1
-    print("[INFO] Vocabulary Dir='{}'".format(cfg.corpus_shuffled_vocab_dir))
-    print("[INFO] Word-Vector Dir='{}'".format(cfg.corpus_shuffled_word_vectors_dir))
-    print("[INFO] Elapsed time is %f seconds." % elapsed)
-    print("[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========")
+    pl.print_log("[INFO] Vocabulary Dir='{}'".format(cfg.corpus_shuffled_vocab_dir))
+    pl.print_log("[INFO] Word-Vector Dir='{}'".format(cfg.corpus_shuffled_word_vectors_dir))
+    pl.print_log("[INFO] Elapsed time is %f seconds." % elapsed)
+    pl.print_log("[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========")

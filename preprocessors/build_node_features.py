@@ -3,7 +3,7 @@ from time import time
 from collections import OrderedDict
 from math import ceil
 from typing import List, Dict, MutableMapping, Tuple, Union
-
+from utils.logger import PrintLog
 import numpy as np
 from scipy.sparse import csr_matrix
 
@@ -146,7 +146,7 @@ def dump_node_features(directory: str, ds: str, node_features_dict: Dict[str, Un
 
 
 def build_node_features(ds_name: str, validation_ratio: float, use_predefined_word_vectors: bool,
-                        cfg: PreProcessingConfigs):
+                        cfg: PreProcessingConfigs, pl: PrintLog):
     t1 = time()
     # input files for building node features
     ds_corpus = cfg.corpus_shuffled_dir + ds_name + '.txt'
@@ -202,8 +202,8 @@ def build_node_features(ds_name: str, validation_ratio: float, use_predefined_wo
     dump_node_features(directory=dir_corpus_node_features, ds=ds_name, node_features_dict=node_feature_matrices)
 
     elapsed = time() - t1
-    print("[INFO] x.shape=   {},\t y.shape=   {}".format(x.shape, y.shape))
-    print("[INFO] tx.shape=  {},\t ty.shape=  {}".format(tx.shape, ty.shape))
-    print("[INFO] allx.shape={},\t ally.shape={}".format(allx.shape, ally.shape))
-    print("[INFO] Elapsed time is %f seconds." % elapsed)
-    print("[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========")
+    pl.print_log("[INFO] x.shape=   {},\t y.shape=   {}".format(x.shape, y.shape))
+    pl.print_log("[INFO] tx.shape=  {},\t ty.shape=  {}".format(tx.shape, ty.shape))
+    pl.print_log("[INFO] allx.shape={},\t ally.shape={}".format(allx.shape, ally.shape))
+    pl.print_log("[INFO] Elapsed time is %f seconds." % elapsed)
+    pl.print_log("[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========")

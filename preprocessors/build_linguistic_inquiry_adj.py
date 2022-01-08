@@ -8,7 +8,7 @@ from nltk.corpus import stopwords
 from common import check_data_set
 from utils.file_ops import create_dir, check_paths
 from preprocessors.configs import PreProcessingConfigs
-
+from utils.logger import PrintLog
 from liwc.liwc import Liwc
 
 
@@ -244,9 +244,10 @@ def compute_weights(docs_of_words, rela_pair_count_str, word_window_freq, train_
     return row, col, weight, weight_tfidf
 
 
-def build_linguistic_inquiry_adjacency(ds_name: str, cfg: PreProcessingConfigs):
+def build_linguistic_inquiry_adjacency(ds_name: str, cfg: PreProcessingConfigs, pl: PrintLog):
 
     t1 = time()
+    #pl = PrintLog()
     # input files
     ds_corpus = cfg.corpus_shuffled_dir + ds_name + ".txt"
     ds_corpus_vocabulary = cfg.corpus_shuffled_vocab_dir + ds_name + '.vocab'
@@ -289,7 +290,7 @@ def build_linguistic_inquiry_adjacency(ds_name: str, cfg: PreProcessingConfigs):
     weight += weight_tfidf
     node_size = train_size + vocab_size + test_size
 
-    print(
+    pl.print_log(
         f"[INFO] ({len(weight)}, ({len(row)}, {len(col)})), shape=({node_size}, {node_size})")
 
     adj = sp.csr_matrix((weight, (row, col)), shape=(node_size, node_size))
@@ -300,7 +301,7 @@ def build_linguistic_inquiry_adjacency(ds_name: str, cfg: PreProcessingConfigs):
 
     # =============================================================
     elapsed = time() - t1
-    print("[INFO] Adjacency Dir='{}'".format(
+    pl.print_log("[INFO] Adjacency Dir='{}'".format(
         cfg.corpus_shuffled_adjacency_dir))
-    print("[INFO] Elapsed time is %f seconds." % elapsed)
-    print("[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========")
+    pl.print_log("[INFO] Elapsed time is %f seconds." % elapsed)
+    pl.print_log("[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========")

@@ -4,7 +4,7 @@ from collections import Counter
 #from shutil import rmtree
 from typing import List, Set
 import os
-
+from utils.logger import PrintLog
 from common import extract_word_counts, check_data_set
 from preprocessors.configs import PreProcessingConfigs
 from utils.file_ops import create_dir, write_iterable_to_file, check_paths
@@ -62,7 +62,7 @@ def glue_lines(lines_of_words: List[List[str]], glue_str: str, with_strip: bool)
         return [glue_str.join(lines) for lines in lines_of_words]
 
 
-def clean_data(ds_name: str, rare_count: int, cfg: PreProcessingConfigs):
+def clean_data(ds_name: str, rare_count: int, cfg: PreProcessingConfigs, pl: PrintLog):
     t1 = time()
     corpus_path = cfg.corpus_dir + ds_name + cfg.data_set_extension
     ds_corpus_cleaned = cfg.corpus_cleaned_dir + ds_name + cfg.data_set_extension
@@ -82,7 +82,7 @@ def clean_data(ds_name: str, rare_count: int, cfg: PreProcessingConfigs):
 
     write_iterable_to_file(an_iterable=docs_of_words, file_path=ds_corpus_cleaned, file_mode='w')
     elapsed = time() - t1
-    print("[INFO] Cleaned-Corpus Dir='{}'".format(cfg.corpus_cleaned_dir))
-    print("[INFO] Rare-Count=<{}>".format(rare_count))
-    print("[INFO] Elapsed time is %f seconds." % elapsed)
-    print("[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========")
+    pl.print_log("[INFO] Cleaned-Corpus Dir='{}'".format(cfg.corpus_cleaned_dir))
+    pl.print_log("[INFO] Rare-Count=<{}>".format(rare_count))
+    pl.print_log("[INFO] Elapsed time is %f seconds." % elapsed)
+    pl.print_log("[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========")
