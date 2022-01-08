@@ -1,0 +1,41 @@
+
+==================== Torch Seed: 991595534600
+Epoch:0001, train_loss=0.77653, train_acc=0.50422, val_loss=0.69898, val_acc=0.60141, time=1.55099
+Epoch:0002, train_loss=0.72961, train_acc=0.59737, val_loss=0.69582, val_acc=0.63944, time=1.66897
+Epoch:0003, train_loss=0.66731, train_acc=0.74086, val_loss=0.69637, val_acc=0.64930, time=1.68399
+Epoch:0004, train_loss=0.64172, train_acc=0.79384, val_loss=0.69592, val_acc=0.66901, time=1.58797
+Epoch:0005, train_loss=0.61949, train_acc=0.84839, val_loss=0.69436, val_acc=0.69296, time=1.58495
+Epoch:0006, train_loss=0.59818, train_acc=0.91013, val_loss=0.69351, val_acc=0.72113, time=1.50493
+Epoch:0007, train_loss=0.58672, train_acc=0.93639, val_loss=0.69348, val_acc=0.72958, time=1.69495
+Epoch:0008, train_loss=0.58124, train_acc=0.94014, val_loss=0.69367, val_acc=0.73662, time=1.54095
+Epoch:0009, train_loss=0.57631, train_acc=0.94936, val_loss=0.69388, val_acc=0.73662, time=1.59795
+Epoch:0010, train_loss=0.57102, train_acc=0.96218, val_loss=0.69422, val_acc=0.74366, time=1.65895
+Epoch:0011, train_loss=0.56656, train_acc=0.97187, val_loss=0.69479, val_acc=0.74366, time=1.58696
+Epoch:0012, train_loss=0.56356, train_acc=0.97593, val_loss=0.69550, val_acc=0.75352, time=1.66196
+Early stopping...
+
+Optimization Finished!
+
+Test set results: loss= 0.69814, accuracy= 0.72847, time= 0.57101
+
+Test Precision, Recall and F1-Score...
+              precision    recall  f1-score   support
+
+           0     0.7104    0.7715    0.7397      1777
+           1     0.7500    0.6854    0.7163      1777
+
+    accuracy                         0.7285      3554
+   macro avg     0.7302    0.7285    0.7280      3554
+weighted avg     0.7302    0.7285    0.7280      3554
+
+
+Macro average Test Precision, Recall and F1-Score...
+(0.7301813471502591, 0.7284749577940348, 0.7279708034268788, None)
+
+Micro average Test Precision, Recall and F1-Score...
+(0.7284749577940349, 0.7284749577940349, 0.7284749577940349, None)
+
+Embeddings:
+Word_embeddings:18764
+Train_doc_embeddings:7108
+Test_doc_embeddings:3554

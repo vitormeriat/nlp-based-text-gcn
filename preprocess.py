@@ -1,7 +1,8 @@
 from sys import argv
 
 from preprocessors.build_freq_adjacency import build_freq_adjacency
-from preprocessors.build_syntactic_adjacency_v5 import build_syntactic_adjacency
+#from preprocessors.build_syntactic_adjacency_v5 import build_syntactic_adjacency
+from preprocessors.build_dependency_adj import build_dependency_adjacency
 from preprocessors.build_linguistic_inquiry_adj import build_linguistic_inquiry_adjacency
 from preprocessors.build_graph_adjacency import build_graph_adjacency
 from preprocessors.build_node_features import build_node_features
@@ -44,9 +45,12 @@ def preprocess(ds: str, rp: str, preprocessing_cfg: PreProcessingConfigs):  # St
     if rp == 'default':
         build_freq_adjacency(
             ds_name=ds, cfg=preprocessing_cfg) # Default adjacency
-    elif rp == 'syntactic':
-        build_syntactic_adjacency(
-            ds_name=ds, cfg=preprocessing_cfg)  # Syntactic adjacency
+    # elif rp == 'syntactic':
+    #     build_syntactic_adjacency(
+    #         ds_name=ds, cfg=preprocessing_cfg)  # Syntactic adjacency
+    elif rp == 'dependency':
+        build_dependency_adjacency(
+            ds_name=ds, cfg=preprocessing_cfg)  # Dependency adjacency
     elif rp == 'linguistic_inquiry':
         build_linguistic_inquiry_adjacency(
             ds_name=ds, cfg=preprocessing_cfg)  # Linguistic Inquiry and Word Count

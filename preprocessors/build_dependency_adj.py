@@ -258,7 +258,7 @@ def build_dependency_adjacency(ds_name: str, cfg: PreProcessingConfigs):
                 ds_corpus_train_idx, ds_corpus_test_idx)
 
     create_dir(dir_path=cfg.corpus_shuffled_adjacency_dir +
-               "/syntactic", overwrite=False)
+               "/dependency", overwrite=False)
 
     docs_of_words = [line.split() for line in open(file=ds_corpus)]
     # Extract Vocabulary.
@@ -294,7 +294,7 @@ def build_dependency_adjacency(ds_name: str, cfg: PreProcessingConfigs):
     adj = sp.csr_matrix((weight, (row, col)), shape=(node_size, node_size))
     # =============================================================
     # Dump Adjacency Matrix
-    with open(cfg.corpus_shuffled_adjacency_dir + "/syntactic/ind.{}.adj".format(ds_name), 'wb') as f:
+    with open(cfg.corpus_shuffled_adjacency_dir + "/dependency/ind.{}.adj".format(ds_name), 'wb') as f:
         pkl.dump(adj, f)
 
     # =============================================================

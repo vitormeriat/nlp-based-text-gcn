@@ -96,6 +96,7 @@ def tsne_visualizer(data_set, representation):
     #plt.savefig(f'./experiments/{representation}/{data_set}/EXPERIMENT_{experiment}_RUN_{run_time}.png', dpi=300)
     plt.close()
 
+
 def batch_train(dataset: str, rp: str, trn_cfg):
     '''
     Experiments > Graph Representation > Model Hyperparameter Tuning > Run Step
@@ -122,7 +123,7 @@ def batch_train(dataset: str, rp: str, trn_cfg):
 
         hist = train(ds=ds, training_cfg=trn_cfg)
         save_history(hist, rp, ds)
-        tsne_visualizer(ds, rp)
+        #tsne_visualizer(ds, rp)
 
 # def batch_train(dataset: str, rp: str, trn_cfg):
 #     '''
