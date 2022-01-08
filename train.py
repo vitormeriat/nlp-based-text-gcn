@@ -108,9 +108,9 @@ def batch_train(dataset: str, rp: str, trn_cfg):
     if rp == 'default':
         # Default adjacency
         trn_cfg.corpus_adjacency_dir = f'{path}/default/'
-    elif rp == 'syntactic':
+    elif rp == 'syntactic_dependency':
         # Syntactic adjacency
-        trn_cfg.corpus_adjacency_dir = f'{path}/syntactic/'
+        trn_cfg.corpus_adjacency_dir = f'{path}/syntactic_dependency/'
     elif rp == 'linguistic_inquiry':
         # Semantic adjacency
         trn_cfg.corpus_adjacency_dir = f'{path}/linguistic_inquiry/'

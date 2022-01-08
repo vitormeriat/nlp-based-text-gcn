@@ -16,7 +16,7 @@ def create_preprocessing_cfg() -> PreProcessingConfigs:
     conf = PreProcessingConfigs()
     conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed',
                       'mr', 'cora', 'citeseer', 'pubmed', 'test']
-    conf.adjacency_sets = ['default', 'syntactic', 'semantic', 'graph']
+    conf.adjacency_sets = ['default', 'syntactic_dependency', 'linguistic_inquiry', 'semantic', 'graph']
     conf.data_set_extension = '.txt'
     conf.corpus_dir = 'data/corpus/'
     conf.corpus_meta_dir = 'data/corpus/meta/'
@@ -44,11 +44,8 @@ def preprocess(ds: str, rp: str, preprocessing_cfg: PreProcessingConfigs):  # St
 
     if rp == 'default':
         build_freq_adjacency(
-            ds_name=ds, cfg=preprocessing_cfg) # Default adjacency
-    # elif rp == 'syntactic':
-    #     build_syntactic_adjacency(
-    #         ds_name=ds, cfg=preprocessing_cfg)  # Syntactic adjacency
-    elif rp == 'dependency':
+            ds_name=ds, cfg=preprocessing_cfg)  # Default adjacency
+    elif rp == 'syntactic_dependency':
         build_dependency_adjacency(
             ds_name=ds, cfg=preprocessing_cfg)  # Dependency adjacency
     elif rp == 'linguistic_inquiry':
