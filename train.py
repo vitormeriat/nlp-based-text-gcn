@@ -20,7 +20,7 @@ def create_training_cfg() -> TrainingConfigs:
     conf.corpus_node_features_dir = 'data/corpus.shuffled/node_features/'
     conf.corpus_adjacency_dir = ''  # 'data/corpus.shuffled/adjacency/'
     conf.corpus_vocab_dir = 'data/corpus.shuffled/vocabulary/'
-    conf.adjacency_sets = ['default', 'syntactic', 'semantic', 'graph']
+    conf.adjacency_sets = ['frequency', 'syntactic_dependency', 'linguistic_inquiry', 'graph']
     conf.model = 'gcn'
     conf.learning_rate = 0.02
     conf.epochs = 200
@@ -105,9 +105,9 @@ def batch_train(dataset: str, rp: str, trn_cfg):
     #hyperparameters = get_hyperparameters()
     path = 'data/corpus.shuffled/adjacency/'
 
-    if rp == 'default':
+    if rp == 'frequency':
         # Default adjacency
-        trn_cfg.corpus_adjacency_dir = f'{path}/default/'
+        trn_cfg.corpus_adjacency_dir = f'{path}/frequency/'
     elif rp == 'syntactic_dependency':
         # Syntactic adjacency
         trn_cfg.corpus_adjacency_dir = f'{path}/syntactic_dependency/'

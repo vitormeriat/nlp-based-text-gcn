@@ -1,4 +1,4 @@
-import time
+from time import time
 
 import numpy as np
 import scipy.sparse as sp
@@ -38,7 +38,7 @@ def configure_cuda():
 
 
 def evaluate_model(model, criterion, features, labels, mask):
-    t_test = time.time()
+    t_test = time()
     # feed_dict_val = construct_feed_dict(
     #     features, support, labels, mask, placeholders)
     # outs_val = sess.run([model.loss, model.accuracy, model.pred, model.labels], feed_dict=feed_dict_val)
@@ -57,7 +57,7 @@ def evaluate_model(model, criterion, features, labels, mask):
         except ZeroDivisionError:
             acc = 0
 
-    return loss.numpy(), acc, pred.numpy(), labels.numpy(), (time.time() - t_test)
+    return loss.numpy(), acc, pred.numpy(), labels.numpy(), (time() - t_test)
 
 
 def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
@@ -113,7 +113,7 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
 
     # Train model
     for epoch in range(cfg.epochs):
-        epoch_start_time = time.time()
+        epoch_start_time = time()
 
         # Forward pass
         logits = model(t_features)
@@ -138,7 +138,7 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
         val_losses.append(val_loss)
 
         pl.print_log("Epoch:{:04d}, train_loss={:.5f}, train_acc={:.5f}, val_loss={:.5f}, val_acc={:.5f}, time={:.5f}"
-                     .format(epoch + 1, loss, acc, val_loss, val_acc, time.time() - epoch_start_time))
+                     .format(epoch + 1, loss, acc, val_loss, val_acc, time() - epoch_start_time))
 
         if epoch > cfg.early_stopping and val_losses[-1] > np.mean(val_losses[-(cfg.early_stopping + 1):-1]):
             pl.print_log("Early stopping...")
