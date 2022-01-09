@@ -1,0 +1,16 @@
+[INFO] Cleaned-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.cleaned/'
+[INFO] Rare-Count=<5>
+[INFO] Elapsed time is 0.821990 seconds.
+[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========
+[INFO] Shuffled-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/'
+[INFO] Elapsed time is 1.016980 seconds.
+[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========
+[INFO] Vocabulary Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/vocabulary/'
+[INFO] Word-Vector Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/word_vectors/'
+[INFO] Elapsed time is 5.345927 seconds.
+[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========
+[INFO] x.shape=   (6398, 300),	 y.shape=   (6398, 2)
+[INFO] tx.shape=  (3554, 300),	 ty.shape=  (3554, 2)
+[INFO] allx.shape=(25872, 300),	 ally.shape=(25872, 2)
+[INFO] Elapsed time is 3.437109 seconds.
+[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========

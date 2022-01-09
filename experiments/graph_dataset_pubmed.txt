@@ -1,0 +1,42 @@
+
+==================== Torch Seed: 24854873182700
+Epoch:0001, train_loss=4.86844, train_acc=0.39084, val_loss=1.42454, val_acc=0.40652, time=0.87101
+Epoch:0002, train_loss=3.79660, train_acc=0.44663, val_loss=1.39783, val_acc=0.40362, time=0.99302
+Epoch:0003, train_loss=3.00125, train_acc=0.51562, val_loss=1.38656, val_acc=0.38986, time=0.88100
+Epoch:0004, train_loss=2.40162, train_acc=0.57986, val_loss=1.37900, val_acc=0.38623, time=0.87804
+Epoch:0005, train_loss=1.90949, train_acc=0.63782, val_loss=1.37455, val_acc=0.38696, time=0.95800
+Epoch:0006, train_loss=1.51750, train_acc=0.69449, val_loss=1.37585, val_acc=0.37246, time=0.92801
+Epoch:0007, train_loss=1.22671, train_acc=0.74223, val_loss=1.38324, val_acc=0.34855, time=0.89804
+Epoch:0008, train_loss=1.01931, train_acc=0.78417, val_loss=1.39383, val_acc=0.33986, time=0.84000
+Epoch:0009, train_loss=0.86774, train_acc=0.82265, val_loss=1.40394, val_acc=0.33188, time=0.90501
+Epoch:0010, train_loss=0.74816, train_acc=0.86790, val_loss=1.41118, val_acc=0.33551, time=0.87301
+Epoch:0011, train_loss=0.65210, train_acc=0.90855, val_loss=1.41518, val_acc=0.34130, time=0.89802
+Epoch:0012, train_loss=0.57806, train_acc=0.93713, val_loss=1.41666, val_acc=0.34348, time=0.94401
+Early stopping...
+
+Optimization Finished!
+
+Test set results: loss= 2.43410, accuracy= 0.36027, time= 0.25800
+
+Test Precision, Recall and F1-Score...
+              precision    recall  f1-score   support
+
+           0     0.2438    0.5574    0.3392      1202
+           1     0.4637    0.3638    0.4077      2356
+           2     0.4579    0.2563    0.3286      2357
+
+    accuracy                         0.3603      5915
+   macro avg     0.3885    0.3925    0.3585      5915
+weighted avg     0.4167    0.3603    0.3623      5915
+
+
+Macro average Test Precision, Recall and F1-Score...
+(0.3884936467037669, 0.39247146779726405, 0.3585218384023765, None)
+
+Micro average Test Precision, Recall and F1-Score...
+(0.3602704987320372, 0.3602704987320372, 0.3602704987320372, None)
+
+Embeddings:
+Word_embeddings:452
+Train_doc_embeddings:13802
+Test_doc_embeddings:5915
