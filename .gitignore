@@ -3,8 +3,15 @@
 # Ignore IDE-specific files
 .idea
 
+# Ignore vscode files
+.vscode
+
 # Ignore old data files
 data.old
+
+# Ignore processed files
+corpus.cleaned
+corpus.shuffled
 
 # Ignore Cached Files
 __pycache__

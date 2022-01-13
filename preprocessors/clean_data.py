@@ -1,11 +1,20 @@
 import re
+from time import time
 from collections import Counter
-from shutil import rmtree
+#from shutil import rmtree
 from typing import List, Set
-
+import os
+from utils.logger import PrintLog
 from common import extract_word_counts, check_data_set
 from preprocessors.configs import PreProcessingConfigs
 from utils.file_ops import create_dir, write_iterable_to_file, check_paths
+
+def config_nltk():
+    temporary_nltk_folder = 'venv/nltk_data/'
+    if not os.path.exists(temporary_nltk_folder):
+        from nltk import download
+        download(info_or_id='stopwords', download_dir=temporary_nltk_folder)
+        download(info_or_id='wordnet', download_dir=temporary_nltk_folder)
 
 
 def clean_str(a_str: str) -> str:
@@ -30,13 +39,10 @@ def clean_str(a_str: str) -> str:
 
 
 def retrieve_stop_words(language: str = 'english') -> Set[str]:
-    temporary_nltk_folder = 'venv/nltk_data/'
+    #temporary_nltk_folder = 'venv/nltk_data/'
     from nltk.corpus import stopwords
-    from nltk import download
-    download(info_or_id='stopwords', download_dir=temporary_nltk_folder)
-    retrieved_stop_words = set(stopwords.words(language))
-    rmtree(temporary_nltk_folder)
-    return retrieved_stop_words
+
+    return set(stopwords.words(language))
 
 
 def remove_stop_words(lines_of_words: List[List[str]], stop_words: Set[str]) -> List[List[str]]:
@@ -56,7 +62,8 @@ def glue_lines(lines_of_words: List[List[str]], glue_str: str, with_strip: bool)
         return [glue_str.join(lines) for lines in lines_of_words]
 
 
-def clean_data(ds_name: str, rare_count: int, cfg: PreProcessingConfigs):
+def clean_data(ds_name: str, rare_count: int, cfg: PreProcessingConfigs, pl: PrintLog):
+    t1 = time()
     corpus_path = cfg.corpus_dir + ds_name + cfg.data_set_extension
     ds_corpus_cleaned = cfg.corpus_cleaned_dir + ds_name + cfg.data_set_extension
 
@@ -68,12 +75,14 @@ def clean_data(ds_name: str, rare_count: int, cfg: PreProcessingConfigs):
     docs_of_words = [clean_str(line.strip().decode('latin1')).split() for line in open(corpus_path, 'rb')]
     word_counts = extract_word_counts(docs_of_words=docs_of_words)
     stop_words = retrieve_stop_words(language='english')
-    if ds_name != 'mr':  # If data-set is 'mr', don't remove stop and rare words, TODO: find why
+    if ds_name not in ['mr', 'test']:  # If data-set is 'mr', don't remove stop and rare words, TODO: find why
         docs_of_words = remove_stop_words(docs_of_words, stop_words=stop_words)
         docs_of_words = remove_rare_words(docs_of_words, word_counts=word_counts, rare_count=rare_count)
     docs_of_words = glue_lines(lines_of_words=docs_of_words, glue_str=' ', with_strip=True)
 
     write_iterable_to_file(an_iterable=docs_of_words, file_path=ds_corpus_cleaned, file_mode='w')
-    print("[INFO] Cleaned-Corpus Dir='{}'".format(cfg.corpus_cleaned_dir))
-    print("[INFO] Rare-Count=<{}>".format(rare_count))
-    print("[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========")
+    elapsed = time() - t1
+    pl.print_log("[INFO] Cleaned-Corpus Dir='{}'".format(cfg.corpus_cleaned_dir))
+    pl.print_log("[INFO] Rare-Count=<{}>".format(rare_count))
+    pl.print_log("[INFO] Elapsed time is %f seconds." % elapsed)
+    pl.print_log("[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========")

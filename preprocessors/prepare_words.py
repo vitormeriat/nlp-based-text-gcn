@@ -1,8 +1,9 @@
 import pickle
+from time import time
 from collections import OrderedDict
 from shutil import rmtree
 from typing import List, Iterable
-
+from utils.logger import PrintLog
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 
@@ -13,9 +14,9 @@ from utils.file_ops import write_iterable_to_file, create_dir, check_paths
 
 def extract_word_definitions(vocabulary: List[str]) -> List[str]:
     from nltk.corpus import wordnet
-    from nltk import download
-    temporary_nltk_folder = 'venv/nltk_data/'
-    download(info_or_id='wordnet', download_dir=temporary_nltk_folder)
+    #from nltk import download
+    #temporary_nltk_folder = 'venv/nltk_data/'
+    #download(info_or_id='wordnet', download_dir=temporary_nltk_folder)
 
     merged_definitions_of_words = []
     for word in vocabulary:
@@ -26,14 +27,13 @@ def extract_word_definitions(vocabulary: List[str]) -> List[str]:
         else:
             merged_definitions_of_word = ' '.join(word_definitions)
         merged_definitions_of_words.append(merged_definitions_of_word)
-    rmtree(temporary_nltk_folder)
+    #rmtree(temporary_nltk_folder)
     return merged_definitions_of_words
 
 
 def extract_tf_idf_word_vectors(word_definitions: List[str], max_features: int) -> List[np.ndarray]:
     tf_idf_vectorizer = TfidfVectorizer(max_features=max_features)
-    tf_idf_vector_arrays = tf_idf_vectorizer.fit_transform(word_definitions).toarray()
-    return tf_idf_vector_arrays
+    return tf_idf_vectorizer.fit_transform(word_definitions).toarray()
 
 
 def extract_vocabulary(docs_of_words: Iterable[List[str]]) -> List[str]:
@@ -43,7 +43,9 @@ def extract_vocabulary(docs_of_words: Iterable[List[str]]) -> List[str]:
     return list(vocabulary.keys())
 
 
-def prepare_words(ds_name: str, cfg: PreProcessingConfigs):
+def prepare_words(ds_name: str, cfg: PreProcessingConfigs, pl: PrintLog):
+    t1 = time()
+
     ds_corpus = cfg.corpus_shuffled_dir + ds_name + cfg.data_set_extension
 
     # Checkers
@@ -72,6 +74,8 @@ def prepare_words(ds_name: str, cfg: PreProcessingConfigs):
     word_to_word_vectors_dict = OrderedDict((word, vec.tolist()) for word, vec in zip(vocabulary, word_vectors))
     pickle.dump(obj=word_to_word_vectors_dict, file=open(ds_corpus_word_vectors, mode='wb'))
 
-    print("[INFO] Vocabulary Dir='{}'".format(cfg.corpus_shuffled_vocab_dir))
-    print("[INFO] Word-Vector Dir='{}'".format(cfg.corpus_shuffled_word_vectors_dir))
-    print("[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========")
+    elapsed = time() - t1
+    pl.print_log("[INFO] Vocabulary Dir='{}'".format(cfg.corpus_shuffled_vocab_dir))
+    pl.print_log("[INFO] Word-Vector Dir='{}'".format(cfg.corpus_shuffled_word_vectors_dir))
+    pl.print_log("[INFO] Elapsed time is %f seconds." % elapsed)
+    pl.print_log("[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========")
