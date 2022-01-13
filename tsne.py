@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 import os
 
-
+# dataset
 data_set = 'mr' # 20ng R8 R52 ohsumed mr
 data_path = './data/corpus.shuffled'
 
