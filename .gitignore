@@ -12,3 +12,12 @@ __pycache__
 
 # Ignore virtual environment
 venv
+
+# Ignore files
+*_doc_vectors.txt
+*_word_vectors.txt
+
+# Ignore folders
+data/corpus.cleaned
+data/corpus.shuffled
+.vscode
