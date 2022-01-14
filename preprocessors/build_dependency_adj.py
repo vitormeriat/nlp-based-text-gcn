@@ -247,7 +247,7 @@ def compute_weights(docs_of_words, rela_pair_count_str, word_window_freq, train_
 def build_dependency_adjacency(ds_name: str, cfg: PreProcessingConfigs, pl: PrintLog):
 
     t1 = time()
-    pl = PrintLog()
+    #pl = PrintLog()
     # input files
     ds_corpus = cfg.corpus_shuffled_dir + ds_name + ".txt"
     ds_corpus_vocabulary = cfg.corpus_shuffled_vocab_dir + ds_name + '.vocab'

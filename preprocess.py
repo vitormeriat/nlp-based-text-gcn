@@ -1,10 +1,7 @@
-from sys import argv
-
-from preprocessors.build_freq_adjacency import build_freq_adjacency
-#from preprocessors.build_syntactic_adjacency_v5 import build_syntactic_adjacency
-from preprocessors.build_dependency_adj import build_dependency_adjacency
 from preprocessors.build_linguistic_inquiry_adj import build_linguistic_inquiry_adjacency
+from preprocessors.build_dependency_adj import build_dependency_adjacency
 from preprocessors.build_graph_adjacency import build_graph_adjacency
+from preprocessors.build_freq_adjacency import build_freq_adjacency
 from preprocessors.build_node_features import build_node_features
 from preprocessors.clean_data import clean_data, config_nltk
 from preprocessors.configs import PreProcessingConfigs
@@ -12,6 +9,7 @@ from preprocessors.prepare_words import prepare_words
 from preprocessors.shuffle_data import shuffle_data
 from utils.file_ops import create_dir
 from utils.logger import PrintLog
+from sys import argv
 
 
 def create_preprocessing_cfg() -> PreProcessingConfigs:
@@ -65,13 +63,13 @@ def preprocess(ds: str, rp: str, preprocessing_cfg: PreProcessingConfigs):  # St
         build_graph_adjacency(
             ds_name=ds, cfg=preprocessing_cfg, pl=pl)  # Graph adjacency
 
-    hist=pl.log_history()
+    hist = pl.log_history()
     save_history(hist, rp, ds)
 
 
 def batch_preprocessing(rp: str, preprocessing_cfg: PreProcessingConfigs):
     for ds in preprocessing_cfg.data_sets:
-        print('\n\n░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ '+ ds)
+        print('\n\n░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ ' + ds)
         preprocess(ds, rp, preprocessing_cfg)
 
 
