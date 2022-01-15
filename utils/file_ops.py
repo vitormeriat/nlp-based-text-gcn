@@ -1,7 +1,7 @@
-from os import makedirs
+from typing import Any, Iterable
 from os.path import exists
 from shutil import rmtree
-from typing import Any, Iterable
+from os import makedirs
 
 
 def create_dir(dir_path: str, overwrite: bool) -> None:
@@ -24,7 +24,8 @@ def check_paths(*paths: str):
     """
     Check paths if they exist or not
     """
-    
+
     for path in paths:
         if not exists(path):
-            raise FileNotFoundError('Path: {path} is not found.'.format(path=path))
+            raise FileNotFoundError(
+                'Path: {path} is not found.'.format(path=path))

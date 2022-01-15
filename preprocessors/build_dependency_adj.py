@@ -1,14 +1,14 @@
-from time import time
-from stanfordcorenlp import StanfordCoreNLP
-from nltk.corpus import stopwords
-import numpy as np
-from math import log
-import scipy.sparse as sp
-import pickle as pkl
 from preprocessors.configs import PreProcessingConfigs
-from common import check_data_set
 from utils.file_ops import create_dir, check_paths
+from stanfordcorenlp import StanfordCoreNLP
+from common import check_data_set
 from utils.logger import PrintLog
+from nltk.corpus import stopwords
+import scipy.sparse as sp
+from time import time
+from math import log
+import pickle as pkl
+import numpy as np
 
 
 def build_word_doc_list(docs_of_words):
@@ -177,8 +177,6 @@ def compute_weights_with_PMI_V5(docs_of_words, rela_pair_count_str, word_window_
                            min_count1) / (max_count1 - min_count1)
                     wei = (rela_pair_count_str[key]-count_mean1) / count_std1
                     weight.append(wei)
-                # else:
-                #    weight.append(pmi)
         except:
             errors += 1
 
@@ -205,8 +203,6 @@ def compute_weights_with_PMI_V2(docs_of_words, rela_pair_count_str, word_window_
                     / num_window
                     / (1.0 * word_freq_i * word_freq_j / num_window ** 2)
                 )
-                # if pmi <= 0:
-                #     continue
 
                 row.append(train_size + word_id_map[i])
                 col.append(train_size + word_id_map[j])
@@ -247,7 +243,6 @@ def compute_weights(docs_of_words, rela_pair_count_str, word_window_freq, train_
 def build_dependency_adjacency(ds_name: str, cfg: PreProcessingConfigs, pl: PrintLog):
 
     t1 = time()
-    #pl = PrintLog()
     # input files
     ds_corpus = cfg.corpus_shuffled_dir + ds_name + ".txt"
     ds_corpus_vocabulary = cfg.corpus_shuffled_vocab_dir + ds_name + '.vocab'
@@ -304,4 +299,5 @@ def build_dependency_adjacency(ds_name: str, cfg: PreProcessingConfigs, pl: Prin
     pl.print_log("[INFO] Adjacency Dir='{}'".format(
         cfg.corpus_shuffled_adjacency_dir))
     pl.print_log("[INFO] Elapsed time is %f seconds." % elapsed)
-    pl.print_log("[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========")
+    pl.print_log(
+        "[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========")

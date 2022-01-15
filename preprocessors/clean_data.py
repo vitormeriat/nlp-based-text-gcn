@@ -1,13 +1,13 @@
-import re
-from time import time
-from collections import Counter
-#from shutil import rmtree
-from typing import List, Set
-import os
-from utils.logger import PrintLog
+from utils.file_ops import create_dir, write_iterable_to_file, check_paths
 from common import extract_word_counts, check_data_set
 from preprocessors.configs import PreProcessingConfigs
-from utils.file_ops import create_dir, write_iterable_to_file, check_paths
+from utils.logger import PrintLog
+from collections import Counter
+from typing import List, Set
+from time import time
+import re
+import os
+
 
 def config_nltk():
     temporary_nltk_folder = 'venv/nltk_data/'
@@ -72,17 +72,24 @@ def clean_data(ds_name: str, rare_count: int, cfg: PreProcessingConfigs, pl: Pri
     check_paths(corpus_path)
 
     create_dir(dir_path=cfg.corpus_cleaned_dir, overwrite=False)
-    docs_of_words = [clean_str(line.strip().decode('latin1')).split() for line in open(corpus_path, 'rb')]
+    docs_of_words = [clean_str(line.strip().decode('latin1')).split()
+                     for line in open(corpus_path, 'rb')]
     word_counts = extract_word_counts(docs_of_words=docs_of_words)
     stop_words = retrieve_stop_words(language='english')
-    if ds_name not in ['mr', 'test']:  # If data-set is 'mr', don't remove stop and rare words, TODO: find why
+    # If data-set is 'mr', don't remove stop and rare words, TODO: find why
+    if ds_name not in ['mr', 'test']:
         docs_of_words = remove_stop_words(docs_of_words, stop_words=stop_words)
-        docs_of_words = remove_rare_words(docs_of_words, word_counts=word_counts, rare_count=rare_count)
-    docs_of_words = glue_lines(lines_of_words=docs_of_words, glue_str=' ', with_strip=True)
+        docs_of_words = remove_rare_words(
+            docs_of_words, word_counts=word_counts, rare_count=rare_count)
+    docs_of_words = glue_lines(
+        lines_of_words=docs_of_words, glue_str=' ', with_strip=True)
 
-    write_iterable_to_file(an_iterable=docs_of_words, file_path=ds_corpus_cleaned, file_mode='w')
+    write_iterable_to_file(an_iterable=docs_of_words,
+                           file_path=ds_corpus_cleaned, file_mode='w')
     elapsed = time() - t1
-    pl.print_log("[INFO] Cleaned-Corpus Dir='{}'".format(cfg.corpus_cleaned_dir))
+    pl.print_log(
+        "[INFO] Cleaned-Corpus Dir='{}'".format(cfg.corpus_cleaned_dir))
     pl.print_log("[INFO] Rare-Count=<{}>".format(rare_count))
     pl.print_log("[INFO] Elapsed time is %f seconds." % elapsed)
-    pl.print_log("[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========")
+    pl.print_log(
+        "[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========")

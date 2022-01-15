@@ -1,18 +1,14 @@
-from time import time
-
-import numpy as np
-import scipy.sparse as sp
-import torch
-from sklearn import metrics
-
-from common import check_data_set
+from trainer.prepare_matrices import prepare_matrices
 from trainer.configs import TrainingConfigs
 from trainer.load_corpus import load_corpus
-from trainer.prepare_matrices import prepare_matrices
-#from utils.logger import print_log, PrintLog
 from utils.logger import PrintLog
-
+from common import check_data_set
+from sklearn import metrics
+import scipy.sparse as sp
+from time import time
+import numpy as np
 import random
+import torch
 
 
 def return_seed(nums=10):

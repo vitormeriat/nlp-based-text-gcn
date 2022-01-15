@@ -1,10 +1,9 @@
-import numpy as np
-import scipy.sparse as sp
 from scipy.sparse.linalg import eigsh
-
+from utils.logger import print_log
 from models.gcn import GCN
 from models.mlp import MLP
-from utils.logger import print_log
+import scipy.sparse as sp
+import numpy as np
 
 
 def chebyshev_polynomials(adj, k) -> list:
@@ -13,7 +12,8 @@ def chebyshev_polynomials(adj, k) -> list:
     adj_normalized = normalize_adj(adj)
     laplacian = sp.eye(adj.shape[0]) - adj_normalized
     largest_eigval, _ = eigsh(laplacian, 1, which='LM')
-    scaled_laplacian = (2. / largest_eigval[0]) * laplacian - sp.eye(adj.shape[0])
+    scaled_laplacian = (
+        2. / largest_eigval[0]) * laplacian - sp.eye(adj.shape[0])
 
     t_k = list()
     # t_k.append(sp.eye(adj.shape[0]))
@@ -68,7 +68,8 @@ def prepare_matrices(features, adj, model_name: str, chebyshev_max_degree: int):
         num_supports = 1
         model_func = GCN
     elif model_name == 'gcn_cheby':
-        print_log("Calculating Chebyshev polynomials up to order {}...".format(chebyshev_max_degree))
+        print_log("Calculating Chebyshev polynomials up to order {}...".format(
+            chebyshev_max_degree))
         support = chebyshev_polynomials(adj, chebyshev_max_degree)
         num_supports = 1 + chebyshev_max_degree
         model_func = GCN

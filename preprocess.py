@@ -69,16 +69,16 @@ def preprocess(ds: str, rp: str, preprocessing_cfg: PreProcessingConfigs):  # St
 
 def batch_preprocessing(rp: str, preprocessing_cfg: PreProcessingConfigs):
     for ds in preprocessing_cfg.data_sets:
-        print('\n\n░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ ' + ds)
+        print('\n\n▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ' + ds)
         preprocess(ds, rp, preprocessing_cfg)
 
 
 if __name__ == '__main__':
     prep_cfg = create_preprocessing_cfg()
-    if len(argv) < 3:
+    if len(argv) < 2:
         raise Exception(
             "Dataset name cannot be left blank. Must be one of datasets:%r." % prep_cfg.data_sets)
-    ds_name = argv[1]
-    rp_name = argv[2]
+
+    rp_name = argv[1]
     #preprocess(ds=ds_name, rp=rp_name, preprocessing_cfg=prep_cfg)
     batch_preprocessing(rp_name, prep_cfg)

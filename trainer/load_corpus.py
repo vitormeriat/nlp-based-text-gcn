@@ -1,10 +1,9 @@
+from scipy.sparse.linalg.eigen.arpack import eigsh
+from trainer.prepare_matrices import normalize_adj
 import pickle as pkl
-
 import numpy as np
 import scipy as sp
-from scipy.sparse.linalg.eigen.arpack import eigsh
 
-from trainer.prepare_matrices import normalize_adj
 
 """
 Loads input corpus from gcn/data directory
@@ -26,10 +25,7 @@ All objects above must be saved using python pickle module.
 
 def parse_index_file(filename):
     """Parse index file."""
-    index = []
-    for line in open(filename):
-        index.append(int(line.strip()))
-    return index
+    return [int(line.strip()) for line in open(filename)]
 
 
 def sample_mask(idx, row_length: int):
@@ -61,12 +57,15 @@ def sparse_to_tuple(sparse_mx):
 
 def construct_feed_dict(features, support, labels, labels_mask, placeholders):
     """Construct feed dictionary."""
-    feed_dict = dict()
-    feed_dict.update({placeholders['labels']: labels})
-    feed_dict.update({placeholders['labels_mask']: labels_mask})
-    feed_dict.update({placeholders['features']: features})
-    feed_dict.update({placeholders['support'][i]: support[i] for i in range(len(support))})
-    feed_dict.update({placeholders['num_features_nonzero']: features[1].shape})
+    feed_dict = {
+        placeholders['labels']: labels,
+        placeholders['labels_mask']: labels_mask,
+        placeholders['features']: features,
+    }
+
+    feed_dict.update({placeholders['support'][i]: support[i]
+                     for i in range(len(support))})
+    feed_dict[placeholders['num_features_nonzero']] = features[1].shape
     return feed_dict
 
 
@@ -76,7 +75,8 @@ def chebyshev_polynomials(adj, k):
     adj_normalized = normalize_adj(adj)
     laplacian = sp.sparse.eye(adj.shape[0]) - adj_normalized
     largest_eigval, _ = eigsh(laplacian, 1, which='LM')
-    scaled_laplacian = (2. / largest_eigval[0]) * laplacian - sp.sparse.eye(adj.shape[0])
+    scaled_laplacian = (
+        2. / largest_eigval[0]) * laplacian - sp.sparse.eye(adj.shape[0])
 
     t_k = list()
     # t_k.append(sp.eye(adj.shape[0]))
@@ -116,7 +116,6 @@ def load_corpus(data_name, split_index_dir: str, node_features_dir: str, adjacen
     """
     #"""Loads all data input files (as well the training/test data)."""
 
-
     node_feature_names = ['x', 'y', 'tx', 'ty', 'allx', 'ally']
     node_features = []
     for node_feature_name in node_feature_names:
@@ -133,7 +132,8 @@ def load_corpus(data_name, split_index_dir: str, node_features_dir: str, adjacen
     labels = np.vstack((ally, ty))
     # print(len(labels))
 
-    train_idx_orig = parse_index_file(split_index_dir + "{}.train".format(data_name))
+    train_idx_orig = parse_index_file(
+        split_index_dir + "{}.train".format(data_name))
     train_size = len(train_idx_orig)
 
     val_size = train_size - x.shape[0]

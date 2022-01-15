@@ -1,15 +1,15 @@
 # Linguistic Inquiry and Word Count
-import numpy as np
-from math import log
-import pickle as pkl
-from time import time
-import scipy.sparse as sp
+from preprocessors.configs import PreProcessingConfigs
+from utils.file_ops import create_dir, check_paths
+from utils.logger import PrintLog
 from nltk.corpus import stopwords
 from common import check_data_set
-from utils.file_ops import create_dir, check_paths
-from preprocessors.configs import PreProcessingConfigs
-from utils.logger import PrintLog
 from liwc.liwc import Liwc
+import scipy.sparse as sp
+from time import time
+from math import log
+import pickle as pkl
+import numpy as np
 
 
 def build_word_doc_list(docs_of_words):
@@ -247,7 +247,6 @@ def compute_weights(docs_of_words, rela_pair_count_str, word_window_freq, train_
 def build_linguistic_inquiry_adjacency(ds_name: str, cfg: PreProcessingConfigs, pl: PrintLog):
 
     t1 = time()
-    #pl = PrintLog()
     # input files
     ds_corpus = cfg.corpus_shuffled_dir + ds_name + ".txt"
     ds_corpus_vocabulary = cfg.corpus_shuffled_vocab_dir + ds_name + '.vocab'
@@ -304,4 +303,5 @@ def build_linguistic_inquiry_adjacency(ds_name: str, cfg: PreProcessingConfigs, 
     pl.print_log("[INFO] Adjacency Dir='{}'".format(
         cfg.corpus_shuffled_adjacency_dir))
     pl.print_log("[INFO] Elapsed time is %f seconds." % elapsed)
-    pl.print_log("[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========")
+    pl.print_log(
+        "[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========")
