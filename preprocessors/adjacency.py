@@ -1,5 +1,5 @@
 from gowpy.feature_extraction.gow import TwidfVectorizer
-from common import flatten_nested_iterables
+from utils.common import flatten_nested_iterables
 from scipy.spatial.distance import cosine
 from typing import List, Dict, Tuple
 from collections import Counter
@@ -208,3 +208,133 @@ def extract_tw_idf_doc_word_weights(
                 break
 
     return adj_rows, adj_cols, adj_weights
+
+# =======================================================================================
+
+
+def build_word_doc_list(docs_of_words):
+    word_doc_list = {}
+    for i in range(len(docs_of_words)):
+        words = docs_of_words[i]
+        appeared = set()
+        for word in words:
+            if word in appeared:
+                continue
+            if word in word_doc_list:
+                doc_list = word_doc_list[word]
+                doc_list.append(i)
+                word_doc_list[word] = doc_list
+            else:
+                word_doc_list[word] = [i]
+            appeared.add(word)
+    return word_doc_list
+
+
+def define_word_doc_freq(docs_of_words):
+    word_doc_list = build_word_doc_list(docs_of_words)
+    return {
+        word: len(doc_list) for word, doc_list in word_doc_list.items()
+    }
+
+
+def build_word_window_freq(docs_of_words):
+    word_window_freq = {}
+    for window in docs_of_words:
+        appeared = set()
+        for i in range(len(window)):
+            if window[i] in appeared:
+                continue
+            if window[i] in word_window_freq:
+                word_window_freq[window[i]] += 1
+            else:
+                word_window_freq[window[i]] = 1
+            appeared.add(window[i])
+    return word_window_freq
+
+
+def relation_pair_statitcs(rela_pair_count_str):
+    max_count1 = 0.0
+    min_count1 = 0.0
+    count1 = []
+    for key, value in rela_pair_count_str.items():
+        if rela_pair_count_str[key] > max_count1:
+            max_count1 = rela_pair_count_str[key]
+        if value < min_count1:
+            min_count1 = rela_pair_count_str[key]
+        count1.append(rela_pair_count_str[key])
+
+    count_mean1 = np.mean(count1)
+    count_std1 = np.std(count1, ddof=1)
+    return min_count1, max_count1, count_mean1, count_std1
+
+
+def get_doc_word_freq(docs_of_words, word_id_map):
+    doc_word_freq = {}
+    for doc_id in range(len(docs_of_words)):
+        words = docs_of_words[doc_id]
+        for word in words:
+            word_id = word_id_map[word]
+            doc_word_str = str(doc_id) + ',' + str(word_id)
+            if doc_word_str in doc_word_freq:
+                doc_word_freq[doc_word_str] += 1
+            else:
+                doc_word_freq[doc_word_str] = 1
+    return doc_word_freq
+
+
+def get_weight_tfidf(docs_of_words, word_id_map, doc_word_freq, train_size, vocab_size, word_doc_freq, vocab, row, col):
+    weight_tfidf = []
+    for i in range(len(docs_of_words)):
+        words = docs_of_words[i]
+        doc_word_set = set()
+        for word in words:
+            if word in doc_word_set:
+                continue
+            j = word_id_map[word]
+            key = str(i) + ',' + str(j)
+            freq = doc_word_freq[key]
+            if i < train_size:
+                row.append(i)
+            else:
+                row.append(i + vocab_size)
+            col.append(train_size + j)
+            idf = log(1.0 * len(docs_of_words) / word_doc_freq[vocab[j]])
+            weight_tfidf.append(freq * idf)
+            doc_word_set.add(word)
+    return weight_tfidf
+
+
+def compute_weights_with_PMI(docs_of_words, rela_pair_count_str, word_window_freq, train_size, word_id_map, min_count1, max_count1, count_mean1, count_std1, row, col):
+    weight = []
+    errors = 0
+    num_window = len(docs_of_words)
+    for key, count in rela_pair_count_str.items():
+        try:
+            temp = key.split(',')
+            i = temp[0]
+            j = temp[1]
+
+            if i in word_window_freq and j in word_window_freq:
+                word_freq_i = word_window_freq[i]
+                word_freq_j = word_window_freq[j]
+                pmi = log(
+                    1.0
+                    * count
+                    / num_window
+                    / (1.0 * word_freq_i * word_freq_j / num_window ** 2)
+                )
+                if pmi <= 0:
+                    continue
+
+                row.append(train_size + word_id_map[i])
+                col.append(train_size + word_id_map[j])
+                if key in rela_pair_count_str:
+                    wei = (rela_pair_count_str[key] -
+                           min_count1) / (max_count1 - min_count1)
+                    wei = (rela_pair_count_str[key]-count_mean1) / count_std1
+                    weight.append(wei)
+        except:
+            errors += 1
+
+    print(f'[INFO] Error in Compute Weights: {errors}')
+    return weight

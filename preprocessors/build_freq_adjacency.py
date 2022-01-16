@@ -2,7 +2,7 @@ from preprocessors.configs import PreProcessingConfigs
 from utils.file_ops import create_dir, check_paths
 import preprocessors.adjacency as adj
 from scipy.sparse import csr_matrix
-from common import check_data_set
+from utils.common import check_data_set
 from utils.logger import PrintLog
 from time import time
 import pickle

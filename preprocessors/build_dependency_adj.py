@@ -1,7 +1,7 @@
 from preprocessors.configs import PreProcessingConfigs
 from utils.file_ops import create_dir, check_paths
 from stanfordcorenlp import StanfordCoreNLP
-from common import check_data_set
+from utils.common import check_data_set
 from utils.logger import PrintLog
 from nltk.corpus import stopwords
 import scipy.sparse as sp

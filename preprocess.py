@@ -1,4 +1,5 @@
-from preprocessors.build_linguistic_inquiry_adj import build_linguistic_inquiry_adjacency
+from preprocessors.build_linguistic_inquiry_adjacency import build_linguistic_inquiry_adjacency
+from preprocessors.build_semantic_adjacency import build_semantic_adjacency
 from preprocessors.build_dependency_adj import build_dependency_adjacency
 from preprocessors.build_graph_adjacency import build_graph_adjacency
 from preprocessors.build_freq_adjacency import build_freq_adjacency
@@ -14,8 +15,8 @@ from sys import argv
 
 def create_preprocessing_cfg() -> PreProcessingConfigs:
     conf = PreProcessingConfigs()
-    conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed',
-                      'mr', 'cora', 'citeseer', 'pubmed', 'test']
+    conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed', 'mr', 'cora', 'citeseer', 'pubmed']
+    #conf.data_sets = ['R8']
     conf.adjacency_sets = ['frequency', 'syntactic_dependency',
                            'linguistic_inquiry', 'semantic', 'graph']
     conf.data_set_extension = '.txt'
@@ -53,6 +54,9 @@ def preprocess(ds: str, rp: str, preprocessing_cfg: PreProcessingConfigs):  # St
     if rp == 'frequency':
         build_freq_adjacency(
             ds_name=ds, cfg=preprocessing_cfg, pl=pl)  # Frequency adjacency
+    elif rp == 'semantic':
+        build_semantic_adjacency(
+            ds_name=ds, cfg=preprocessing_cfg, pl=pl)  # Semantic adjacency
     elif rp == 'syntactic_dependency':
         build_dependency_adjacency(
             ds_name=ds, cfg=preprocessing_cfg, pl=pl)  # Dependency adjacency

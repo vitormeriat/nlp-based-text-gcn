@@ -4,7 +4,7 @@ from utils.file_ops import check_paths, create_dir
 from collections import OrderedDict
 from scipy.sparse import csr_matrix
 from utils.logger import PrintLog
-from common import check_data_set
+from utils.common import check_data_set
 from time import time
 from math import ceil
 import pickle as pkl
