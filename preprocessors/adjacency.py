@@ -1,14 +1,11 @@
-import pickle
+from gowpy.feature_extraction.gow import TwidfVectorizer
+from common import flatten_nested_iterables
+from scipy.spatial.distance import cosine
+from typing import List, Dict, Tuple
 from collections import Counter
 from math import log
-from typing import List, Dict, Tuple
-
 import numpy as np
-from scipy.spatial.distance import cosine
-
-from gowpy.feature_extraction.gow import TwidfVectorizer
-
-from common import flatten_nested_iterables
+import pickle
 
 
 def extract_word_to_doc_ids(docs_of_words: List[List[str]]) -> Dict[str, List[int]]:
@@ -81,7 +78,7 @@ def extract_pmi_word_weights(windows_of_words: List[List[str]], word_to_id: Dict
         word_id_i, word_id_j = int(word_ids_in_str[0]), int(word_ids_in_str[1])
         word_i, word_j = vocab[word_id_i], vocab[word_id_j]
         word_freq_i, word_freq_j = word_counts_in_windows[word_i], word_counts_in_windows[word_j]
-        
+
         #pmi_score = log((1.0 * count / num_windows) / (1.0 * word_freq_i * word_freq_j / (num_windows * num_windows)))
         pmi_score = log(
             1.0
@@ -150,12 +147,15 @@ def extract_tf_idf_doc_word_weights(
             # se a palavra ainda não foi calculada...
             if word not in doc_word_set:
                 word_id = word_to_id[word]
-                word_ids_pair_count = doc_word_ids_pair_to_counts[str(doc_id) + ',' + str(word_id)]
+                word_ids_pair_count = doc_word_ids_pair_to_counts[str(
+                    doc_id) + ',' + str(word_id)]
 
-                adj_rows.append(doc_id if doc_id < train_size else doc_id + vocab_len)
+                adj_rows.append(doc_id if doc_id <
+                                train_size else doc_id + vocab_len)
                 adj_cols.append(train_size + word_id)
 
-                doc_word_idf = log(1.0 * num_docs / word_to_doc_counts[vocab[word_id]])
+                doc_word_idf = log(
+                    1.0 * num_docs / word_to_doc_counts[vocab[word_id]])
                 adj_weights.append(word_ids_pair_count * doc_word_idf)
                 doc_word_set.add(word)
     return adj_rows, adj_cols, adj_weights
@@ -169,7 +169,7 @@ def extract_tw_idf_doc_word_weights(
     #word_to_doc_ids = extract_word_to_doc_ids(docs_of_words=docs_of_words)
     #word_to_doc_counts = extract_word_to_doc_counts(word_to_doc_ids=word_to_doc_ids)
 
-    vectorizer = TwidfVectorizer(                 
+    vectorizer = TwidfVectorizer(
         # Graph-of-words specificities
         directed=True,
         window_size=20,
@@ -189,11 +189,10 @@ def extract_tw_idf_doc_word_weights(
     top_words = np.array(top_words)
     print(len(top_words))
 
-
     vocab_len = len(vocab)
     #num_docs = len(docs_of_words)
     for doc_id, vector in enumerate(vectors):
-    #for vector in vectors:
+        # for vector in vectors:
         doc_word_set = set()
         for word_id, twidf in enumerate(vector):
             if twidf > 0:
@@ -201,7 +200,8 @@ def extract_tw_idf_doc_word_weights(
                 #word_id = word_to_id[word]
 
                 if word not in doc_word_set:
-                    adj_rows.append(doc_id if doc_id < train_size else doc_id + vocab_len)
+                    adj_rows.append(doc_id if doc_id <
+                                    train_size else doc_id + vocab_len)
                     adj_cols.append(train_size + word_id)
                     adj_weights.append(twidf)
                     doc_word_set.add(word)

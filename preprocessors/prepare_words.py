@@ -1,15 +1,13 @@
-import pickle
-from time import time
+from utils.file_ops import write_iterable_to_file, create_dir, check_paths
+from sklearn.feature_extraction.text import TfidfVectorizer
+from preprocessors.configs import PreProcessingConfigs
+from common import check_data_set
 from collections import OrderedDict
-from shutil import rmtree
 from typing import List, Iterable
 from utils.logger import PrintLog
+from time import time
 import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
-
-from common import check_data_set
-from preprocessors.configs import PreProcessingConfigs
-from utils.file_ops import write_iterable_to_file, create_dir, check_paths
+import pickle
 
 
 def extract_word_definitions(vocabulary: List[str]) -> List[str]:
@@ -21,13 +19,14 @@ def extract_word_definitions(vocabulary: List[str]) -> List[str]:
     merged_definitions_of_words = []
     for word in vocabulary:
         syn_sets_of_word = wordnet.synsets(word.strip())
-        word_definitions = [syn_set.definition() for syn_set in syn_sets_of_word]
+        word_definitions = [syn_set.definition()
+                            for syn_set in syn_sets_of_word]
         if not word_definitions:  # If list is empty, fill with '<PAD>'
             merged_definitions_of_word = '<PAD>'
         else:
             merged_definitions_of_word = ' '.join(word_definitions)
         merged_definitions_of_words.append(merged_definitions_of_word)
-    #rmtree(temporary_nltk_folder)
+    # rmtree(temporary_nltk_folder)
     return merged_definitions_of_words
 
 
@@ -57,25 +56,33 @@ def prepare_words(ds_name: str, cfg: PreProcessingConfigs, pl: PrintLog):
     create_dir(dir_path=cfg.corpus_shuffled_word_vectors_dir, overwrite=False)
 
     ds_corpus_vocabulary = cfg.corpus_shuffled_vocab_dir + ds_name + '.vocab'
-    ds_corpus_word_vectors = cfg.corpus_shuffled_word_vectors_dir + ds_name + '.word_vectors'
+    ds_corpus_word_vectors = cfg.corpus_shuffled_word_vectors_dir + \
+        ds_name + '.word_vectors'
     # ###################################################
 
     # Build vocabulary
     docs_of_words_generator = (line.split() for line in open(ds_corpus))
     vocabulary = extract_vocabulary(docs_of_words=docs_of_words_generator)
-    write_iterable_to_file(an_iterable=vocabulary, file_path=ds_corpus_vocabulary, file_mode='w')
+    write_iterable_to_file(an_iterable=vocabulary,
+                           file_path=ds_corpus_vocabulary, file_mode='w')
 
     # Extract word definitions
     word_definitions = extract_word_definitions(vocabulary=vocabulary)
     # write_iterable_to_file(word_definitions, file_path='/<>' + ds, file_mode='w+')
 
     # Extract & Dump word vectors
-    word_vectors = extract_tf_idf_word_vectors(word_definitions=word_definitions, max_features=1000)
-    word_to_word_vectors_dict = OrderedDict((word, vec.tolist()) for word, vec in zip(vocabulary, word_vectors))
-    pickle.dump(obj=word_to_word_vectors_dict, file=open(ds_corpus_word_vectors, mode='wb'))
+    word_vectors = extract_tf_idf_word_vectors(
+        word_definitions=word_definitions, max_features=1000)
+    word_to_word_vectors_dict = OrderedDict(
+        (word, vec.tolist()) for word, vec in zip(vocabulary, word_vectors))
+    pickle.dump(obj=word_to_word_vectors_dict, file=open(
+        ds_corpus_word_vectors, mode='wb'))
 
     elapsed = time() - t1
-    pl.print_log("[INFO] Vocabulary Dir='{}'".format(cfg.corpus_shuffled_vocab_dir))
-    pl.print_log("[INFO] Word-Vector Dir='{}'".format(cfg.corpus_shuffled_word_vectors_dir))
+    pl.print_log("[INFO] Vocabulary Dir='{}'".format(
+        cfg.corpus_shuffled_vocab_dir))
+    pl.print_log(
+        "[INFO] Word-Vector Dir='{}'".format(cfg.corpus_shuffled_word_vectors_dir))
     pl.print_log("[INFO] Elapsed time is %f seconds." % elapsed)
-    pl.print_log("[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========")
+    pl.print_log(
+        "[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========")

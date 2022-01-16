@@ -1,22 +1,24 @@
-import pickle as pkl
-from time import time
-from collections import OrderedDict
-from math import ceil
 from typing import List, Dict, MutableMapping, Tuple, Union
-from utils.logger import PrintLog
-import numpy as np
-from scipy.sparse import csr_matrix
-
-from common import check_data_set
 from preprocessors.configs import PreProcessingConfigs
 from utils.file_ops import check_paths, create_dir
+from collections import OrderedDict
+from scipy.sparse import csr_matrix
+from utils.logger import PrintLog
+from common import check_data_set
+from time import time
+from math import ceil
+import pickle as pkl
+import numpy as np
 
-WORD_VECTORS_TYPE = MutableMapping[str, np.ndarray]  # word -> word-vector, words are ordered with respect to vocabulary
+
+# word -> word-vector, words are ordered with respect to vocabulary
+WORD_VECTORS_TYPE = MutableMapping[str, np.ndarray]
 
 
 def extract_doc_labels(ds_corpus_meta_file: str) -> List[str]:
     with open(ds_corpus_meta_file) as ds_corpus_meta:
-        doc_labels = list(OrderedDict.fromkeys(doc_meta.split()[2] for doc_meta in ds_corpus_meta))
+        doc_labels = list(OrderedDict.fromkeys(
+            doc_meta.split()[2] for doc_meta in ds_corpus_meta))
     return doc_labels
 
 
@@ -33,7 +35,8 @@ def compute_x(docs_of_words: List[List[str]], tr_size: int, emb_dim: int, w_vect
         mean_doc_vec = (doc_vec / len(words)).tolist()
         data_x.extend(mean_doc_vec)
 
-    row_indexes = np.array([[i] * emb_dim for i in range(tr_size)]).flatten().tolist()
+    row_indexes = np.array(
+        [[i] * emb_dim for i in range(tr_size)]).flatten().tolist()
     col_indexes = list(range(emb_dim)) * tr_size
     return csr_matrix((data_x, (row_indexes, col_indexes)), shape=(tr_size, emb_dim))
 
@@ -53,7 +56,9 @@ def compute_y(doc_meta_list: List[str], train_size: int, doc_labels: List[str]) 
 
 def compute_tx(docs_of_words: List[List[str]], test_size: int, real_train_size: int, word_emb_dim: int,
                w_vectors: WORD_VECTORS_TYPE) -> csr_matrix:
-    """ tx: feature vectors of test docs, no initial features """
+    """ 
+    tx: feature vectors of test docs, no initial features 
+    """
     data_tx = []
     for i in range(test_size):
         doc_vec = np.zeros(word_emb_dim, dtype=float)  # Initialize
@@ -65,7 +70,8 @@ def compute_tx(docs_of_words: List[List[str]], test_size: int, real_train_size: 
         mean_doc_vec = (doc_vec / len(words)).tolist()
         data_tx.extend(mean_doc_vec)
 
-    row_indexes = np.array([[i] * word_emb_dim for i in range(test_size)]).flatten().tolist()
+    row_indexes = np.array(
+        [[i] * word_emb_dim for i in range(test_size)]).flatten().tolist()
     col_indexes = list(range(word_emb_dim)) * test_size
     return csr_matrix((data_tx, (row_indexes, col_indexes)), shape=(test_size, word_emb_dim))
 
@@ -85,8 +91,11 @@ def compute_ty(doc_meta_list: List[str], test_size: int, real_train_size: int, d
 
 def compute_allx(docs_of_words: List[List[str]], real_train_size: int, vocab: List[str],
                  word_vectors: WORD_VECTORS_TYPE, emb_dim: int) -> csr_matrix:
-    """allx: A superset of x, the feature vectors of both labeled and words (unlabeled training instances)"""
-    word_vectors_arr = extract_word_vectors_arr(word_vectors, vocab, emb_dim=emb_dim)
+    """
+    allx: A superset of x, the feature vectors of both labeled and words (unlabeled training instances)
+    """
+    word_vectors_arr = extract_word_vectors_arr(
+        word_vectors, vocab, emb_dim=emb_dim)
     data_allx = []
     row_size = real_train_size + len(vocab)
 
@@ -117,14 +126,16 @@ def compute_ally(doc_meta_list: List[str], real_train_size: int, doc_labels: Lis
         one_hot_encoded_label[label_index] = 1
         ally.append(one_hot_encoded_label)
 
-    zero_filled_one_hot_for_words = [np.zeros(len(doc_labels), dtype=int)] * vocab_size
+    zero_filled_one_hot_for_words = [
+        np.zeros(len(doc_labels), dtype=int)] * vocab_size
     ally.extend(zero_filled_one_hot_for_words)
     return np.array(ally)
 
 
 def load_word_to_word_vectors(path: str) -> Tuple[WORD_VECTORS_TYPE, int]:
-    word_vectors_as_list = pkl.load(file=open(path, 'rb'))  # type: MutableMapping[str,List[float]]
-    word_vectors = OrderedDict((word, np.array(vec_lst)) for word, vec_lst in word_vectors_as_list.items())
+    word_vectors_as_list = pkl.load(file=open(path, 'rb'))
+    word_vectors = OrderedDict((word, np.array(vec_lst))
+                               for word, vec_lst in word_vectors_as_list.items())
     word_embedding_dimension = len(next(iter(word_vectors.values())))
     return word_vectors, word_embedding_dimension
 
@@ -173,37 +184,55 @@ def build_node_features(ds_name: str, validation_ratio: float, use_predefined_wo
 
     # Extract word_vectors and word_embedding_dimension
     if use_predefined_word_vectors:
-        ds_corpus_word_vectors = cfg.corpus_shuffled_word_vectors_dir + ds_name + '.word_vectors'
+        ds_corpus_word_vectors = cfg.corpus_shuffled_word_vectors_dir + \
+            ds_name + '.word_vectors'
         # ds_corpus_word_vectors =  'glove.6B.300d.txt'  # Alternatively, you can use GLOVE word-embeddings
-        word_vectors, word_emb_dim = load_word_to_word_vectors(path=ds_corpus_word_vectors)
+        word_vectors, word_emb_dim = load_word_to_word_vectors(
+            path=ds_corpus_word_vectors)
     else:
         word_vectors, word_emb_dim = OrderedDict(), 300  # todo: parametrize
 
-    vocabulary = open(ds_corpus_vocabulary).read().splitlines()  # Extract Vocabulary
-    doc_meta_list = open(file=ds_corpus_meta, mode='r').read().splitlines()  # Extract Meta List
-    doc_labels = extract_doc_labels(ds_corpus_meta_file=ds_corpus_meta)  # Extract Document Labels
+    vocabulary = open(ds_corpus_vocabulary).read(
+    ).splitlines()  # Extract Vocabulary
+    doc_meta_list = open(file=ds_corpus_meta, mode='r').read(
+    ).splitlines()  # Extract Meta List
+    doc_labels = extract_doc_labels(
+        ds_corpus_meta_file=ds_corpus_meta)  # Extract Document Labels
 
-    docs_of_words = [line.split() for line in open(file=ds_corpus)]  # Extract Documents of Words
+    docs_of_words = [line.split() for line in open(
+        file=ds_corpus)]  # Extract Documents of Words
 
     # Extract mean document word vectors and one hot labels of train-set
-    x = compute_x(docs_of_words, adjusted_train_size, word_emb_dim, w_vectors=word_vectors)
-    y = compute_y(doc_meta_list, train_size=adjusted_train_size, doc_labels=doc_labels)
+    x = compute_x(docs_of_words, adjusted_train_size,
+                  word_emb_dim, w_vectors=word_vectors)
+    y = compute_y(doc_meta_list, train_size=adjusted_train_size,
+                  doc_labels=doc_labels)
 
     # Extract mean document word vectors and one hot labels of test-set
-    tx = compute_tx(docs_of_words, test_size, real_train_size, word_emb_dim, w_vectors=word_vectors)
-    ty = compute_ty(doc_meta_list, test_size=test_size, real_train_size=real_train_size, doc_labels=doc_labels)
+    tx = compute_tx(docs_of_words, test_size, real_train_size,
+                    word_emb_dim, w_vectors=word_vectors)
+    ty = compute_ty(doc_meta_list, test_size=test_size,
+                    real_train_size=real_train_size, doc_labels=doc_labels)
 
     # Extract doc_features + word_features
-    allx = compute_allx(docs_of_words, real_train_size, vocabulary, word_vectors, emb_dim=word_emb_dim)
-    ally = compute_ally(doc_meta_list, real_train_size, doc_labels, vocab_size=len(vocabulary))
+    allx = compute_allx(docs_of_words, real_train_size,
+                        vocabulary, word_vectors, emb_dim=word_emb_dim)
+    ally = compute_ally(doc_meta_list, real_train_size,
+                        doc_labels, vocab_size=len(vocabulary))
 
     # Dump node features matrices to files
-    node_feature_matrices = {"x": x, "y": y, "tx": tx, "ty": ty, "allx": allx, "ally": ally}
-    dump_node_features(directory=dir_corpus_node_features, ds=ds_name, node_features_dict=node_feature_matrices)
+    node_feature_matrices = {"x": x, "y": y, "tx": tx,
+                             "ty": ty, "allx": allx, "ally": ally}
+    dump_node_features(directory=dir_corpus_node_features,
+                       ds=ds_name, node_features_dict=node_feature_matrices)
 
     elapsed = time() - t1
-    pl.print_log("[INFO] x.shape=   {},\t y.shape=   {}".format(x.shape, y.shape))
-    pl.print_log("[INFO] tx.shape=  {},\t ty.shape=  {}".format(tx.shape, ty.shape))
-    pl.print_log("[INFO] allx.shape={},\t ally.shape={}".format(allx.shape, ally.shape))
+    pl.print_log(
+        "[INFO] x.shape=   {},\t y.shape=   {}".format(x.shape, y.shape))
+    pl.print_log("[INFO] tx.shape=  {},\t ty.shape=  {}".format(
+        tx.shape, ty.shape))
+    pl.print_log("[INFO] allx.shape={},\t ally.shape={}".format(
+        allx.shape, ally.shape))
     pl.print_log("[INFO] Elapsed time is %f seconds." % elapsed)
-    pl.print_log("[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========")
+    pl.print_log(
+        "[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========")

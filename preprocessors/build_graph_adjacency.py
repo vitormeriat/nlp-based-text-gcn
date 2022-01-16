@@ -1,20 +1,17 @@
-import pickle
-from time import time
-
-from scipy.sparse import csr_matrix
-
-from common import check_data_set
 from preprocessors.configs import PreProcessingConfigs
 from utils.file_ops import create_dir, check_paths
-from utils.logger import PrintLog
 import preprocessors.adjacency as adj
+from scipy.sparse import csr_matrix
+from common import check_data_set
+from utils.logger import PrintLog
+from time import time
+import pickle
 
 
 def build_graph_adjacency(ds_name: str, cfg: PreProcessingConfigs, pl: PrintLog):
     """Build Adjacency Matrix of Doc-Word Heterogeneous Graph"""
 
     t1 = time()
-    #pl = PrintLog()
     # input files
     ds_corpus = cfg.corpus_shuffled_dir + ds_name + ".txt"
     ds_corpus_vocabulary = cfg.corpus_shuffled_vocab_dir + ds_name + '.vocab'
@@ -43,9 +40,6 @@ def build_graph_adjacency(ds_name: str, cfg: PreProcessingConfigs, pl: PrintLog)
     # Extract word-word weights
     rows, cols, weights = adj.extract_pmi_word_weights(
         windows_of_words, word_to_id, vocab, train_size)
-    # As an alternative, use cosine similarity of word vectors as weights:
-    #   ds_corpus_word_vectors = cfg.CORPUS_WORD_VECTORS_DIR + ds_name + '.word_vectors'
-    #   rows, cols, weights = extract_cosine_similarity_word_weights(vocab, train_size, ds_corpus_word_vectors)
 
     # Extract word-doc weights
     rows, cols, weights = adj.extract_tw_idf_doc_word_weights(
@@ -67,4 +61,5 @@ def build_graph_adjacency(ds_name: str, cfg: PreProcessingConfigs, pl: PrintLog)
     pl.print_log("[INFO] Adjacency Dir='{}'".format(
         cfg.corpus_shuffled_adjacency_dir))
     pl.print_log("[INFO] Elapsed time is %f seconds." % elapsed)
-    pl.print_log("[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========")
+    pl.print_log(
+        "[INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========")

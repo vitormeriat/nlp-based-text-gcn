@@ -1,20 +1,17 @@
-import pickle
-from time import time
-
-from scipy.sparse import csr_matrix
-
-from common import check_data_set
 from preprocessors.configs import PreProcessingConfigs
 from utils.file_ops import create_dir, check_paths
-from utils.logger import PrintLog
 import preprocessors.adjacency as adj
+from scipy.sparse import csr_matrix
+from common import check_data_set
+from utils.logger import PrintLog
+from time import time
+import pickle
 
 
 def build_freq_adjacency(ds_name: str, cfg: PreProcessingConfigs, pl: PrintLog):
     """Build Adjacency Matrix of Doc-Word Heterogeneous Graph"""
 
     t1 = time()
-    #pl = PrintLog()
     # input files
     ds_corpus = cfg.corpus_shuffled_dir + ds_name + ".txt"
     ds_corpus_vocabulary = cfg.corpus_shuffled_vocab_dir + ds_name + '.vocab'
