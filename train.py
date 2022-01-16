@@ -9,9 +9,9 @@ import matplotlib.pyplot as plt
 def create_training_cfg() -> TrainingConfigs:
 
     conf = TrainingConfigs()
-    # conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed',
-    #                  'mr', 'cora', 'citeseer', 'pubmed', 'test']
-    conf.data_sets = ['R8']
+    conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed',
+                      'mr', 'cora', 'citeseer', 'pubmed']
+    #conf.data_sets = ['R8']
     conf.corpus_split_index_dir = 'data/corpus.shuffled/split_index/'
     conf.corpus_node_features_dir = 'data/corpus.shuffled/node_features/'
     conf.corpus_adjacency_dir = ''
