@@ -2,7 +2,7 @@ from trainer.prepare_matrices import prepare_matrices
 from trainer.configs import TrainingConfigs
 from trainer.load_corpus import load_corpus
 from utils.logger import PrintLog
-from common import check_data_set
+from utils.common import check_data_set
 from sklearn import metrics
 import scipy.sparse as sp
 from time import time

@@ -3,12 +3,15 @@ from trainer.train_model import train_model
 from tsne import tsne_visualizer
 from sys import argv
 
+import matplotlib.pyplot as plt
+
 
 def create_training_cfg() -> TrainingConfigs:
 
     conf = TrainingConfigs()
-    conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed',
-                      'mr', 'cora', 'citeseer', 'pubmed', 'test']
+    # conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed',
+    #                  'mr', 'cora', 'citeseer', 'pubmed', 'test']
+    conf.data_sets = ['R8']
     conf.corpus_split_index_dir = 'data/corpus.shuffled/split_index/'
     conf.corpus_node_features_dir = 'data/corpus.shuffled/node_features/'
     conf.corpus_adjacency_dir = ''
@@ -39,6 +42,26 @@ def save_history(hist, representation, dataset):
         my_file.writelines(hist)
 
 
+def create_training_plot(training_history, name="training_history"):
+    fig, axes = plt.subplots(2, 1)
+    axes[0].plot(training_history.epoch, training_history.accuracy, c="blue")
+    axes[0].set_ylabel("Accuracy", size=20)
+    axes[0].grid(which="both")
+    axes[1].plot(training_history.epoch, training_history.val_loss,
+                 c="green", label='Validation')
+    axes[1].plot(training_history.epoch,
+                 training_history.train_loss, c="red", label='Train')
+    axes[1].set_ylabel("Loss", size=20)
+    axes[1].set_xlabel("Epoch", size=20)
+    axes[1].grid(which="both")
+    axes[1].legend(fontsize=15)
+
+    fig = plt.gcf()
+    fig.set_size_inches(15, 8)
+    plt.tight_layout()
+    plt.savefig(f"{name}.jpg", dpi=200)
+
+
 def batch_train(rp: str, trn_cfg):
     '''
     Experiments > Graph Representation > Model Hyperparameter Tuning > Run Step
@@ -49,6 +72,9 @@ def batch_train(rp: str, trn_cfg):
     if rp == 'frequency':
         # Default adjacency
         trn_cfg.corpus_adjacency_dir = f'{path}/frequency/'
+    elif rp == 'semantic':
+        # Semantic adjacency
+        trn_cfg.corpus_adjacency_dir = f'{path}/semantic/'
     elif rp == 'syntactic_dependency':
         # Syntactic adjacency
         trn_cfg.corpus_adjacency_dir = f'{path}/syntactic_dependency/'

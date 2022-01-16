@@ -2,7 +2,7 @@ import random
 from time import time
 from typing import List, Tuple
 from utils.logger import PrintLog
-from common import check_data_set
+from utils.common import check_data_set
 from preprocessors.configs import PreProcessingConfigs
 from utils.file_ops import create_dir, write_iterable_to_file, check_paths
 

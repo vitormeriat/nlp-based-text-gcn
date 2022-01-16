@@ -1,7 +1,7 @@
 from utils.file_ops import write_iterable_to_file, create_dir, check_paths
 from sklearn.feature_extraction.text import TfidfVectorizer
 from preprocessors.configs import PreProcessingConfigs
-from common import check_data_set
+from utils.common import check_data_set
 from collections import OrderedDict
 from typing import List, Iterable
 from utils.logger import PrintLog
