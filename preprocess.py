@@ -16,7 +16,7 @@ def create_preprocessing_cfg() -> PreProcessingConfigs:
     conf = PreProcessingConfigs()
     conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed',
                       'mr', 'cora', 'citeseer', 'pubmed', 'test']
-    conf.adjacency_sets = ['default', 'syntactic_dependency',
+    conf.adjacency_sets = ['frequency', 'syntactic_dependency',
                            'linguistic_inquiry', 'semantic', 'graph']
     conf.data_set_extension = '.txt'
     conf.corpus_dir = 'data/corpus/'

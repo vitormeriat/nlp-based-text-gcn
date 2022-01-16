@@ -13,7 +13,7 @@ def create_training_cfg() -> TrainingConfigs:
     conf.corpus_node_features_dir = 'data/corpus.shuffled/node_features/'
     conf.corpus_adjacency_dir = ''
     conf.corpus_vocab_dir = 'data/corpus.shuffled/vocabulary/'
-    conf.adjacency_sets = ['default', 'syntactic_dependency',
+    conf.adjacency_sets = ['frequency', 'syntactic_dependency',
                            'linguistic_inquiry', 'semantic', 'graph']
     conf.model = 'gcn'
     conf.learning_rate = 0.02
