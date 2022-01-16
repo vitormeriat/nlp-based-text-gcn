@@ -152,7 +152,7 @@ def get_weight_tfidf(docs_of_words, word_id_map, doc_word_freq, train_size, voca
     return weight_tfidf
 
 
-def compute_weights_with_PMI_V5(docs_of_words, rela_pair_count_str, word_window_freq, train_size, word_id_map, min_count1, max_count1, count_mean1, count_std1, row, col):
+def compute_weights_with_PMI(docs_of_words, rela_pair_count_str, word_window_freq, train_size, word_id_map, min_count1, max_count1, count_mean1, count_std1, row, col):
     weight = []
     errors = 0
     num_window = len(docs_of_words)
@@ -188,42 +188,6 @@ def compute_weights_with_PMI_V5(docs_of_words, rela_pair_count_str, word_window_
     return weight
 
 
-def compute_weights_with_PMI_V2(docs_of_words, rela_pair_count_str, word_window_freq, train_size, word_id_map, min_count1, max_count1, count_mean1, count_std1, row, col):
-    weight = []
-    errors = 0
-    num_window = len(docs_of_words)
-    for key, count in rela_pair_count_str.items():
-        try:
-            temp = key.split(',')
-            i = temp[0]
-            j = temp[1]
-
-            if i in word_window_freq and j in word_window_freq:
-                word_freq_i = word_window_freq[i]
-                word_freq_j = word_window_freq[j]
-                pmi = log(
-                    1.0
-                    * count
-                    / num_window
-                    / (1.0 * word_freq_i * word_freq_j / num_window ** 2)
-                )
-
-                row.append(train_size + word_id_map[i])
-                col.append(train_size + word_id_map[j])
-                if key in rela_pair_count_str:
-                    wei = (rela_pair_count_str[key] -
-                           min_count1) / (max_count1 - min_count1)
-                    wei = (rela_pair_count_str[key]-count_mean1) / count_std1
-                    weight.append(wei)
-                else:
-                    weight.append(pmi)
-        except:
-            errors += 1
-
-    print(f'[INFO] Error in Compute Weights: {errors}')
-    return weight
-
-
 def compute_weights(docs_of_words, rela_pair_count_str, word_window_freq, train_size, word_id_map, vocab_size, word_doc_freq, vocab):
     row = []
     col = []
@@ -232,8 +196,8 @@ def compute_weights(docs_of_words, rela_pair_count_str, word_window_freq, train_
         rela_pair_count_str)
 
     # compute weights PMI
-    weight = compute_weights_with_PMI_V5(docs_of_words, rela_pair_count_str, word_window_freq,
-                                         train_size, word_id_map, min_count1, max_count1, count_mean1, count_std1, row, col)
+    weight = compute_weights_with_PMI(docs_of_words, rela_pair_count_str, word_window_freq,
+                                      train_size, word_id_map, min_count1, max_count1, count_mean1, count_std1, row, col)
 
     # doc word frequency
     doc_word_freq = get_doc_word_freq(docs_of_words, word_id_map)
