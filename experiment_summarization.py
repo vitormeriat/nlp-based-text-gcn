@@ -11,6 +11,7 @@ import os
 DATASETS = ["MR", "Ohsumed", "R8", "R52"]
 MODES = ["default", "graph", "syntactic"]
 
+
 def clean_text(txt):
     return txt.split(':')[1].replace(',', '')
 
@@ -20,11 +21,11 @@ def get_metrics(file_path, info, mode, dataset):
     with open(file_path) as f:
         text = f.readlines()
     for line in text:
-        
-        if line[0:6] == "Epoch:":
+
+        if line[:6] == "Epoch:":
             #line = line.replace('\n', '').replace(', ', ' ').replace(':', ' ').replace('=', ' ')
             epochs = line.split(" ")[1]
-        if line[0:17] == "Test set results:":
+        if line[:17] == "Test set results:":
             #line = line.replace('\n', '').replace(', ', ' ').replace(':', ' ').replace('=', ' ')
             tokens = line.split(" ")
             return {
@@ -145,11 +146,12 @@ for mode in MODES:
 
         for experiment in range(19):
             experiment_results = df.loc[(df["experiment"] == experiment)]
-            statistics_results.append(calculate_statistics(experiment_results, dataset))
+            statistics_results.append(
+                calculate_statistics(experiment_results, dataset))
         results = pd.DataFrame(statistics_results)
-        max_result = results.loc[(results["mean"] == numpy.max(results["mean"]))]
+        max_result = results.loc[(
+            results["mean"] == numpy.max(results["mean"]))]
         best_results.append(calculate_statistics(max_result, dataset))
-
 
     statistics_results_df = pd.DataFrame(statistics_results)
     best_results_df = pd.DataFrame(best_results)

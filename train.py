@@ -1,5 +1,5 @@
-from trainer.configs import TrainingConfigs
-from trainer.train_model import train_model
+from modules.trainer.configs import TrainingConfigs
+from modules.trainer.train_model import train_model
 from tsne import tsne_visualizer
 from sys import argv
 

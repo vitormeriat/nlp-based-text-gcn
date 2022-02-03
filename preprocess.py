@@ -1,13 +1,13 @@
-from preprocessors.build_linguistic_inquiry_adjacency import build_linguistic_inquiry_adjacency
-from preprocessors.build_semantic_adjacency import build_semantic_adjacency
-from preprocessors.build_dependency_adj import build_dependency_adjacency
-from preprocessors.build_graph_adjacency import build_graph_adjacency
-from preprocessors.build_freq_adjacency import build_freq_adjacency
-from preprocessors.build_node_features import build_node_features
-from preprocessors.clean_data import clean_data, config_nltk
-from preprocessors.configs import PreProcessingConfigs
-from preprocessors.prepare_words import prepare_words
-from preprocessors.shuffle_data import shuffle_data
+from modules.preprocessors.build_linguistic_inquiry_adjacency import build_linguistic_inquiry_adjacency
+from modules.preprocessors.build_semantic_adjacency import build_semantic_adjacency
+from modules.preprocessors.build_dependency_adj import build_dependency_adjacency
+from modules.preprocessors.build_graph_adjacency import build_graph_adjacency
+from modules.preprocessors.build_freq_adjacency import build_freq_adjacency
+from modules.preprocessors.build_node_features import build_node_features
+from modules.preprocessors.clean_data import clean_data, config_nltk
+from modules.preprocessors.configs import PreProcessingConfigs
+from modules.preprocessors.prepare_words import prepare_words
+from modules.preprocessors.shuffle_data import shuffle_data
 from utils.file_ops import create_dir
 from utils.logger import PrintLog
 from sys import argv
@@ -15,7 +15,8 @@ from sys import argv
 
 def create_preprocessing_cfg() -> PreProcessingConfigs:
     conf = PreProcessingConfigs()
-    conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed', 'mr', 'cora', 'citeseer', 'pubmed']
+    conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed',
+                      'mr', 'cora', 'citeseer', 'pubmed']
     #conf.data_sets = ['R8']
     conf.adjacency_sets = ['frequency', 'syntactic_dependency',
                            'linguistic_inquiry', 'semantic', 'graph']
@@ -73,7 +74,7 @@ def preprocess(ds: str, rp: str, preprocessing_cfg: PreProcessingConfigs):  # St
 
 def batch_preprocessing(rp: str, preprocessing_cfg: PreProcessingConfigs):
     for ds in preprocessing_cfg.data_sets:
-        print('\n\n▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ' + ds)
+        print('\n\n'+'▄'*60 + ds)
         preprocess(ds, rp, preprocessing_cfg)
 
 
