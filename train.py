@@ -1,17 +1,16 @@
 from modules.trainer.configs import TrainingConfigs
 from modules.trainer.train_model import train_model
 from tsne import tsne_visualizer
-from sys import argv
-
 import matplotlib.pyplot as plt
+from sys import argv
 
 
 def create_training_cfg() -> TrainingConfigs:
 
     conf = TrainingConfigs()
-    conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed',
-                      'mr', 'cora', 'citeseer', 'pubmed']
-    #conf.data_sets = ['R8']
+    # conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed', 'mr', 'cora', 'citeseer', 'pubmed']
+
+    conf.data_sets = ['R8']
     conf.corpus_split_index_dir = 'data/corpus.shuffled/split_index/'
     conf.corpus_node_features_dir = 'data/corpus.shuffled/node_features/'
     conf.corpus_adjacency_dir = ''
@@ -36,7 +35,7 @@ def train(ds: str, training_cfg: TrainingConfigs):
 
 
 def save_history(hist, representation, dataset):
-    file_name = f'experiments/{representation}_dataset_{dataset}.txt'
+    file_name = f'logs/experiments/{representation}_dataset_{dataset}.txt'
 
     with open(file_name, 'w') as my_file:
         my_file.writelines(hist)
@@ -91,6 +90,7 @@ def batch_train(rp: str, trn_cfg):
         hist = train(ds=ds, training_cfg=trn_cfg)
         save_history(hist, rp, ds)
         tsne_visualizer(ds, rp)
+        create_training_plot(hist)
 
 
 if __name__ == '__main__':

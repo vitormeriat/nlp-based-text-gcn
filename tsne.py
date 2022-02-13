@@ -50,6 +50,6 @@ def tsne_visualizer(data_set, representation):
                bbox_to_anchor=(0.48, -0.08), fontsize=11)
     plt.tight_layout()
     plt.savefig(
-        f'experiments/{representation}_dataset_{data_set}.png', dpi=300)
+        f'logs/tsne/{representation}_dataset_{data_set}.png', dpi=150)
 
     plt.close()

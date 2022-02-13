@@ -1,5 +1,5 @@
-from preprocessors.configs import PreProcessingConfigs
-from embeddings.word_features import train_word2vec
+from modules.preprocessors.configs import PreProcessingConfigs
+from modules.embeddings.word_features import train_word2vec
 from utils.file_ops import create_dir, check_paths
 from utils.common import check_data_set
 from utils.logger import PrintLog

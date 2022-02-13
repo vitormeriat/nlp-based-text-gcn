@@ -1,7 +1,7 @@
 from scipy.sparse.linalg import eigsh
 from utils.logger import print_log
-from models.gcn import GCN
-from models.mlp import MLP
+from modules.models.gcn import GCN
+from modules.models.mlp import MLP
 import scipy.sparse as sp
 import numpy as np
 

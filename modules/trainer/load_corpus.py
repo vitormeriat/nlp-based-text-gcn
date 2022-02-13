@@ -1,5 +1,5 @@
+from modules.trainer.prepare_matrices import normalize_adj
 from scipy.sparse.linalg.eigen.arpack import eigsh
-from trainer.prepare_matrices import normalize_adj
 import pickle as pkl
 import numpy as np
 import scipy as sp

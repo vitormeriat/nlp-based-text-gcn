@@ -1,10 +1,10 @@
 # Linguistic Inquiry and Word Count
-from preprocessors.configs import PreProcessingConfigs
+from modules.preprocessors.configs import PreProcessingConfigs
 from utils.file_ops import create_dir, check_paths
 from utils.logger import PrintLog
 from nltk.corpus import stopwords
 from utils.common import check_data_set
-from liwc.liwc import Liwc
+from modules.liwc.liwc import Liwc
 import scipy.sparse as sp
 from time import time
 from math import log
