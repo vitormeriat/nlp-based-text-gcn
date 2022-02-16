@@ -167,7 +167,7 @@ def build_node_features(ds_name: str, validation_ratio: float, use_predefined_wo
     ds_corpus_test_idx = cfg.corpus_shuffled_split_index_dir + ds_name + '.test'
 
     # output directory of node features
-    dir_corpus_node_features = cfg.corpus_shuffled_node_features_dir + "/" + ds_name
+    dir_corpus_node_features = f'{cfg.corpus_shuffled_node_features_dir}/{ds_name}'
 
     # checkers
     check_data_set(data_set_name=ds_name, all_data_set_names=cfg.data_sets)

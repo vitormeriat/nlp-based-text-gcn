@@ -42,13 +42,13 @@ def build_relation_pair(docs_of_words, cfg):
                 errors += 1
                 continue
 
-            word_pair_str = docs_of_word[i] + ',' + docs_of_word[i+1]
+            word_pair_str = f'{docs_of_word[i]},{docs_of_word[i+1]}'
             if word_pair_str in rela_pair_count_str:
                 rela_pair_count_str[word_pair_str] += 1
             else:
                 rela_pair_count_str[word_pair_str] = 1
             # two orders
-            word_pair_str = docs_of_word[i+1] + ',' + docs_of_word[i]
+            word_pair_str = f'{docs_of_word[i+1]},{docs_of_word[i]}'
             if word_pair_str in rela_pair_count_str:
                 rela_pair_count_str[word_pair_str] += 1
             else:

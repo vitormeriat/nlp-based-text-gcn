@@ -35,9 +35,11 @@ def extract_windows(docs_of_words: List[List[str]], window_size: int) -> List[Li
         if doc_len <= window_size:
             windows.append(doc_words)
         else:
-            for j in range(doc_len - window_size + 1):
-                window = doc_words[j: j + window_size]
-                windows.append(window)
+            windows.extend(
+                doc_words[j : j + window_size]
+                for j in range(doc_len - window_size + 1)
+            )
+
     return windows
 
 

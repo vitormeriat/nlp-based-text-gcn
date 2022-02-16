@@ -191,10 +191,10 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
         word = words[i].strip()
         word_vector = word_embeddings[i]
         word_vector_str = ' '.join([str(x) for x in word_vector])
-        word_vectors.append(word + ' ' + word_vector_str)
+        word_vectors.append(f'{word} {word_vector_str}')
 
     word_embeddings_str = '\n'.join(word_vectors)
-    with open('./data/' + ds_name + '_word_vectors.txt', 'w') as f:
+    with open(f'./data/{ds_name}_word_vectors.txt', 'w') as f:
         f.write(word_embeddings_str)
 
     # Create doc vectors and written to file  # todo: commented-out
@@ -213,7 +213,7 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
         doc_id += 1
 
     doc_embeddings_str = '\n'.join(doc_vectors)
-    with open('./data/' + ds_name + '_doc_vectors.txt', 'w') as f:
+    with open(f'./data/{ds_name}_doc_vectors.txt', 'w') as f:
         f.write(doc_embeddings_str)
 
     return pl.log_history()

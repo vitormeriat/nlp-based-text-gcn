@@ -7,7 +7,7 @@ def make_path_absolute(a_path: str) -> str:
         print('[WARN] Path:{} is already absolute.'.format(a_path))
         return a_path
     current_working_dir = getcwd()
-    return current_working_dir + '/' + a_path
+    return f'{current_working_dir}/{a_path}'
 
 
 class TrainingConfigs:
