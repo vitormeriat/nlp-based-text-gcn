@@ -8,7 +8,7 @@ import scipy.sparse as sp
 from time import time
 import pickle as pkl
 
-import preprocessors.adjacency as adjcy
+import modules.preprocessors.adjacency as adjcy
 
 
 def build_relation_pair(docs_of_words, cfg):

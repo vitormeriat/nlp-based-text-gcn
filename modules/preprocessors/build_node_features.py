@@ -1,5 +1,5 @@
 from typing import List, Dict, MutableMapping, Tuple, Union
-from preprocessors.configs import PreProcessingConfigs
+from modules.preprocessors.configs import PreProcessingConfigs
 from utils.file_ops import check_paths, create_dir
 from collections import OrderedDict
 from scipy.sparse import csr_matrix

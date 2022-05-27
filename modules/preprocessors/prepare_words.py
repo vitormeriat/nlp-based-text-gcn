@@ -1,6 +1,6 @@
 from utils.file_ops import write_iterable_to_file, create_dir, check_paths
 from sklearn.feature_extraction.text import TfidfVectorizer
-from preprocessors.configs import PreProcessingConfigs
+from modules.preprocessors.configs import PreProcessingConfigs
 from utils.common import check_data_set
 from collections import OrderedDict
 from typing import List, Iterable
@@ -19,12 +19,12 @@ def extract_word_definitions(vocabulary: List[str]) -> List[str]:
     merged_definitions_of_words = []
     for word in vocabulary:
         syn_sets_of_word = wordnet.synsets(word.strip())
-        if word_definitions := [
-            syn_set.definition() for syn_set in syn_sets_of_word
-        ]:
-            merged_definitions_of_word = ' '.join(word_definitions)
-        else:
+        word_definitions = [syn_set.definition()
+                            for syn_set in syn_sets_of_word]
+        if not word_definitions:  # If list is empty, fill with '<PAD>'
             merged_definitions_of_word = '<PAD>'
+        else:
+            merged_definitions_of_word = ' '.join(word_definitions)
         merged_definitions_of_words.append(merged_definitions_of_word)
     # rmtree(temporary_nltk_folder)
     return merged_definitions_of_words

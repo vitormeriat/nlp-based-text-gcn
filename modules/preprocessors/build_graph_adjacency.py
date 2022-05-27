@@ -1,6 +1,6 @@
-from preprocessors.configs import PreProcessingConfigs
+from modules.preprocessors.configs import PreProcessingConfigs
 from utils.file_ops import create_dir, check_paths
-import preprocessors.adjacency as adj
+import modules.preprocessors.adjacency as adj
 from scipy.sparse import csr_matrix
 from utils.common import check_data_set
 from utils.logger import PrintLog

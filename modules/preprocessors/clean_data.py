@@ -1,6 +1,6 @@
 from utils.file_ops import create_dir, write_iterable_to_file, check_paths
 from utils.common import extract_word_counts, check_data_set
-from preprocessors.configs import PreProcessingConfigs
+from modules.preprocessors.configs import PreProcessingConfigs
 from utils.logger import PrintLog
 from collections import Counter
 from typing import List, Set

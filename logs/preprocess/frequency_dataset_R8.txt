@@ -1,20 +1,5 @@
-[INFO] Cleaned-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.cleaned/'
-[INFO] Rare-Count=<5>
-[INFO] Elapsed time is 1.455981 seconds.
-[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========
-[INFO] Shuffled-Corpus Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/'
-[INFO] Elapsed time is 0.654992 seconds.
-[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========
-[INFO] Vocabulary Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/vocabulary/'
-[INFO] Word-Vector Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/word_vectors/'
-[INFO] Elapsed time is 3.993627 seconds.
-[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========
-[INFO] x.shape=   (4937, 300),	 y.shape=   (4937, 8)
-[INFO] tx.shape=  (2189, 300),	 ty.shape=  (2189, 8)
-[INFO] allx.shape=(13173, 300),	 ally.shape=(13173, 8)
-[INFO] Elapsed time is 2.426975 seconds.
-[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========
 [INFO] (3165430, (3165430, 3165430)), shape=(15362, 15362)
-[INFO] Adjacency Dir='C:\repos\GCN-for-text-classification/data/corpus.shuffled/adjacency/'
-[INFO] Elapsed time is 397.824760 seconds.
+[INFO] Adjacency Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/adjacency/'
+[INFO] Elapsed time is 136.813317 seconds.
 [INFO] ========= EXTRACTED ADJACENCY MATRIX: Heterogenous doc-word adjacency matrix. =========
+[INFO] Final elapsed time is 136.972344 seconds.

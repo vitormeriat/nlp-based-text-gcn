@@ -1,0 +1,70 @@
+
+==================== Torch Seed: 2109777161100
+
+Model parameters
+
+Layer: layer1.W0 | Size: torch.Size([6827, 200])
+Layer: layer2.W0 | Size: torch.Size([200, 6])
+
+Data statistics
+
+  Edges    Classes    Train samples    Val samples    Test samples
+-------  ---------  ---------------  -------------  --------------
+   6827          6             2088            231             993
+
+Epoch:0001, train_loss=1.88995, train_acc=0.15230, val_loss=1.79061, val_acc=0.23810, time=0.06200
+Epoch:0002, train_loss=1.77520, train_acc=0.28448, val_loss=1.78713, val_acc=0.31602, time=0.06400
+Epoch:0003, train_loss=1.72794, train_acc=0.38889, val_loss=1.78167, val_acc=0.41558, time=0.06299
+Epoch:0004, train_loss=1.66351, train_acc=0.50431, val_loss=1.77609, val_acc=0.53247, time=0.06301
+Epoch:0005, train_loss=1.59898, train_acc=0.63123, val_loss=1.77214, val_acc=0.59307, time=0.08599
+Epoch:0006, train_loss=1.54987, train_acc=0.73276, val_loss=1.76973, val_acc=0.61472, time=0.08999
+Epoch:0007, train_loss=1.51569, train_acc=0.76245, val_loss=1.76811, val_acc=0.62771, time=0.09000
+Epoch:0008, train_loss=1.49038, train_acc=0.79262, val_loss=1.76656, val_acc=0.62771, time=0.09099
+Epoch:0009, train_loss=1.46787, train_acc=0.80364, val_loss=1.76479, val_acc=0.67100, time=0.09000
+Epoch:0010, train_loss=1.44561, train_acc=0.82567, val_loss=1.76309, val_acc=0.67532, time=0.08600
+Epoch:0011, train_loss=1.42527, train_acc=0.85057, val_loss=1.76183, val_acc=0.69697, time=0.08298
+Epoch:0012, train_loss=1.40882, train_acc=0.85824, val_loss=1.76105, val_acc=0.71429, time=0.08899
+Epoch:0013, train_loss=1.39616, train_acc=0.86925, val_loss=1.76062, val_acc=0.72294, time=0.08102
+Epoch:0014, train_loss=1.38587, train_acc=0.87644, val_loss=1.76033, val_acc=0.70563, time=0.06102
+Epoch:0015, train_loss=1.37660, train_acc=0.88362, val_loss=1.76006, val_acc=0.70563, time=0.06303
+Epoch:0016, train_loss=1.36761, train_acc=0.89033, val_loss=1.75978, val_acc=0.72294, time=0.06003
+Epoch:0017, train_loss=1.35870, train_acc=0.89943, val_loss=1.75950, val_acc=0.71429, time=0.07999
+Epoch:0018, train_loss=1.35006, train_acc=0.91044, val_loss=1.75929, val_acc=0.70996, time=0.08800
+Epoch:0019, train_loss=1.34200, train_acc=0.91667, val_loss=1.75920, val_acc=0.70996, time=0.06001
+Epoch:0020, train_loss=1.33485, train_acc=0.92337, val_loss=1.75926, val_acc=0.71429, time=0.06401
+Epoch:0021, train_loss=1.32868, train_acc=0.93199, val_loss=1.75943, val_acc=0.71861, time=0.06001
+Epoch:0022, train_loss=1.32330, train_acc=0.94061, val_loss=1.75965, val_acc=0.72294, time=0.06001
+Epoch:0023, train_loss=1.31832, train_acc=0.94397, val_loss=1.75983, val_acc=0.72294, time=0.06100
+Early stopping...
+
+Optimization Finished!
+
+Test set results: loss= 1.66410, accuracy= 0.70594, time= 0.02199
+
+Test Precision, Recall and F1-Score...
+              precision    recall  f1-score   support
+
+           0     0.6882    0.6275    0.6564       204
+           1     0.7700    0.7885    0.7791       208
+           2     0.6763    0.7800    0.7245       150
+           3     0.6965    0.7407    0.7179       189
+           4     0.4694    0.3333    0.3898        69
+           5     0.7544    0.7457    0.7500       173
+
+    accuracy                         0.7059       993
+   macro avg     0.6758    0.6693    0.6696       993
+weighted avg     0.7014    0.7059    0.7019       993
+
+
+Macro average Test Precision, Recall and F1-Score...
+(0.6757861342730452, 0.6692752221353603, 0.6696241790568854, None)
+
+Micro average Test Precision, Recall and F1-Score...
+(0.7059415911379657, 0.7059415911379657, 0.7059415911379657, None)
+
+Embeddings:
+Word_embeddings: 3515
+Train_doc_embeddings: 2319
+Test_doc_embeddings: 993
+
+Elapsed time is 2.220988 seconds.

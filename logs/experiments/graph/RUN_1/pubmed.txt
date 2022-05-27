@@ -1,0 +1,59 @@
+
+==================== Torch Seed: 14257673868900
+
+Model parameters
+
+Layer: layer1.W0 | Size: torch.Size([20169, 200])
+Layer: layer2.W0 | Size: torch.Size([200, 3])
+
+Data statistics
+
+  Edges    Classes    Train samples    Val samples    Test samples
+-------  ---------  ---------------  -------------  --------------
+  20169          3            12422           1380            5915
+
+Epoch:0001, train_loss=3.61443, train_acc=0.34358, val_loss=1.35995, val_acc=0.36594, time=0.42501
+Epoch:0002, train_loss=2.93465, train_acc=0.43495, val_loss=1.35318, val_acc=0.37319, time=0.40300
+Epoch:0003, train_loss=2.39444, train_acc=0.51481, val_loss=1.34515, val_acc=0.37609, time=0.40101
+Epoch:0004, train_loss=1.92846, train_acc=0.59218, val_loss=1.33822, val_acc=0.38188, time=0.40200
+Epoch:0005, train_loss=1.54938, train_acc=0.66600, val_loss=1.33405, val_acc=0.38551, time=0.39701
+Epoch:0006, train_loss=1.25766, train_acc=0.72726, val_loss=1.33182, val_acc=0.38333, time=0.43400
+Epoch:0007, train_loss=1.03358, train_acc=0.78699, val_loss=1.33008, val_acc=0.38768, time=0.39700
+Epoch:0008, train_loss=0.85990, train_acc=0.83908, val_loss=1.32845, val_acc=0.39420, time=0.39799
+Epoch:0009, train_loss=0.72893, train_acc=0.88392, val_loss=1.32723, val_acc=0.39928, time=0.40800
+Epoch:0010, train_loss=0.63411, train_acc=0.91563, val_loss=1.32663, val_acc=0.40072, time=0.39701
+Epoch:0011, train_loss=0.56723, train_acc=0.94147, val_loss=1.32664, val_acc=0.40507, time=0.44701
+Epoch:0012, train_loss=0.52049, train_acc=0.96023, val_loss=1.32715, val_acc=0.40870, time=0.44200
+Epoch:0013, train_loss=0.48800, train_acc=0.97207, val_loss=1.32806, val_acc=0.40870, time=0.39502
+Epoch:0014, train_loss=0.46563, train_acc=0.98189, val_loss=1.32926, val_acc=0.41232, time=0.39001
+Epoch:0015, train_loss=0.45040, train_acc=0.98801, val_loss=1.33067, val_acc=0.41232, time=0.39400
+Early stopping...
+
+Optimization Finished!
+
+Test set results: loss= 2.05802, accuracy= 0.42502, time= 0.11501
+
+Test Precision, Recall and F1-Score...
+              precision    recall  f1-score   support
+
+           0     0.3147    0.4176    0.3590      1202
+           1     0.4635    0.4709    0.4672      2357
+           2     0.4686    0.3829    0.4214      2356
+
+    accuracy                         0.4250      5915
+   macro avg     0.4156    0.4238    0.4158      5915
+weighted avg     0.4353    0.4250    0.4269      5915
+
+
+Macro average Test Precision, Recall and F1-Score...
+(0.41559017470902865, 0.42380906527293627, 0.4158415371245641, None)
+
+Micro average Test Precision, Recall and F1-Score...
+(0.4250211327134404, 0.4250211327134404, 0.4250211327134404, None)
+
+Embeddings:
+Word_embeddings: 452
+Train_doc_embeddings: 13802
+Test_doc_embeddings: 5915
+
+Elapsed time is 7.766990 seconds.

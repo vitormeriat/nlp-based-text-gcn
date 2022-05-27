@@ -9,10 +9,10 @@ from time import time
 import numpy as np
 import random
 import torch
+from tabulate import tabulate
 
 
 def return_seed(nums=10):
-    # seed = [47, 17, 1, 3, 87, 300, 77, 23, 13]
     seed = random.sample(range(0, 100000), nums)
     return seed
 
@@ -56,7 +56,7 @@ def evaluate_model(model, criterion, features, labels, mask):
     return loss.numpy(), acc, pred.numpy(), labels.numpy(), (time() - t_test)
 
 
-def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
+def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs, rp:str):
     t1 = time()
     pl = PrintLog()
     configure_cuda()
@@ -87,16 +87,6 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
         t_train_mask, 0), 1, 0).repeat(1, y_train.shape[1])
 
     t_support = [torch.Tensor(support[i]) for i in range(len(support))]
-    # if torch.cuda.is_available():
-    #     model_func = model_func.cuda()
-    #     t_features = t_features.cuda()
-    #     t_y_train = t_y_train.cuda()
-    #     t_y_val = t_y_val.cuda()
-    #     t_y_test = t_y_test.cuda()
-    #     t_train_mask = t_train_mask.cuda()
-    #     tm_train_mask = tm_train_mask.cuda()
-    #     for i in range(len(support)):
-    #         t_support = [t.cuda() for t in t_support if True]
 
     model = model_func(
         input_dim=features.shape[0], support=t_support, num_classes=y_train.shape[1])
@@ -105,7 +95,24 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=cfg.learning_rate)
 
+    #pl.print_log(f"\nModel structure:\n\n{model}\n")
+    pl.print_log("\nModel parameters\n")
+    for name, param in model.named_parameters():
+        pl.print_log(f"Layer: {name} | Size: {param.size()}")
+
+    pl.print_log("\nData statistics\n")
+    pl.print_log(tabulate([
+        ["Edges", "Classes", "Train samples", "Val samples", "Test samples"],
+        [features.shape[0], y_train.shape[1], train_mask.sum(), val_mask.sum(), test_mask.sum()]],
+        headers="firstrow"))
+    pl.print_log()
+
     val_losses = []
+
+    train_loss_hist = []
+    eval_loss_hist = []
+    train_acc_hist = []
+    eval_acc_hist = []
 
     # Train model
     for epoch in range(cfg.epochs):
@@ -140,6 +147,11 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
             pl.print_log("Early stopping...")
             break
 
+        train_loss_hist.append(float(loss))
+        train_acc_hist.append(float(acc))
+        eval_loss_hist.append(float(val_loss))
+        eval_acc_hist.append(float(val_acc))
+
     pl.print_log("\nOptimization Finished!")
 
     # Testing
@@ -166,6 +178,8 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
     pl.print_log("\nMicro average Test Precision, Recall and F1-Score...")
     pl.print_log(metrics.precision_recall_fscore_support(
         test_labels, test_pred, average='micro'))
+    #pl.print_log("\nConfusion Matrix...")
+    #pl.print_log(metrics.confusion_matrix(test_labels, test_pred))
 
     # doc and word embeddings
     tmp = model.layer1.embedding.numpy()
@@ -174,9 +188,9 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
     test_doc_embeddings = tmp[adj.shape[0] - test_size:]
 
     pl.print_log('\nEmbeddings:')
-    pl.print_log('Word_embeddings:' + str(len(word_embeddings)))
-    pl.print_log('Train_doc_embeddings:' + str(len(train_doc_embeddings)))
-    pl.print_log('Test_doc_embeddings:' + str(len(test_doc_embeddings)))
+    pl.print_log(f'Word_embeddings: {len(word_embeddings)}')
+    pl.print_log(f'Train_doc_embeddings: {len(train_doc_embeddings)}')
+    pl.print_log(f'Test_doc_embeddings: {len(test_doc_embeddings)}')
     pl.print_log("\nElapsed time is %f seconds." % elapsed)
     print('\nWord_embeddings:')
     print(word_embeddings)
@@ -194,7 +208,7 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
         word_vectors.append(f'{word} {word_vector_str}')
 
     word_embeddings_str = '\n'.join(word_vectors)
-    with open(f'./data/{ds_name}_word_vectors.txt', 'w') as f:
+    with open(f'./data/{ds_name}_{rp}_word_vectors.txt', 'w') as f:
         f.write(word_embeddings_str)
 
     # Create doc vectors and written to file  # todo: commented-out
@@ -203,17 +217,17 @@ def train_model(ds_name: str, is_featureless: bool, cfg: TrainingConfigs):
     for i in range(train_size):
         doc_vector = train_doc_embeddings[i]
         doc_vector_str = ' '.join([str(x) for x in doc_vector])
-        doc_vectors.append('doc_' + str(doc_id) + ' ' + doc_vector_str)
+        doc_vectors.append(f'doc_{str(doc_id)} {doc_vector_str}')
         doc_id += 1
 
     for i in range(test_size):
         doc_vector = test_doc_embeddings[i]
         doc_vector_str = ' '.join([str(x) for x in doc_vector])
-        doc_vectors.append('doc_' + str(doc_id) + ' ' + doc_vector_str)
+        doc_vectors.append(f'doc_{str(doc_id)} {doc_vector_str}')
         doc_id += 1
 
     doc_embeddings_str = '\n'.join(doc_vectors)
-    with open(f'./data/{ds_name}_doc_vectors.txt', 'w') as f:
+    with open(f'./data/{ds_name}_{rp}_doc_vectors.txt', 'w') as f:
         f.write(doc_embeddings_str)
 
-    return pl.log_history()
+    return pl.log_history(), train_loss_hist, eval_loss_hist, train_acc_hist, eval_acc_hist

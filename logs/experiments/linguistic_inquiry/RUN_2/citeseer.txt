@@ -1,0 +1,73 @@
+
+==================== Torch Seed: 9687882272600
+
+Model parameters
+
+Layer: layer1.W0 | Size: torch.Size([6827, 200])
+Layer: layer2.W0 | Size: torch.Size([200, 6])
+
+Data statistics
+
+  Edges    Classes    Train samples    Val samples    Test samples
+-------  ---------  ---------------  -------------  --------------
+   6827          6             2088            231             993
+
+Epoch:0001, train_loss=1.95256, train_acc=0.10536, val_loss=1.79595, val_acc=0.20779, time=0.05802
+Epoch:0002, train_loss=1.79649, train_acc=0.25527, val_loss=1.79114, val_acc=0.30303, time=0.05801
+Epoch:0003, train_loss=1.72955, train_acc=0.38602, val_loss=1.78941, val_acc=0.32468, time=0.05800
+Epoch:0004, train_loss=1.69481, train_acc=0.46839, val_loss=1.78624, val_acc=0.40693, time=0.05898
+Epoch:0005, train_loss=1.65325, train_acc=0.56609, val_loss=1.78204, val_acc=0.50216, time=0.07103
+Epoch:0006, train_loss=1.60742, train_acc=0.67912, val_loss=1.77852, val_acc=0.54545, time=0.05800
+Epoch:0007, train_loss=1.56967, train_acc=0.73228, val_loss=1.77576, val_acc=0.61039, time=0.05700
+Epoch:0008, train_loss=1.53926, train_acc=0.75096, val_loss=1.77311, val_acc=0.63636, time=0.05704
+Epoch:0009, train_loss=1.51087, train_acc=0.76724, val_loss=1.77042, val_acc=0.64502, time=0.05802
+Epoch:0010, train_loss=1.48305, train_acc=0.78448, val_loss=1.76792, val_acc=0.64502, time=0.05702
+Epoch:0011, train_loss=1.45765, train_acc=0.80460, val_loss=1.76596, val_acc=0.64069, time=0.05802
+Epoch:0012, train_loss=1.43702, train_acc=0.82423, val_loss=1.76471, val_acc=0.64935, time=0.05900
+Epoch:0013, train_loss=1.42230, train_acc=0.84579, val_loss=1.76408, val_acc=0.64069, time=0.05701
+Epoch:0014, train_loss=1.41252, train_acc=0.85967, val_loss=1.76374, val_acc=0.64069, time=0.05703
+Epoch:0015, train_loss=1.40493, train_acc=0.86207, val_loss=1.76335, val_acc=0.64502, time=0.05802
+Epoch:0016, train_loss=1.39679, train_acc=0.87021, val_loss=1.76276, val_acc=0.64935, time=0.05701
+Epoch:0017, train_loss=1.38696, train_acc=0.88027, val_loss=1.76207, val_acc=0.67100, time=0.05801
+Epoch:0018, train_loss=1.37623, train_acc=0.89320, val_loss=1.76148, val_acc=0.67965, time=0.05702
+Epoch:0019, train_loss=1.36603, train_acc=0.89895, val_loss=1.76112, val_acc=0.68398, time=0.05801
+Epoch:0020, train_loss=1.35729, train_acc=0.90278, val_loss=1.76101, val_acc=0.69264, time=0.05802
+Epoch:0021, train_loss=1.35014, train_acc=0.90613, val_loss=1.76107, val_acc=0.69697, time=0.06000
+Epoch:0022, train_loss=1.34417, train_acc=0.90900, val_loss=1.76123, val_acc=0.69264, time=0.07000
+Epoch:0023, train_loss=1.33888, train_acc=0.91475, val_loss=1.76141, val_acc=0.68398, time=0.07400
+Epoch:0024, train_loss=1.33388, train_acc=0.91954, val_loss=1.76157, val_acc=0.67532, time=0.05801
+Epoch:0025, train_loss=1.32897, train_acc=0.92672, val_loss=1.76167, val_acc=0.67965, time=0.05800
+Epoch:0026, train_loss=1.32405, train_acc=0.93439, val_loss=1.76171, val_acc=0.68398, time=0.07500
+Early stopping...
+
+Optimization Finished!
+
+Test set results: loss= 1.66412, accuracy= 0.70292, time= 0.01603
+
+Test Precision, Recall and F1-Score...
+              precision    recall  f1-score   support
+
+           0     0.6649    0.6324    0.6482       204
+           1     0.7387    0.7885    0.7628       208
+           2     0.7267    0.7800    0.7524       150
+           3     0.6502    0.7672    0.7039       189
+           4     0.6667    0.2319    0.3441        69
+           5     0.7515    0.7341    0.7427       173
+
+    accuracy                         0.7029       993
+   macro avg     0.6998    0.6557    0.6590       993
+weighted avg     0.7021    0.7029    0.6939       993
+
+
+Macro average Test Precision, Recall and F1-Score...
+(0.6997942397892132, 0.6556663918412609, 0.6590171757329684, None)
+
+Micro average Test Precision, Recall and F1-Score...
+(0.702920443101712, 0.702920443101712, 0.702920443101712, None)
+
+Embeddings:
+Word_embeddings: 3515
+Train_doc_embeddings: 2319
+Test_doc_embeddings: 993
+
+Elapsed time is 1.911006 seconds.

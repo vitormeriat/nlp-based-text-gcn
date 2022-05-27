@@ -3,14 +3,14 @@ from modules.trainer.train_model import train_model
 from tsne import tsne_visualizer
 import matplotlib.pyplot as plt
 from sys import argv
+from utils.file_ops import create_dir
 
 
 def create_training_cfg() -> TrainingConfigs:
 
     conf = TrainingConfigs()
-    # conf.data_sets = ['20ng', 'R8', 'R52', 'ohsumed', 'mr', 'cora', 'citeseer', 'pubmed']
-
-    conf.data_sets = ['R8']
+    #conf.data_sets = ['R8', 'R52', '20ng', 'ohsumed', 'mr', 'cora', 'citeseer', 'pubmed']
+    conf.data_sets = ['R8', 'R52', '20ng', 'mr', 'cora', 'citeseer', 'pubmed']
     conf.corpus_split_index_dir = 'data/corpus.shuffled/split_index/'
     conf.corpus_node_features_dir = 'data/corpus.shuffled/node_features/'
     conf.corpus_adjacency_dir = ''
@@ -29,36 +29,39 @@ def create_training_cfg() -> TrainingConfigs:
     return conf
 
 
-def train(ds: str, training_cfg: TrainingConfigs):
+def train(ds: str, training_cfg: TrainingConfigs, rp:str):
     # Start training
-    return train_model(ds_name=ds, is_featureless=True, cfg=training_cfg)
+    return train_model(ds_name=ds, is_featureless=True, cfg=training_cfg, rp=rp)
 
 
-def save_history(hist, representation, dataset):
-    file_name = f'logs/experiments/{representation}_dataset_{dataset}.txt'
+def save_history(hist, file_name):  # representation, dataset, run_time):
+    #file_name = f'logs/experiments/{representation}_dataset_{dataset}.txt'
+    file_name = f'{file_name}.txt'
 
     with open(file_name, 'w') as my_file:
         my_file.writelines(hist)
 
 
-def create_training_plot(training_history, name="training_history"):
-    fig, axes = plt.subplots(2, 1)
-    axes[0].plot(training_history.epoch, training_history.accuracy, c="blue")
-    axes[0].set_ylabel("Accuracy", size=20)
-    axes[0].grid(which="both")
-    axes[1].plot(training_history.epoch, training_history.val_loss,
-                 c="green", label='Validation')
-    axes[1].plot(training_history.epoch,
-                 training_history.train_loss, c="red", label='Train')
-    axes[1].set_ylabel("Loss", size=20)
-    axes[1].set_xlabel("Epoch", size=20)
-    axes[1].grid(which="both")
-    axes[1].legend(fontsize=15)
+# representation, dataset, run_time):
+def plot_acc_loss(train_acc, eval_acc, train_loss, eval_loss, file_name):
+    epochs = range(1, len(train_acc) + 1)
 
-    fig = plt.gcf()
-    fig.set_size_inches(15, 8)
-    plt.tight_layout()
-    plt.savefig(f"{name}.jpg", dpi=200)
+    #file_name = f'logs/experiments/{representation}/RUN_{run_time}/{dataset}'
+
+    plt.figure(figsize=(16, 10))
+    plt.plot(epochs, train_acc, 'b', label='Training acc')
+    plt.plot(epochs, eval_acc, 'r', label='Validation acc')
+    plt.title('Training and validation accuracy')
+    plt.legend()
+    plt.savefig(f'{file_name}-metrics-acc.png', dpi=250)
+
+    plt.figure()
+    plt.figure(figsize=(16, 10))
+    plt.plot(epochs, train_loss, 'b', label='Training loss')
+    plt.plot(epochs, eval_loss, 'r', label='Validation loss')
+    plt.title('Training and validation loss')
+    plt.legend()
+    plt.savefig(f'{file_name}-metrics-loss.png', dpi=250)
 
 
 def batch_train(rp: str, trn_cfg):
@@ -68,29 +71,43 @@ def batch_train(rp: str, trn_cfg):
 
     path = 'data/corpus.shuffled/adjacency/'
 
-    if rp == 'frequency':
-        # Default adjacency
-        trn_cfg.corpus_adjacency_dir = f'{path}/frequency/'
-    elif rp == 'semantic':
-        # Semantic adjacency
-        trn_cfg.corpus_adjacency_dir = f'{path}/semantic/'
-    elif rp == 'syntactic_dependency':
-        # Syntactic adjacency
-        trn_cfg.corpus_adjacency_dir = f'{path}/syntactic_dependency/'
-    elif rp == 'linguistic_inquiry':
-        # Semantic adjacency
-        trn_cfg.corpus_adjacency_dir = f'{path}/linguistic_inquiry/'
-    elif rp == 'graph':
-        # Graph adjacency
-        trn_cfg.corpus_adjacency_dir = f'{path}/graph/'
-
     for ds in trn_cfg.data_sets:
-        print('\n\n▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ' + ds)
 
-        hist = train(ds=ds, training_cfg=trn_cfg)
-        save_history(hist, rp, ds)
-        tsne_visualizer(ds, rp)
-        create_training_plot(hist)
+        print('\n\n'+'▄'*60 + ds + '\n')
+
+        for indx in range(5):
+            print('\n\n'+'▄'*30 + f' {indx}\n')
+
+            if rp == 'frequency':
+                # Default adjacency
+                trn_cfg.corpus_adjacency_dir = f'{path}/frequency/'
+            elif rp == 'semantic':
+                # Semantic adjacency
+                trn_cfg.corpus_adjacency_dir = f'{path}/semantic/'
+            elif rp == 'syntactic_dependency':
+                # Syntactic adjacency
+                trn_cfg.corpus_adjacency_dir = f'{path}/syntactic_dependency/'
+            elif rp == 'linguistic_inquiry':
+                # Semantic adjacency
+                trn_cfg.corpus_adjacency_dir = f'{path}/linguistic_inquiry/'
+            elif rp == 'graph':
+                # Graph adjacency
+                trn_cfg.corpus_adjacency_dir = f'{path}/graph/'
+
+            # for ds in trn_cfg.data_sets:
+            #     print('\n\n'+'▄'*60 + ds)
+
+            file_name = f'logs/experiments/{rp}/RUN_{indx}'
+            create_dir(dir_path=file_name, overwrite=False)
+            file_name = f'{file_name}/{ds}'
+
+            hist, train_loss, eval_loss, train_acc, eval_acc = train(
+                ds=ds, training_cfg=trn_cfg, rp=rp)
+            save_history(hist, file_name)  # rp, ds, indx)
+            #tsne_visualizer(ds, rp, indx)
+            #create_training_plot(hist, rp, ds, indx)
+            plot_acc_loss(train_acc, eval_acc, train_loss,
+                          eval_loss, file_name)  # rp, ds, indx)
 
 
 if __name__ == '__main__':

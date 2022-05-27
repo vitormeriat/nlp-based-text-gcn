@@ -1,0 +1,141 @@
+
+
+============================================================ R8
+
+[INFO] Cleaned-Corpus Dir='C:\repos\nlp-based-text-gcn/data/corpus.cleaned/'
+[INFO] Rare-Count=<5>
+[INFO] Elapsed time is 0.703141 seconds.
+[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========
+[INFO] Shuffled-Corpus Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/'
+[INFO] Elapsed time is 0.489028 seconds.
+[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========
+[INFO] Vocabulary Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/vocabulary/'
+[INFO] Word-Vector Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/word_vectors/'
+[INFO] Elapsed time is 3.420238 seconds.
+[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========
+[INFO] x.shape=   (4937, 300),	 y.shape=   (4937, 8)
+[INFO] tx.shape=  (2189, 300),	 ty.shape=  (2189, 8)
+[INFO] allx.shape=(13173, 300),	 ally.shape=(13173, 8)
+[INFO] Elapsed time is 1.977235 seconds.
+[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========
+
+
+============================================================ R52
+
+[INFO] Cleaned-Corpus Dir='C:\repos\nlp-based-text-gcn/data/corpus.cleaned/'
+[INFO] Rare-Count=<5>
+[INFO] Elapsed time is 0.878525 seconds.
+[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========
+[INFO] Shuffled-Corpus Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/'
+[INFO] Elapsed time is 0.660940 seconds.
+[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========
+[INFO] Vocabulary Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/vocabulary/'
+[INFO] Word-Vector Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/word_vectors/'
+[INFO] Elapsed time is 1.446195 seconds.
+[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========
+[INFO] x.shape=   (5879, 300),	 y.shape=   (5879, 52)
+[INFO] tx.shape=  (2568, 300),	 ty.shape=  (2568, 52)
+[INFO] allx.shape=(15424, 300),	 ally.shape=(15424, 52)
+[INFO] Elapsed time is 2.366419 seconds.
+[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========
+
+
+============================================================ 20ng
+
+[INFO] Cleaned-Corpus Dir='C:\repos\nlp-based-text-gcn/data/corpus.cleaned/'
+[INFO] Rare-Count=<5>
+[INFO] Elapsed time is 5.790147 seconds.
+[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========
+[INFO] Shuffled-Corpus Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/'
+[INFO] Elapsed time is 2.350868 seconds.
+[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========
+[INFO] Vocabulary Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/vocabulary/'
+[INFO] Word-Vector Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/word_vectors/'
+[INFO] Elapsed time is 7.347985 seconds.
+[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========
+[INFO] x.shape=   (10183, 300),	 y.shape=   (10183, 20)
+[INFO] tx.shape=  (7532, 300),	 ty.shape=  (7532, 20)
+[INFO] allx.shape=(54071, 300),	 ally.shape=(54071, 20)
+[INFO] Elapsed time is 6.973142 seconds.
+[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========
+
+
+============================================================ mr
+
+[INFO] Cleaned-Corpus Dir='C:\repos\nlp-based-text-gcn/data/corpus.cleaned/'
+[INFO] Rare-Count=<5>
+[INFO] Elapsed time is 0.312520 seconds.
+[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========
+[INFO] Shuffled-Corpus Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/'
+[INFO] Elapsed time is 0.848996 seconds.
+[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========
+[INFO] Vocabulary Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/vocabulary/'
+[INFO] Word-Vector Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/word_vectors/'
+[INFO] Elapsed time is 2.449229 seconds.
+[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========
+[INFO] x.shape=   (6398, 300),	 y.shape=   (6398, 2)
+[INFO] tx.shape=  (3554, 300),	 ty.shape=  (3554, 2)
+[INFO] allx.shape=(25872, 300),	 ally.shape=(25872, 2)
+[INFO] Elapsed time is 3.462007 seconds.
+[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========
+
+
+============================================================ cora
+
+[INFO] Cleaned-Corpus Dir='C:\repos\nlp-based-text-gcn/data/corpus.cleaned/'
+[INFO] Rare-Count=<5>
+[INFO] Elapsed time is 0.078127 seconds.
+[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========
+[INFO] Shuffled-Corpus Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/'
+[INFO] Elapsed time is 0.062500 seconds.
+[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========
+[INFO] Vocabulary Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/vocabulary/'
+[INFO] Word-Vector Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/word_vectors/'
+[INFO] Elapsed time is 0.046877 seconds.
+[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========
+[INFO] x.shape=   (1707, 300),	 y.shape=   (1707, 7)
+[INFO] tx.shape=  (812, 300),	 ty.shape=  (812, 7)
+[INFO] allx.shape=(3239, 300),	 ally.shape=(3239, 7)
+[INFO] Elapsed time is 0.581772 seconds.
+[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========
+
+
+============================================================ citeseer
+
+[INFO] Cleaned-Corpus Dir='C:\repos\nlp-based-text-gcn/data/corpus.cleaned/'
+[INFO] Rare-Count=<5>
+[INFO] Elapsed time is 0.113830 seconds.
+[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========
+[INFO] Shuffled-Corpus Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/'
+[INFO] Elapsed time is 0.093753 seconds.
+[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========
+[INFO] Vocabulary Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/vocabulary/'
+[INFO] Word-Vector Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/word_vectors/'
+[INFO] Elapsed time is 0.109377 seconds.
+[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========
+[INFO] x.shape=   (2088, 300),	 y.shape=   (2088, 6)
+[INFO] tx.shape=  (993, 300),	 ty.shape=  (993, 6)
+[INFO] allx.shape=(5834, 300),	 ally.shape=(5834, 6)
+[INFO] Elapsed time is 0.832693 seconds.
+[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========
+
+
+============================================================ pubmed
+
+[INFO] Cleaned-Corpus Dir='C:\repos\nlp-based-text-gcn/data/corpus.cleaned/'
+[INFO] Rare-Count=<5>
+[INFO] Elapsed time is 1.005775 seconds.
+[INFO] ========= CLEANED DATA: Removed rare & stop-words. =========
+[INFO] Shuffled-Corpus Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/'
+[INFO] Elapsed time is 3.259900 seconds.
+[INFO] ========= SHUFFLED DATA: Corpus documents shuffled. =========
+[INFO] Vocabulary Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/vocabulary/'
+[INFO] Word-Vector Dir='C:\repos\nlp-based-text-gcn/data/corpus.shuffled/word_vectors/'
+[INFO] Elapsed time is 0.270155 seconds.
+[INFO] ========= PREPARED WORDS: Vocabulary & word-vectors extracted. =========
+[INFO] x.shape=   (12422, 300),	 y.shape=   (12422, 3)
+[INFO] tx.shape=  (5915, 300),	 ty.shape=  (5915, 3)
+[INFO] allx.shape=(14254, 300),	 ally.shape=(14254, 3)
+[INFO] Elapsed time is 3.539117 seconds.
+[INFO] ========= EXTRACTED NODE FEATURES: x, y, tx, ty, allx, ally. =========
+[INFO] Final elapsed time is 52.675903 seconds.
